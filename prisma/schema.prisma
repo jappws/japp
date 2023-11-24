@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url  	= env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+
+model User {
+  id Int @id @default(autoincrement())
+  firstName String  @map("first_name")
+  lastName String  @map("last_name")
+  surname String? @default("")
+  username String @unique
+  nickname String? @default("")
+  sex Sex
+  phone String @unique
+  otherPhone String? @default("")
+  email String @unique
+  avatar String? @default("")
+  password String
+  blocked Boolean @default(false)
+  deleted Boolean @default(false)
+  country String? @default("")
+  province String? @default("")
+  city String? @default("")
+  address String? @default("")
+  account Account?
+  usersCreated User[] @relation("user_creator")
+  createdBy User? @relation("user_creator", fields: [createdById],references: [id])
+  createdById Int? @map("created_by_id")
+  role Role
+  createdTransactionsOperations Transaction[]
+  createdTransfersOperations Transfer[]
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+enum Sex {
+  M
+  F
+}
+
+enum Role {
+  CLIENT
+  AGENT
+  ADMIN
+}
+
+model Account {
+  id Int @id @default(autoincrement())
+  accountNumber String
+  balance Float
+  owner User @relation(fields: [ownerId],references: [id])
+  ownerId Int @unique @map("owner_id")
+  transactions Transaction[]
+}
+
+model Transaction {
+  id Int @id @default(autoincrement())
+  date DateTime
+  amount Float
+  balanceAfter Float
+  goldQuantity String? @default("")
+  title String? @default("")
+  message String @default("") // Un commentaire, une observation sur la transaction
+  type TransactionType
+  account Account @relation(fields: [accountId],references: [id])
+  accountId Int @map("account_id")
+  operator User @relation(fields: [operatorId],references: [id])
+  operatorId Int @map("operator_id")
+  deleted Boolean @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+  LOAN_DISBURSEMENT // Décaissement de prêt
+  LOAN_PAYMENT // Rembourssement de prêt
+  SERVICE_FEE  // Frais de service
+  INTEREST_EARNED // Intérêts perçus
+  INTEREST_PAID // Intérêts payés
+}
+
+model Company {
+  id Int @id @default(autoincrement())
+  code String @unique
+  name String
+  shortName String? @default("")
+  description String? @default("")
+  logo String? @default("")
+  icon String? @default("")
+  currency IsoCodeCurrency
+  country String? @default("")
+  province String? @default("")
+  city String? @default("")
+  address String? @default("")
+  webSiteUrl String? @default("")
+  motto String? @default("")
+  phone1 String? @default("")
+  phone2 String? @default("")
+  email String? @default("")
+  status Status
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+enum Status {
+  ENABLED
+  DISABLED
+}
+
+enum IsoCodeCurrency {
+  USD
+  CDF
+}
+
+model Transfer {
+  id Int @id  @default(autoincrement())
+  date DateTime
+  type TransferTypeType
+  amount Float
+  balanceAfter Float
+  goldQuantity String? @default("")
+  sender String
+  message String @default("") // Un commentaire, une observation sur le transfer
+  operator User @relation(fields: [operatorId],references: [id])
+  operatorId Int
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+model TransferBalance {
+  id Int @id @default(autoincrement())
+  balance Float
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+}
+
+enum TransferTypeType {
+  MONEY_TRANSFER
+  GOLD_TRANSFER
+}
