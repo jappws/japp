@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { Avatar, Card, Tabs, Typography } from "antd";
+import { Space, Card, Tabs, Typography } from "antd";
 import { LoginType } from "@/lib/types";
 import { LoginFormByEmail } from "./email";
 import { LoginFormByPhone } from "./phone";
