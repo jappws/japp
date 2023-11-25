@@ -14,7 +14,7 @@ export const LoginPageClientSide = () => {
       <Card bordered className="mx-auto">
         <div className="flex flex-col items-center jus space-x-2 my-5">
         <Avatar
-            icon={<LaptopOutlined />}
+            icon={<UserOutlined />}
             className="bg-primary"
           />
           {/* <Space>
