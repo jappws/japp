@@ -7,9 +7,9 @@ type BodyRequestType = {
   company: {
     name: string;
     shortName: string;
-    description: string;
-    logo: string;
-    icon: string;
+    description?: string | null;
+    logo?: string | null;
+    icon?: string | null;
     currency: IsoCodeCurrencyType;
     country: string | null;
     province?: string | null;
@@ -24,10 +24,10 @@ type BodyRequestType = {
   user: {
     firstName: string;
     lastName: string;
-    surname: string;
+    surname?: string | null;
     email: string;
     phone: string;
-    otherPhone: string;
+    otherPhone?: string | null;
     sex: SexType;
     password: string;
   };
