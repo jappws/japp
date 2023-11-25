@@ -6,7 +6,6 @@ import {
 } from "@ant-design/icons";
 import {
   Layout,
-  Modal,
   Space,
   Steps,
   Typography,
