@@ -12,18 +12,19 @@ export const LoginPageClientSide = () => {
   return (
     <div className="min-h-screen flex items-center p-4">
       <Card bordered className="mx-auto">
-        <div className="flex flex-col items-center space-x-2 my-5">
+        <div className="flex flex-col items-center jus space-x-2 my-5">
         {/* <Avatar
             icon={<UserOutlined />}
             className="bg-primary"
           /> */}
-        </div>
-        <Space>
+          <Space>
         <Typography.Paragraph className="text-center text-4xl font-bold text-primary">
         Japp
         </Typography.Paragraph>
         <UserOutlined />
         </Space>
+        </div>
+        
         <Tabs
           centered
           activeKey={loginType}
