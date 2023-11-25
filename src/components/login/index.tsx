@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { UserOutlined } from "@ant-design/icons";
-import { Space, Card, Tabs, Typography } from "antd";
+import { Space, Card, Tabs, Typography, Avatar } from "antd";
 import { LoginType } from "@/lib/types";
 import { LoginFormByEmail } from "./email";
 import { LoginFormByPhone } from "./phone";
@@ -12,11 +12,11 @@ export const LoginPageClientSide = () => {
   return (
     <div className="min-h-screen flex items-center p-4">
       <Card bordered className="mx-auto">
-        <div className="flex flex-col items-center jus space-x-2 my-5">
-        {/* <Avatar
+        {/* <div className="flex flex-col items-center jus space-x-2 my-5">
+        <Avatar
             icon={<UserOutlined />}
             className="bg-primary"
-          /> */}
+          />
           <Space>
         <Typography.Paragraph className="text-center text-4xl font-bold text-primary">
         Japp
@@ -24,7 +24,7 @@ export const LoginPageClientSide = () => {
         <UserOutlined />
         </Space>
         </div>
-        
+         */}
         <Tabs
           centered
           activeKey={loginType}
