@@ -5,7 +5,9 @@ export async function GET(
     request: Request
   ) {
     try {
-      const accounts = await prisma.account.findMany({include:{owner:{}}});
+      const accounts = await prisma.account.findMany({
+        include: { owner: {} },
+      });
       const res = accounts
       return new Response(JSON.stringify(res), { status: 200 });
     } catch (e: any) {
