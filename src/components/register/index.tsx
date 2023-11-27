@@ -1,22 +1,10 @@
 "use client";
 
-import {
-  CheckOutlined,
-  SettingOutlined,
-} from "@ant-design/icons";
-import {
-  Layout,
-  Space,
-  Steps,
-  Typography,
-  message,
-  theme,
-} from "antd";
+import { CheckOutlined, SettingOutlined } from "@ant-design/icons";
+import { Layout, Space, Steps, Typography, message, theme } from "antd";
 import { ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
-import {
-  useMutation
-} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import { stepsItems } from "./steps/items";
 import { CompanyFormDataType, StepCompanyForm } from "./steps/company";
@@ -25,13 +13,13 @@ import { StepFormOverview } from "./steps/overview";
 import { IsoCodeCurrencyType } from "@/lib/types";
 
 export const RegisterPageClientSider: React.FC = () => {
-  const {
-    token: { colorPrimary },
-  } = theme.useToken();
+
   const { push } = useRouter();
 
   const [currentStep, setCurrentStep] = useState(0);
-  const [companyData, setCompanyData] = useState<CompanyFormDataType | undefined>({currency:IsoCodeCurrencyType.USD, name:"Japp", shortName:"Japp"});
+  const [companyData, setCompanyData] = useState<
+    CompanyFormDataType | undefined
+  >({ currency: IsoCodeCurrencyType.USD, name: "Japp", shortName: "Japp" });
   const [userData, setUserData] = useState<UserFormDataType | undefined>();
 
   const { mutate, isPending } = useMutation({
@@ -48,8 +36,18 @@ export const RegisterPageClientSider: React.FC = () => {
 
   const submit = () => {
     const data = {
-      company: {},
-      user: {},
+      company: {
+        ...companyData,
+      },
+      user: {
+        firstName: userData?.firstName,
+        lastName: userData?.lastName,
+        surname: userData?.surname,
+        email: userData?.email,
+        phone: `+${userData?.phone.countryCode}${userData?.phone.areaCode}${userData?.phone.phoneNumber}`,
+        sex: userData?.sex,
+        password: userData?.password,
+      },
     };
 
     mutate(data, {
