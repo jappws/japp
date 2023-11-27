@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Col,
@@ -42,6 +42,13 @@ type Props = {
 export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
   const [form] = Form.useForm();
   const { accountId } = useParams();
+
+  const { data:numberData, isLoading:isLoadingNumberData } = useQuery({
+    queryKey: ["accountNumber"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/account/number`).then((res) => res.data as {accountNumber:string}),
+  });
+
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
@@ -94,8 +101,8 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
       title={
         <Space className="">
           Nouveau compte
-          <Tag className="mr-0 font-bold" color="cyan-inverse">
-            0001988
+          <Tag className="mr-0 font-bold" color="purple-inverse">
+            {numberData?.accountNumber}
           </Tag>
         </Space>
       }
