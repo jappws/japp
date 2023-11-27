@@ -67,6 +67,7 @@ export const AccountsClient = () => {
               }
               placeholder="Rechercher ici"
               bordered={false}
+              onChange={search}
             />
             <Tooltip key="1" title="Créer un compte">
               <Button
