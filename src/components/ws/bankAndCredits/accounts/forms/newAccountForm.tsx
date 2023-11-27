@@ -90,7 +90,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
         otherPhone: formData?.otherPhone?.valid
           ? `+${formData?.otherPhone?.countryCode}${formData?.otherPhone?.areaCode}${formData?.otherPhone?.phoneNumber}`
           : "",
-        sex: SexType,
+        sex: formData.sex,
         country: formData.country,
         province: formData.province,
         city: formData.city,
