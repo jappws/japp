@@ -46,7 +46,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
   const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: ["years"],
     queryFn: () =>
-      axios.get(`/api/v1/ws/years`).then((res) => res.data as CompanyType),
+      axios.get(`/api/v1/ws/company`).then((res) => res.data as CompanyType),
   });
 
   return (
