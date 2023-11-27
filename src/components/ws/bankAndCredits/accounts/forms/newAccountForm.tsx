@@ -53,7 +53,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/finance/cash-transaction`, data),
+      axios.post(`/api/v1/ws/account`, data),
   });
 
   const submit = (formData: CreditFormData) => {
@@ -78,9 +78,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
           toggleForm();
         }
         return Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["cash-transactions"] }),
-          queryClient.invalidateQueries({ queryKey: ["balance"] }),
-          queryClient.invalidateQueries({ queryKey: ["cash-accounts"] }),
+          queryClient.invalidateQueries({ queryKey: ["accounts"] }),
         ]);
       },
       onError: () => {

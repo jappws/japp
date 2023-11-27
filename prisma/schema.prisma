@@ -55,7 +55,7 @@ enum Role {
 
 model Account {
   id Int @id @default(autoincrement())
-  accountNumber String
+  accountNumber String @unique
   balance Float
   owner User @relation(fields: [ownerId],references: [id])
   ownerId Int @unique @map("owner_id")
