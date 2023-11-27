@@ -101,7 +101,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
       title={
         <Space className="">
           Nouveau compte
-          <Tag className="mr-0 font-bold" color="purple-inverse">
+          <Tag className="mr-0 font-bold" color="purple" bordered={false}>
             {numberData?.accountNumber}
           </Tag>
         </Space>
