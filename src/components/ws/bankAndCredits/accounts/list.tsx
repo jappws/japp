@@ -14,7 +14,6 @@ export const AccountsList:React.FC<Props> =({data})=>{
     const onRowClick = (record: AccountType) => {};
 
     return <Table
-    // loading={isLoading}
     rowClassName={(rowData) => "bg-[#f5f5f5] odd:bg-white"}
     columns={transactionsColumns}
     dataSource={data}

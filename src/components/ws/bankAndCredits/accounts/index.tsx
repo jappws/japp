@@ -1,11 +1,11 @@
 "use client";
 
 import { BankOutlined, PlusOutlined, SearchOutlined } from "@ant-design/icons";
-import { PageContainer, ProCard } from "@ant-design/pro-components";
+import { PageContainer } from "@ant-design/pro-components";
 import { Button, Input, Space, Tooltip, theme } from "antd";
 import { AccountsList } from "./list";
 import { NewAccountForm } from "./forms/newAccountForm";
-import { useState } from "react";
+import { useState, ChangeEvent, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AccountType } from "@/lib/types";
@@ -14,11 +14,31 @@ export const AccountsClient = () => {
   const { token } = theme.useToken();
   const [openNewAccountForm, setOpenNewAccountform] = useState<boolean>(false);
 
+  const [selectedCurrentData, setSelectedCurrentData] = useState<
+    AccountType[] | undefined
+  >();
+
   const { data, isLoading } = useQuery({
     queryKey: ["accounts"],
     queryFn: () =>
       axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
   });
+
+  const search = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const items = data?.filter(
+      (item) =>
+        item.accountNumber.toLowerCase().includes(value.toLowerCase()) ||
+        `${item.owner.firstName.toLowerCase()} ${item.owner.lastName.toLowerCase()} ${item.owner.surname?.toLowerCase()}`.includes(
+          value.toLowerCase()
+        )
+    );
+    setSelectedCurrentData(items);
+  };
+
+  useEffect(() => {
+    setSelectedCurrentData(data);
+  }, [data]);
 
   return (
     <div>
@@ -69,7 +89,7 @@ export const AccountsClient = () => {
         extra={[<BankOutlined key="2" />]}
       >
         <div className="md:pt-4">
-          <AccountsList data={[]} />
+          <AccountsList data={selectedCurrentData} />
           <NewAccountForm
             open={openNewAccountForm}
             toggle={setOpenNewAccountform}
