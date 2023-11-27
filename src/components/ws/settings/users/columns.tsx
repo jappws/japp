@@ -55,7 +55,7 @@ export const usersColumns: TableColumnsType<UserType> = [
     dataIndex: "role",
     key: "role",
     render: (value, record) => (
-      <Tag color="purple" className="mr-0">
+      <Tag color="purple" className="mr-0" bordered={false}>
         {value}
       </Tag>
     ),
