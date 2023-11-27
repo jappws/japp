@@ -5,14 +5,25 @@ import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { Button, Input, Space, Tooltip, theme } from "antd";
 import { AccountsList } from "./list";
 import { NewAccountForm } from "./forms/newAccountForm";
-import {useState} from 'react'
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { AccountType } from "@/lib/types";
 
 export const AccountsClient = () => {
   const { token } = theme.useToken();
-  const [openNewAccountForm, setOpenNewAccountform]=useState<boolean>(false)
+  const [openNewAccountForm, setOpenNewAccountform] = useState<boolean>(false);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
+  });
+
   return (
     <div>
       <PageContainer
+        loading={isLoading}
         fixedHeader
         token={{
           paddingInlinePageContainerContent: 16,
@@ -41,7 +52,7 @@ export const AccountsClient = () => {
               <Button
                 type="primary"
                 onClick={() => {
-                 setOpenNewAccountform(true)
+                  setOpenNewAccountform(true);
                 }}
                 className="shadow-none uppercase"
                 icon={<PlusOutlined />}
@@ -59,7 +70,10 @@ export const AccountsClient = () => {
       >
         <div className="md:pt-4">
           <AccountsList data={[]} />
-          <NewAccountForm open={openNewAccountForm} toggle={setOpenNewAccountform}/>
+          <NewAccountForm
+            open={openNewAccountForm}
+            toggle={setOpenNewAccountform}
+          />
         </div>
       </PageContainer>
     </div>
