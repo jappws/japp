@@ -355,7 +355,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
                   label="Email"
                   rules={[
                     {
-                      required: true,
+                      required: false,
                     },
                     {
                       type: "email",
@@ -363,7 +363,11 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
                     },
                   ]}
                 >
-                  <Input className="bg-white" placeholder="Adresse mail" />
+                  <Input
+                    className="bg-white"
+                    placeholder="Adresse mail"
+                    disabled
+                  />
                 </Form.Item>
               </Col>
               <Col span={24}>
@@ -393,8 +397,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
                   label="Téléphone 2"
                   rules={[
                     {
-                      //   required: true,
-                      message: "Le numéro de téléphone est obligatoire",
+                      required: false,
                     },
                     { validator: phoneValidator },
                   ]}
