@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 export async function GET(request: Request) {
   try {
     const users = await prisma.user.findMany({
-      where: { role: { not: "CLIENT" } },
+      where: { NOT:{role:"CLIENT"} },
     });
     const res = users;
     return new Response(JSON.stringify(res), { status: 200 });
