@@ -1,120 +1,35 @@
 "use client";
 
 import {
-  BankOutlined,
-  CaretDownFilled,
-  DashboardOutlined,
   DoubleRightOutlined,
   LaptopOutlined,
   LogoutOutlined,
   PlusCircleFilled,
-  QuestionCircleFilled,
   SearchOutlined,
   SettingOutlined,
-  TeamOutlined,
-  TransactionOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import type { ProSettings } from "@ant-design/pro-components";
 import {
-  PageContainer,
-  ProCard,
   ProConfigProvider,
   ProLayout,
   SettingDrawer,
 } from "@ant-design/pro-components";
-//   import { css } from '@emotion/css';
-import {
-  Button,
-  ConfigProvider,
-  Divider,
-  Dropdown,
-  Input,
-  Menu,
-  Popover,
-  theme,
-} from "antd";
+import { Dropdown } from "antd";
 import React, { useState } from "react";
 import { wsLayoutDefaultProps } from "./_defaultProps";
 import { usePathname, useRouter } from "next/navigation";
 import dayjs from "dayjs";
 import { signOut, useSession } from "next-auth/react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { CompanyType } from "@/lib/types";
 
 const currentYear = dayjs().format("YYYY");
 
-const Item: React.FC<{ children: React.ReactNode }> = (props) => {
-  const { token } = theme.useToken();
-  return (
-    <div
-      // className={css`
-      //   color: ${token.colorTextSecondary};
-      //   font-size: 14px;
-      //   cursor: pointer;
-      //   line-height: 22px;
-      //   margin-bottom: 8px;
-      //   &:hover {
-      //     color: ${token.colorPrimary};
-      //   }
-      // `}
-      style={{
-        width: "33.33%",
-      }}
-    >
-      {props.children}
-      <DoubleRightOutlined
-        style={{
-          marginInlineStart: 4,
-        }}
-      />
-    </div>
-  );
-};
-
-const SearchInput = () => {
-  const { token } = theme.useToken();
-  return (
-    <div
-      key="SearchOutlined"
-      aria-hidden
-      style={{
-        display: "flex",
-        alignItems: "center",
-        marginInlineEnd: 24,
-      }}
-      onMouseDown={(e) => {
-        e.stopPropagation();
-        e.preventDefault();
-      }}
-    >
-      <Input
-        style={{
-          borderRadius: 4,
-          marginInlineEnd: 12,
-          backgroundColor: token.colorBgTextHover,
-        }}
-        prefix={
-          <SearchOutlined
-            style={{
-              color: token.colorTextLightSolid,
-            }}
-          />
-        }
-        placeholder="搜索方案"
-        bordered={false}
-      />
-      <PlusCircleFilled
-        style={{
-          color: token.colorPrimary,
-          fontSize: 24,
-        }}
-      />
-    </div>
-  );
-};
-
 export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const {data:session} =useSession()
+  const { data: session } = useSession();
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
     fixSiderbar: true,
     layout: "side",
@@ -127,7 +42,12 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
   });
 
   const { push } = useRouter();
-  
+
+  const { data: company, isLoading: isLoadingCompany } = useQuery({
+    queryKey: ["years"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/years`).then((res) => res.data as CompanyType),
+  });
 
   return (
     <div
@@ -162,7 +82,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
             className: " bg-primary",
             icon: <UserOutlined />,
             size: "small",
-            title:`${session?.user.username}`,
+            title: `${session?.user.username}`,
             render: (props, dom) => {
               return (
                 <Dropdown
@@ -216,7 +136,11 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
                   paddingBlockStart: 12,
                 }}
               >
-                <div>© {currentYear} JAPP by crudflow</div>
+                <div>
+                  © {currentYear}{" "}
+                  <span className=" uppercase">{company?.shortName}</span>{" "}
+                  Designed by crudflow
+                </div>
               </div>
             );
           }}
