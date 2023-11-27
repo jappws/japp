@@ -1,6 +1,6 @@
 import { TransactionType, UserType } from "@/lib/types";
 import { getHSLColor } from "@/lib/utils";
-import { Avatar, TableColumnsType } from "antd";
+import { Avatar, TableColumnsType, Tag } from "antd";
 import dayjs from "dayjs";
 
 export const usersColumns: TableColumnsType<UserType> = [
@@ -50,12 +50,30 @@ export const usersColumns: TableColumnsType<UserType> = [
     key: "username",
     ellipsis: true,
   },
-  { title: "Rôle", dataIndex: "role", key: "role" },
+  {
+    title: "Rôle",
+    dataIndex: "role",
+    key: "role",
+    render: (value, record) => (
+      <Tag color="purple" className="mr-0">
+        {value}
+      </Tag>
+    ),
+  },
   {
     title: "Statut",
-    dataIndex: "status",
-    key: "status",
+    dataIndex: "blocked",
+    key: "blocked",
     responsive: ["md"],
-    ellipsis: true,
+    render: (value, record) =>
+      record.blocked ? (
+        <Tag color="warning" className="mr-0" bordered={false}>
+          Bloqué
+        </Tag>
+      ) : (
+        <Tag color="success" className="mr-0" bordered={false}>
+          Actif
+        </Tag>
+      ),
   },
 ];
