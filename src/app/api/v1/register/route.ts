@@ -48,7 +48,7 @@ export async function POST(request: Request) {
     //generate a user code as a username
     const currentYear = new Date().getFullYear();
     const yearSuffix = String(currentYear).substring(-2);
-    const randomPrefix = String(Math.floor(Math.random() * 1000)).padStart(
+    const randomPrefix = String(Math.floor(Math.random() * 100)).padStart(
       3,
       "0"
     );
