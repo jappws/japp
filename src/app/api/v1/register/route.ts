@@ -49,7 +49,7 @@ export async function POST(request: Request) {
     const currentYear = new Date().getFullYear();
     const yearSuffix = String(currentYear).substring(2);
     const randomPrefix = String(Math.floor(Math.random() * 1000)).padStart(
-      3,
+      4,
       "0"
     );
     const username = randomPrefix + yearSuffix;

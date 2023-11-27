@@ -38,7 +38,7 @@ import React, { useState } from "react";
 import { wsLayoutDefaultProps } from "./_defaultProps";
 import { usePathname, useRouter } from "next/navigation";
 import dayjs from "dayjs";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const currentYear = dayjs().format("YYYY");
 
@@ -114,6 +114,7 @@ const SearchInput = () => {
 
 export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const {data:session} =useSession()
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
     fixSiderbar: true,
     layout: "side",
@@ -125,9 +126,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
     fixedHeader: false,
   });
 
-  // const [pathname, setPathname] = useState('/list/sub-page/sub-sub-page1');
   const { push } = useRouter();
-
   
 
   return (
@@ -163,7 +162,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
             className: " bg-primary",
             icon: <UserOutlined />,
             size: "small",
-            title: "089842",
+            title:`${session?.user.username}`,
             render: (props, dom) => {
               return (
                 <Dropdown
