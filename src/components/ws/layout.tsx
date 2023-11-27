@@ -1,11 +1,8 @@
 "use client";
 
 import {
-  DoubleRightOutlined,
   LaptopOutlined,
   LogoutOutlined,
-  PlusCircleFilled,
-  SearchOutlined,
   SettingOutlined,
   UserOutlined,
 } from "@ant-design/icons";
@@ -44,7 +41,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
   const { push } = useRouter();
 
   const { data: company, isLoading: isLoadingCompany } = useQuery({
-    queryKey: ["years"],
+    queryKey: ["company"],
     queryFn: () =>
       axios.get(`/api/v1/ws/company`).then((res) => res.data as CompanyType),
   });
@@ -59,7 +56,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
     >
       <ProConfigProvider hashed={false}>
         <ProLayout
-          title="Japp"
+          title={company?.shortName ?? ""}
           logo={<LaptopOutlined />}
           {...wsLayoutDefaultProps}
           location={{
@@ -138,7 +135,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
               >
                 <div>
                   © {currentYear}{" "}
-                  <span className=" uppercase">{company?.shortName}</span>{" "}
+                  <span className=" uppercase">{company?.shortName ?? ""}</span>{" "}
                   Designed by crudflow
                 </div>
               </div>

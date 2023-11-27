@@ -99,8 +99,13 @@ export type CompanyType = {
   shortName: string;
   description: string;
   logo: string;
+  motto:string;
   icon: string;
   currency: IsoCodeCurrencyType;
+  webSiteUrl:string;
+  phone1:string;
+  phone2:string;
+  email:string;
   country: string;
   province: string;
   city: string;

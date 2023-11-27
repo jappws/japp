@@ -1,10 +1,18 @@
 "use client";
 
+import { CompanyType } from "@/lib/types";
 import { EditOutlined } from "@ant-design/icons";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
-import {  Button } from "antd";
+import { useQuery } from "@tanstack/react-query";
+import { Button } from "antd";
+import axios from "axios";
 
 export const CompanyClient = () => {
+  const { data: company, isLoading: isLoadingCompany } = useQuery({
+    queryKey: ["company"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/company`).then((res) => res.data as CompanyType),
+  });
   return (
     <div>
       <ProCard
@@ -20,59 +28,57 @@ export const CompanyClient = () => {
           column={{ sm: 1, md: 2 }}
           // title="Résumé de configurations"
           emptyText=""
+          loading={isLoadingCompany}
         >
-          <ProDescriptions.Item
-            valueType="text"
-            label="Monnaie"
-          >
-            {/* {company?.currency} */}
+          <ProDescriptions.Item valueType="text" label="Monnaie">
+            {company?.currency}
           </ProDescriptions.Item>
           <ProDescriptions.Item
             valueType="text"
             ellipsis
             label="Nom de l'entreprise"
           >
-            {/* {company?.name} */}
+            {company?.name}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Abréviation" valueType="text">
-            {/* {company?.shortName} */}
+            {company?.shortName}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Devise" valueType="text">
-            {/* {company?.motto} */}
+            {company?.motto}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Description" valueType="text">
-            {/* {company?.description} */}
+            {company?.description}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Logo" valueType="image">
-            {/* {company?.logo} */}
+            {company?.logo}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Icon" valueType="image">
-            {/* {company?.icon} */}
+            {company?.icon}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Site web" valueType="text">
-            {/* {company?.webSiteUrl} */}
+            {company?.webSiteUrl}
           </ProDescriptions.Item>
 
           <ProDescriptions.Item label="Pays" valueType="text">
-            {/* {company?.country} */}
+            {company?.country}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Province" valueType="text">
-            {/* {company?.province} */}
+            {company?.province}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Ville ou territoire" valueType="text">
-            {/* {company?.city} */}
+            {company?.city}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Adresse" valueType="text">
-            {/* {company?.address} */}
+            {company?.address}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Téléphone 1" valueType="text">
-            {/* {`${company?.phone1.countryCode??""}${company?.phone1.areaCode??""}${company?.phone1.phoneNumber??""}`} */}
+            {company?.phone1}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Téléphone 2" valueType="text">
-            {/* {`${company?.phone2.countryCode??""}${company?.phone2.areaCode??""}${company?.phone2.phoneNumber??""}`} */}
+            {company?.phone2}
           </ProDescriptions.Item>
           <ProDescriptions.Item label="Email" valueType="text">
-            {/* {company?.email} */}
+            {company?.email}
           </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>

@@ -48,8 +48,12 @@ export const RegisterPageClientSider: React.FC = () => {
         address: companyData?.address,
         webSiteUrl: companyData?.webSiteUrl,
         motto: companyData?.motto,
-        phone1: `${companyData?.phone1?.countryCode}${companyData?.phone1?.areaCode}${companyData?.phone1?.phoneNumber}`,
-        phone2: `${companyData?.phone2?.countryCode}${companyData?.phone2?.areaCode}${companyData?.phone2?.phoneNumber}`,
+        phone1: `${companyData?.phone1?.countryCode ?? ""}${
+          companyData?.phone1?.areaCode ?? ""
+        }${companyData?.phone1?.phoneNumber ?? ""}`,
+        phone2: `${companyData?.phone2?.countryCode ?? ""}${
+          companyData?.phone2?.areaCode ?? ""
+        }${companyData?.phone2?.phoneNumber ?? ""}`,
         email: companyData?.email,
       },
       user: {
