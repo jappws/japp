@@ -13,7 +13,6 @@ import { StepFormOverview } from "./steps/overview";
 import { IsoCodeCurrencyType } from "@/lib/types";
 
 export const RegisterPageClientSider: React.FC = () => {
-
   const { push } = useRouter();
 
   const [currentStep, setCurrentStep] = useState(0);
@@ -37,7 +36,21 @@ export const RegisterPageClientSider: React.FC = () => {
   const submit = () => {
     const data = {
       company: {
-        ...companyData,
+        name: companyData?.name,
+        shortName: companyData?.shortName,
+        description: companyData?.description,
+        logo: companyData?.logo,
+        icon: companyData?.icon,
+        currency: companyData?.currency,
+        country: companyData?.country,
+        province: companyData?.province,
+        city: companyData?.city,
+        address: companyData?.address,
+        webSiteUrl: companyData?.webSiteUrl,
+        motto: companyData?.motto,
+        phone1: `${companyData?.phone1?.countryCode}${companyData?.phone1?.areaCode}${companyData?.phone1?.phoneNumber}`,
+        phone2: `${companyData?.phone2?.countryCode}${companyData?.phone2?.areaCode}${companyData?.phone2?.phoneNumber}`,
+        email: companyData?.email,
       },
       user: {
         firstName: userData?.firstName,
