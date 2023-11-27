@@ -14,7 +14,7 @@ export const AccountsList: React.FC<Props> = ({ data }) => {
   const { push } = useRouter();
 
   const onRowClick = (record: AccountType) => {
-    push(`/ws/bank_and_credits/${record.owner.id}`);
+    push(`/ws/bank_and_credits/${record.id}`);
   };
 
   return (
