@@ -3,6 +3,6 @@ import { UsersList } from "./list"
 
 export const UsersClient=()=>{
     return <div>
-        <UsersList/>
+        <UsersList />
     </div>
 }

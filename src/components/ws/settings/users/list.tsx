@@ -1,20 +1,26 @@
 "use client";
 
-import { TransactionType, UserType } from "@/lib/types";
+import { UserType } from "@/lib/types";
 import { Table } from "antd";
 import { usersColumns } from "./columns";
 import React from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
-type Props = {
-  data?: UserType[];
-};
+type Props = {};
 
-export const UsersList: React.FC<Props> = ({ data }) => {
+export const UsersList: React.FC<Props> = () => {
   const onRowClick = (record: UserType) => {};
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["users"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/users`).then((res) => res.data as UserType[]),
+  });
 
   return (
     <Table
-      // loading={isLoading}
+      loading={isLoading}
       rowClassName={(rowData) => "bg-[#f5f5f5] odd:bg-white"}
       columns={usersColumns}
       dataSource={data}

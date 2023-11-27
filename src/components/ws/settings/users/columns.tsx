@@ -50,7 +50,7 @@ export const usersColumns: TableColumnsType<UserType> = [
     key: "username",
     ellipsis: true,
   },
-
+  { title: "Rôle", dataIndex: "role", key: "role" },
   {
     title: "Statut",
     dataIndex: "status",
