@@ -13,6 +13,10 @@ type BodyRequestType = {
     phone: string;
     otherPhone?: string | null;
     sex: SexType;
+    country?: string | null;
+    province?: string | null;
+    city?: string | null;
+    address?: string | null;
     createdById?: number | null;
   };
 };
@@ -31,6 +35,10 @@ export async function POST(request: Request) {
         otherPhone: body.owner.otherPhone,
         sex: body.owner.sex,
         password: await bcrypt.hash(body.accountNumber, 10),
+        country:body.owner.country,
+        province:body.owner.province,
+        city:body.owner.city,
+        address:body.owner.address,
         createdById: body.owner.createdById,
         role: "CLIENT",
       },

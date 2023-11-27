@@ -11,7 +11,7 @@ type BodyRequestType = {
     logo?: string | null;
     icon?: string | null;
     currency: IsoCodeCurrencyType;
-    country: string | null;
+    country?: string | null;
     province?: string | null;
     city?: string | null;
     address?: string | null;

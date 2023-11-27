@@ -19,19 +19,35 @@ import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
 import dayjs from "dayjs";
 import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
-import { TransactionTypeType } from "@/lib/types";
-import { useParams } from "next/navigation";
-import { getTransactionTitle } from "@/lib/utils";
+import { SexType } from "@/lib/types";
 import { ProCard } from "@ant-design/pro-components";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";
 
 type CreditFormData = {
-  type: TransactionTypeType;
-  amount: string;
-  goldQuantity: string;
-  date: string;
-  message?: string;
+  firstName: string;
+  lastName: string;
+  surname: string;
+  nickname: string;
+  phone?: {
+    countryCode?: number;
+    areaCode?: number;
+    phoneNumber?: string;
+    isoCode?: string;
+    valid?: boolean;
+  };
+  otherPhone?: {
+    countryCode?: number;
+    areaCode?: number;
+    phoneNumber?: string;
+    isoCode?: string;
+    valid?: boolean;
+  };
+  sex: SexType;
+  country: string;
+  province: string;
+  city: string;
+  address: string;
 };
 
 type Props = {
@@ -41,14 +57,14 @@ type Props = {
 
 export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
   const [form] = Form.useForm();
-  const { accountId } = useParams();
 
-  const { data:numberData, isLoading:isLoadingNumberData } = useQuery({
+  const { data: numberData, isLoading: isLoadingNumberData } = useQuery({
     queryKey: ["accountNumber"],
     queryFn: () =>
-      axios.get(`/api/v1/ws/account/number`).then((res) => res.data as {accountNumber:string}),
+      axios
+        .get(`/api/v1/ws/account/number`)
+        .then((res) => res.data as { accountNumber: string }),
   });
-
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
@@ -59,20 +75,28 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/account`, data),
+    mutationFn: (data: any) => axios.post(`/api/v1/ws/account`, data),
   });
 
   const submit = (formData: CreditFormData) => {
     const data = {
-      title: getTransactionTitle(formData.type),
-      amount: parseFloat(formData.amount),
-      type: formData.type,
-      goldQuantity: formData.goldQuantity,
-      message: formData.message,
-      date: formData.date,
-      accountId: accountId,
-      operatorId: session?.user.id,
+      accountNumber: numberData?.accountNumber,
+      owner: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        surname: formData.surname,
+        nickname: formData.nickname,
+        phone: `+${formData?.phone?.countryCode}${formData?.phone?.areaCode}${formData?.phone?.phoneNumber}`,
+        otherPhone: formData?.otherPhone?.valid
+          ? `+${formData?.otherPhone?.countryCode}${formData?.otherPhone?.areaCode}${formData?.otherPhone?.phoneNumber}`
+          : "",
+        sex: SexType,
+        country: formData.country,
+        province: formData.province,
+        city: formData.city,
+        address: formData.address,
+        createdById: session?.user.id,
+      },
     };
     mutate(data, {
       onSuccess: (res) => {
