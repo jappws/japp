@@ -60,7 +60,7 @@ export const UserRightSider: React.FC<Props> = ({
     <Drawer
       title={
         <div className="flex">
-          <Space>{}</Space>
+          <Space>Utilisateur {user?.username}</Space>
           <div className="flex-1" />
           <Space>
             <Tooltip title="Modifier" placement="bottomRight">
@@ -115,10 +115,10 @@ export const UserRightSider: React.FC<Props> = ({
                   style={{ fontSize: 12 }}
                   ellipsis={true}
                 >
-                  {`${user?.createdBy.firstName} ${user?.createdBy.firstName}`}
+                  {`${user?.createdBy?.firstName??""} ${user?.createdBy?.firstName??""}`}
                 </Typography.Text>
                 <Typography.Text className="m-0 text-[12px]">
-                  {user?.createdBy.username}
+                  {user?.createdBy?.username??""}
                 </Typography.Text>
               </div>
             </Space>
