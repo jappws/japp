@@ -89,6 +89,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
             className=" ml"
             title="Identité"
             collapsible
+            bordered
             extra={[
               <Button
                 key="1"
@@ -97,7 +98,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
                 shape="circle"
-                type="text"
+                type="link"
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
@@ -118,6 +119,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
             className=" ml"
             title="Identifiants"
             collapsible
+            bordered
             extra={[
               <Button
                 key="1"
@@ -126,7 +128,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
                 shape="circle"
-                type="text"
+                type="link"
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
@@ -151,6 +153,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
             className=" ml"
             title="Sécurité"
             collapsible
+            bordered
             extra={[
               <Button
                 key="1"
@@ -159,7 +162,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
                 shape="circle"
-                type="text"
+                type="link"
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
