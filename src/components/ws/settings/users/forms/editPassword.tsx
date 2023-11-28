@@ -16,38 +16,23 @@ import {
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
-import dayjs from "dayjs";
-import { CheckOutlined, EditOutlined, LoadingOutlined, UserAddOutlined } from "@ant-design/icons";
+import { CheckOutlined, LoadingOutlined, LockOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
-import PhoneInput from "antd-phone-input";
-import { phoneValidator } from "@/lib/validators/phone";
-import { RoleType, SexType, UserType } from "@/lib/types";
+import { UserType } from "@/lib/types";
+import { User } from "@prisma/client";
 
 type NewUserFormData = {
-  firstName: string;
-  lastName: string;
-  surname: string;
-  sex: SexType;
-  phone: {
-    countryCode: number;
-    areaCode: number;
-    phoneNumber: string;
-    isoCode: string;
-    valid: boolean;
-  };
-  email: string;
   password: string;
   passwordConfirmed: string;
-  role: RoleType;
 };
 
 type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
-  initialData?:UserType;
+  user?:UserType
 };
 
-export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => {
+export const EditPasswordForm: React.FC<Props> = ({ open, toggle, user }) => {
   const [form] = Form.useForm();
 
   const toggleForm = () => {
@@ -59,20 +44,12 @@ export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => 
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) => axios.post(`/api/v1/ws/user`, data),
+    mutationFn: (data: any) => axios.post(`/api/v1/ws/user/${user?.id}/password`, data),
   });
 
   const submit = (formData: NewUserFormData) => {
     const data = {
-      firstName: formData?.firstName,
-      lastName: formData?.lastName,
-      surname: formData?.surname,
-      email: formData?.email,
-      phone: `+${formData?.phone.countryCode}${formData?.phone.areaCode}${formData?.phone.phoneNumber}`,
-      sex: formData?.sex,
       password: formData?.password,
-      role:formData.role,
-      createdById: session?.user.id,
     };
     mutate(data, {
       onSuccess: (res) => {
@@ -98,7 +75,7 @@ export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => 
 
   return (
     <Modal
-      title={<div className=""><EditOutlined/> Modification utilisateur</div>}
+      title={<div className=""><LockOutlined/> Modification du mot de passe</div>}
       open={open}
       footer={null}
       onCancel={toggleForm}
@@ -110,150 +87,84 @@ export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => 
         layout="horizontal"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{ ...initialData }}
         onFinish={submit}
         disabled={isPending}
       >
         <div className="bg-white">
           <ProCard
-            title="Profile"
+            title="Sécurité"
             bordered
             collapsible
             style={{ marginBlockEnd: 16, maxWidth: "100%" }}
           >
-            <Row gutter={24}>
-              <Col span={24}>
-                <Form.Item
-                  name="firstName"
-                  label="Nom"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                    {
-                      whitespace: true,
-                      message: "Pas uniquement des espaces svp!",
-                    },
-                  ]}
-                >
-                  <Input className="bg-white" />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  name="lastName"
-                  label="Postnom"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                    {
-                      whitespace: true,
-                      message: "Pas uniquement des espaces svp!",
-                    },
-                  ]}
-                >
-                  <Input className="bg-white" />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  name="surname"
-                  label="Prénom"
-                  rules={[
-                    {
-                      whitespace: true,
-                      message: "Pas uniquement des espaces svp!",
-                    },
-                  ]}
-                >
-                  <Input className="bg-white" />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  name="sex"
-                  label="Sexe"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <Select
-                    showSearch
-                    className=""
-                    style={{ width: "100%" }}
-                    placeholder="Sélectionner un sexe"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                    filterSort={(optionA, optionB) =>
-                      (optionA?.label ?? "")
-                        .toLowerCase()
-                        .localeCompare((optionB?.label ?? "").toLowerCase())
-                    }
-                    notFoundContent={
-                      <Empty
-                        description="Aucune donnée"
-                        image={Empty.PRESENTED_IMAGE_SIMPLE}
-                      />
-                    }
-                    menuItemSelectedIcon={<CheckOutlined />}
-                    options={[
-                      {
-                        value: "F",
-                        label: "Féminin",
-                      },
-                      {
-                        value: "M",
-                        label: "Masculin",
-                      },
-                    ]}
-                  />
-                </Form.Item>
-              </Col>
-            </Row>
             <Row>
               <Col span={24}>
                 <Form.Item
-                  name="email"
-                  label="Email"
+                  name="password"
+                  label="Nouveau mot de passe"
                   rules={[
                     {
                       required: true,
                     },
                     {
-                      type: "email",
-                      message: "Le format de l'Email n'est pas valide!",
+                      min: 6,
+                      message:
+                        "Le mot de passe doit être entre 6 et 14 caractères",
+                    },
+                    {
+                      max: 14,
+                      message:
+                        "Le mot de passe doit être entre 6 et 14 caractères",
+                    },
+                    {
+                      whitespace: true,
+                      message: "Pas uniquement des espaces vide svp!",
                     },
                   ]}
+                  hasFeedback
                 >
-                  <Input className="bg-white" placeholder="Adresse mail" />
+                  <Input.Password style={{ backgroundColor: "#fff" }} />
                 </Form.Item>
               </Col>
               <Col span={24}>
                 <Form.Item
-                  name="phone"
-                  label="Téléphone"
+                  name="passwordConfirmed"
+                  label="Confirmé le mot de passe"
+                  dependencies={["password"]}
                   rules={[
                     {
                       required: true,
-                      message: "Le numéro de téléphone est obligatoire",
                     },
-                    { validator: phoneValidator },
+                    {
+                      min: 6,
+                      message:
+                        "Le mot de passe doit être entre 6 et 14 caractères",
+                    },
+                    {
+                      max: 14,
+                      message:
+                        "Le mot de passe doit être entre 6 et 14 caractères",
+                    },
+                    {
+                      whitespace: true,
+                      message: "Pas uniquement des espaces vide svp!",
+                    },
+                    ({ getFieldValue }) => ({
+                      validator(_, value) {
+                        if (!value || getFieldValue("password") === value) {
+                          return Promise.resolve();
+                        }
+                        return Promise.reject(
+                          new Error(
+                            "Les deux mots de passe que vous avez saisis ne correspondent pas!"
+                          )
+                        );
+                      },
+                    }),
                   ]}
+                  hasFeedback
                 >
-                  <PhoneInput
-                    placeholder="Numéro de téléphone"
-                    searchPlaceholder="Rechercher un pays"
-                    country="cd"
-                    enableSearch={true}
-                    preferredCountries={["cd"]}
-                  />
+                  <Input.Password style={{ backgroundColor: "#fff" }} />
                 </Form.Item>
               </Col>
               <Col span={24}>
@@ -309,7 +220,6 @@ export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => 
               </Col>
             </Row>
           </ProCard>
-          
           <div
             style={{
               display: "flex",

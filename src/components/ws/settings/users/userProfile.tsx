@@ -1,17 +1,7 @@
 "use client";
 
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
-import {
-  Layout,
-  Space,
-  theme,
-  Button,
-  Modal,
-  Avatar,
-  Drawer,
-  Tag,
-  Descriptions,
-} from "antd";
+import { Layout, Space, theme, Button, Modal, Avatar, Drawer, Tag } from "antd";
 import { useState, Dispatch, SetStateAction } from "react";
 
 import { useQueryClient } from "@tanstack/react-query";
@@ -23,6 +13,7 @@ import { UserType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { getHSLColor } from "@/lib/utils";
 import dayjs from "dayjs";
+import { EditPasswordForm } from "./forms/editPassword";
 
 const { confirm } = Modal;
 
@@ -36,7 +27,10 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
   const {
     token: { colorPrimary },
   } = theme.useToken();
+
   const [openEditProfileForm, setOpenEditProfileForm] =
+    useState<boolean>(false);
+  const [openEditPasswordForm, setOpenEditPasswordForm] =
     useState<boolean>(false);
 
   const { data: session } = useSession();
@@ -87,7 +81,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
         <Layout.Content className="bg-white">
           <ProCard
             className=" ml"
-            title="Identité"
+            title="Profile"
             collapsible
             bordered
             extra={[
@@ -113,42 +107,24 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               <ProDescriptions.Item label="Prénom" valueType="text">
                 {user?.surname}
               </ProDescriptions.Item>
-            </ProDescriptions>
-          </ProCard>
-          <ProCard
-            className=" ml"
-            title="Identifiants"
-            collapsible
-            bordered
-            extra={[
-              <Button
-                key="1"
-                icon={<EditOutlined />}
-                className="shadow-none"
-                onClick={() => setOpenEditProfileForm(true)}
-                disabled={session?.user?.role !== "ADMIN"}
-                shape="circle"
-                type="link"
-              />,
-            ]}
-            style={{ marginBlockEnd: 16 }}
-          >
-            <ProDescriptions column={1} emptyText="">
-              <ProDescriptions.Item
-                label="Email"
-                // valueType="avatar"
-              >
+              <ProDescriptions.Item label="Email">
                 {user?.email}
               </ProDescriptions.Item>
-              <ProDescriptions.Item
-                label="Téléphone"
-                // valueType="avatar"
-              >
+              <ProDescriptions.Item label="Téléphone">
                 {user?.phone}
               </ProDescriptions.Item>
             </ProDescriptions>
+            <ProDescriptions.Item
+              label="Rôle"
+              render={() => (
+                <Tag color="success" className="mr-0" bordered={false}>
+                  {user?.role}
+                </Tag>
+              )}
+            >
+              {user?.role}
+            </ProDescriptions.Item>
           </ProCard>
-
           <ProCard
             className=" ml"
             title="Sécurité"
@@ -159,7 +135,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 key="1"
                 icon={<EditOutlined />}
                 className="shadow-none"
-                onClick={() => setOpenEditProfileForm(true)}
+                onClick={() => setOpenEditPasswordForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
                 shape="circle"
                 type="link"
@@ -174,22 +150,13 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               >
                 {""}
               </ProDescriptions.Item>
-              <ProDescriptions.Item
-                label="Rôle"
-                render={() => (
-                  <Tag color="success" className="mr-0">
-                    {user?.role}
-                  </Tag>
-                )}
-              >
-                {user?.role}
-              </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
           <ProCard
             className=" ml"
             title="Autres informations"
             collapsible
+            bordered
             style={{ marginBlockEnd: 16 }}
           >
             <ProDescriptions column={1} emptyText="">
@@ -207,7 +174,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               </ProDescriptions.Item>
               <ProDescriptions.Item
                 valueType="text"
-                title="Créateur de l'utilisateur (Opérateur)"
+                title="Opérateur créateur"
               >
                 {`${user?.createdBy?.firstName ?? ""} ${
                   user?.createdBy?.lastName ?? ""
@@ -221,6 +188,11 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
         open={openEditProfileForm}
         toggle={setOpenEditProfileForm}
         initialData={user}
+      />
+      <EditPasswordForm
+        open={openEditPasswordForm}
+        toggle={setOpenEditPasswordForm}
+        user={user}
       />
     </Drawer>
   );
