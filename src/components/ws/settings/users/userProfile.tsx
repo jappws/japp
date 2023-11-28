@@ -88,6 +88,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
           <ProCard
             className=" ml"
             title="Identité"
+            collapsible
             extra={[
               <Button
                 key="1"
@@ -116,6 +117,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
           <ProCard
             className=" ml"
             title="Identifiants"
+            collapsible
             extra={[
               <Button
                 key="1"
@@ -148,6 +150,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
           <ProCard
             className=" ml"
             title="Sécurité"
+            collapsible
             extra={[
               <Button
                 key="1"
@@ -183,6 +186,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
           <ProCard
             className=" ml"
             title="Autres informations"
+            collapsible
             style={{ marginBlockEnd: 16 }}
           >
             <ProDescriptions column={1} emptyText="">
