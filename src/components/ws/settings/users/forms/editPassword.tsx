@@ -16,7 +16,11 @@ import {
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
-import { CheckOutlined, LoadingOutlined, LockOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  LoadingOutlined,
+  LockOutlined,
+} from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { UserType } from "@/lib/types";
 import { User } from "@prisma/client";
@@ -29,7 +33,7 @@ type NewUserFormData = {
 type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
-  user?:UserType
+  user?: UserType;
 };
 
 export const EditPasswordForm: React.FC<Props> = ({ open, toggle, user }) => {
@@ -44,7 +48,8 @@ export const EditPasswordForm: React.FC<Props> = ({ open, toggle, user }) => {
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) => axios.post(`/api/v1/ws/user/${user?.id}/password`, data),
+    mutationFn: (data: any) =>
+      axios.post(`/api/v1/ws/user/${user?.id}/password`, data),
   });
 
   const submit = (formData: NewUserFormData) => {
@@ -75,7 +80,11 @@ export const EditPasswordForm: React.FC<Props> = ({ open, toggle, user }) => {
 
   return (
     <Modal
-      title={<div className=""><LockOutlined/> Modification du mot de passe</div>}
+      title={
+        <div className="">
+          <LockOutlined /> Modification du mot de passe
+        </div>
+      }
       open={open}
       footer={null}
       onCancel={toggleForm}
@@ -91,12 +100,7 @@ export const EditPasswordForm: React.FC<Props> = ({ open, toggle, user }) => {
         disabled={isPending}
       >
         <div className="bg-white">
-          <ProCard
-            title="Sécurité"
-            bordered
-            collapsible
-            style={{ marginBlockEnd: 16, maxWidth: "100%" }}
-          >
+          <ProCard bordered style={{ marginBlockEnd: 16, maxWidth: "100%" }}>
             <Row>
               <Col span={24}>
                 <Form.Item
@@ -165,57 +169,6 @@ export const EditPasswordForm: React.FC<Props> = ({ open, toggle, user }) => {
                   hasFeedback
                 >
                   <Input.Password style={{ backgroundColor: "#fff" }} />
-                </Form.Item>
-              </Col>
-              <Col span={24}>
-                <Form.Item
-                  name="role"
-                  label="Rôle"
-                  rules={[
-                    {
-                      required: true,
-                    },
-                  ]}
-                >
-                  <Select
-                    showSearch
-                    className=""
-                    style={{ width: "100%" }}
-                    placeholder="Sélectionner un rôle"
-                    optionFilterProp="children"
-                    filterOption={(input, option) =>
-                      (option?.label ?? "")
-                        .toLowerCase()
-                        .includes(input.toLowerCase())
-                    }
-                    filterSort={(optionA, optionB) =>
-                      (optionA?.label ?? "")
-                        .toLowerCase()
-                        .localeCompare((optionB?.label ?? "").toLowerCase())
-                    }
-                    notFoundContent={
-                      <Empty
-                        description="Aucune donnée"
-                        image={Empty.PRESENTED_IMAGE_SIMPLE}
-                      />
-                    }
-                    menuItemSelectedIcon={<CheckOutlined />}
-                    options={[
-                      {
-                        value: "AGENT",
-                        label: "Opérateur agent",
-                      },
-                      {
-                        value: "ADMIN",
-                        label: "Administrateur",
-                      },
-                      {
-                        value: "CLIENT",
-                        label: "Client partenaire",
-                        disabled: true,
-                      },
-                    ]}
-                  />
                 </Form.Item>
               </Col>
             </Row>

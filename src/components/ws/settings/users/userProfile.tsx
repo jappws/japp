@@ -113,21 +113,21 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               <ProDescriptions.Item label="Téléphone">
                 {user?.phone}
               </ProDescriptions.Item>
+              <ProDescriptions.Item
+                label="Rôle"
+                render={() => (
+                  <Tag color="success" className="mr-0" bordered={false}>
+                    {user?.role}
+                  </Tag>
+                )}
+              >
+                {user?.role}
+              </ProDescriptions.Item>
             </ProDescriptions>
-            <ProDescriptions.Item
-              label="Rôle"
-              render={() => (
-                <Tag color="success" className="mr-0" bordered={false}>
-                  {user?.role}
-                </Tag>
-              )}
-            >
-              {user?.role}
-            </ProDescriptions.Item>
           </ProCard>
           <ProCard
             className=" ml"
-            title="Sécurité"
+            title="Sécurité du compte"
             collapsible
             bordered
             extra={[
@@ -172,10 +172,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               >
                 {`${user?.updatedAt}`}
               </ProDescriptions.Item>
-              <ProDescriptions.Item
-                valueType="text"
-                title="Opérateur créateur"
-              >
+              <ProDescriptions.Item valueType="text" title="Opérateur créateur">
                 {`${user?.createdBy?.firstName ?? ""} ${
                   user?.createdBy?.lastName ?? ""
                 } (${user?.createdBy?.username ?? ""})`}
