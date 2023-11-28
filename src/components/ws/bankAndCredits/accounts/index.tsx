@@ -9,9 +9,11 @@ import { useState, ChangeEvent, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AccountType } from "@/lib/types";
+import { useSession } from "next-auth/react";
 
 export const AccountsClient = () => {
   const { token } = theme.useToken();
+  const {data:session} = useSession()
   const [openNewAccountForm, setOpenNewAccountform] = useState<boolean>(false);
 
   const [selectedCurrentData, setSelectedCurrentData] = useState<
@@ -22,6 +24,7 @@ export const AccountsClient = () => {
     queryKey: ["accounts"],
     queryFn: () =>
       axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
+      enabled: !!session?.user
   });
 
   const search = (e: ChangeEvent<HTMLInputElement>) => {

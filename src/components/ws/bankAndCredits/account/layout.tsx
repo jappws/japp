@@ -1,6 +1,6 @@
 "use client";
 
-import { MinusOutlined, MinusSquareOutlined, PlusOutlined, PlusSquareOutlined } from "@ant-design/icons";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { Breadcrumb, Button, Dropdown, Space, Statistic } from "antd";
 import { useParams, usePathname, useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ export default function AccountClientLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const {data:session}=useSession()
+  const { data: session } = useSession();
   const { accountId } = useParams();
   const { push } = useRouter();
   const pathname = usePathname();
@@ -26,25 +26,34 @@ export default function AccountClientLayout({
   const [openNewOutOrDebitForm, setOpenNewOutOrDebitForm] =
     useState<boolean>(false);
 
-    const { data :account, isLoading } = useQuery({
-      queryKey: ["account"],
-      queryFn: () =>
-        axios.get(`/api/v1/ws/account/${accountId}`).then((res) => res.data as AccountType),
-        enabled: !!session?.user && !!accountId,
-    });
+  const { data: account, isLoading } = useQuery({
+    queryKey: ["account", accountId],
+    queryFn: () =>
+      axios
+        .get(`/api/v1/ws/account/${accountId}`)
+        .then((res) => res.data as AccountType),
+    enabled: !!session?.user && !!accountId,
+  });
 
   return (
     <div className="">
       <PageContainer
-      loading={isLoading}
-        title={`${account?.owner.firstName} ${account?.owner.lastName} ${account?.owner.surname}`}
+        loading={isLoading}
+        title={`${account?.owner.firstName ?? ""} ${
+          account?.owner.lastName ?? ""
+        } ${account?.owner.surname ?? ""}`}
         fixedHeader
         token={{
           paddingInlinePageContainerContent: 16,
           paddingBlockPageContainerContent: 16,
         }}
         breadcrumbRender={() => (
-          <Breadcrumb items={[{ title: "Compte" }, { title: account?.accountNumber }]} />
+          <Breadcrumb
+            items={[
+              { title: "Compte" },
+              { title: account?.accountNumber ?? "" },
+            ]}
+          />
         )}
         tabBarExtraContent={
           <Space>
@@ -60,7 +69,7 @@ export default function AccountClientLayout({
                     type: "divider",
                   },
                   {
-                    key: "OutOrDebit",
+                    key: "outOrDebit",
                     label: "Sortie (Décaissement)",
                     icon: <MinusOutlined />,
                   },
@@ -110,7 +119,7 @@ export default function AccountClientLayout({
             value={`${new Intl.NumberFormat("fr-FR", {
               style: "currency",
               currency: "USD",
-            }).format(Number(account?.balance))}`}
+            }).format(account?.balance ? Number(account?.balance) : 0)}`}
           />,
         ]}
       >
