@@ -23,10 +23,10 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 type GoldTransferFormData = {
-  date:string;
-  amount:string;
-  goldQuantity:string;
-  message:string
+  date: string;
+  amount: string;
+  goldQuantity: string;
+  message: string;
 };
 
 type Props = {
@@ -47,11 +47,10 @@ export const GoldTransferForm: React.FC<Props> = ({ open, toggle }) => {
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/finance/cash-transaction`, data),
+      axios.post(`/api/v1/ws/transfer`, data),
   });
 
   const submit = (formData: GoldTransferFormData) => {
-
     const data = {
       date: formData.date,
       type: "GOLD_TRANSFER",
@@ -66,17 +65,13 @@ export const GoldTransferForm: React.FC<Props> = ({ open, toggle }) => {
       onSuccess: (res) => {
         if (res.data) {
           message.success({
-            content: "Enregistré",
+            content: "Opération effectuée",
             icon: <CheckOutlined />,
           });
           form.resetFields();
           toggleForm();
+          queryClient.invalidateQueries({ queryKey: ["transfers"] });
         }
-        return Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["cash-transactions"] }),
-          queryClient.invalidateQueries({ queryKey: ["balance"] }),
-          queryClient.invalidateQueries({ queryKey: ["cash-accounts"] }),
-        ]);
       },
       onError: () => {
         message.error({
@@ -108,7 +103,7 @@ export const GoldTransferForm: React.FC<Props> = ({ open, toggle }) => {
       >
         <Layout className="bg-white">
           <Layout.Content>
-          <Form.Item
+            <Form.Item
               name="goldQuantity"
               label="Quantité en Or"
               rules={[

@@ -7,14 +7,15 @@ import React from "react";
 
 type Props = {
   data?: TransferType[];
+  isLoading:boolean
 };
 
-export const TransfersList: React.FC<Props> = ({ data }) => {
+export const TransfersList: React.FC<Props> = ({ data,isLoading }) => {
   const onRowClick = (record: TransferType) => {};
 
   return (
     <Table
-      // loading={isLoading}
+      loading={isLoading}
       rowClassName={(rowData) => "bg-[#f5f5f5] odd:bg-white"}
       columns={transfersColumns}
       dataSource={data}

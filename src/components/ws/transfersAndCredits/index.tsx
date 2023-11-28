@@ -7,12 +7,26 @@ import { TransfersList } from "./transactions/list";
 import { GoldTransferForm } from "./forms/goldTransferForm";
 import { MoneyTransferForm } from "./forms/moneyTransferForm";
 import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { TransferType } from "@/lib/types";
 
 export const TransfersAndCreditsClient = () => {
   const [openMoneyTransferForm, setOpenMoneyTransferForm] =
     useState<boolean>(false);
   const [openGoldTransferForm, setOpenGoldTransferForm] =
     useState<boolean>(false);
+
+  const { data, isLoading } = useQuery({
+    queryKey: ["transfers"],
+    queryFn: () =>
+      axios
+        .get(`/api/v1/ws/transfers`)
+        .then(
+          (res) => res.data as { balance: number | null; trans: TransferType[] }
+        ),
+  });
+
   return (
     <div>
       <PageContainer
@@ -24,12 +38,13 @@ export const TransfersAndCreditsClient = () => {
         }}
         extra={[
           <Statistic
+            loading={isLoading}
             key="1"
             title="Solde"
             value={`${new Intl.NumberFormat("fr-FR", {
               style: "currency",
               currency: "USD",
-            }).format(150000000.05)}`}
+            }).format(Number(data?.balance ?? 0))}`}
           />,
         ]}
         tabBarExtraContent={
@@ -82,7 +97,7 @@ export const TransfersAndCreditsClient = () => {
         //   subTitle="Dashboard"
       >
         <div className="md:pt-4">
-          <TransfersList data={[]} />
+          <TransfersList data={data?.trans} isLoading={isLoading} />
           <GoldTransferForm
             open={openGoldTransferForm}
             toggle={setOpenGoldTransferForm}

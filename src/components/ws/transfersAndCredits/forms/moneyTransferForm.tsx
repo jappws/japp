@@ -46,8 +46,7 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/finance/cash-transaction`, data),
+    mutationFn: (data: any) => axios.post(`/api/v1/ws/transfer`, data),
   });
 
   const submit = (formData: MoneyTransferFormData) => {
@@ -64,17 +63,14 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
       onSuccess: (res) => {
         if (res.data) {
           message.success({
-            content: "Enregistré",
+            content: "Opération effectuée",
             icon: <CheckOutlined />,
           });
           form.resetFields();
           toggleForm();
         }
-        return Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["cash-transactions"] }),
-          queryClient.invalidateQueries({ queryKey: ["balance"] }),
-          queryClient.invalidateQueries({ queryKey: ["cash-accounts"] }),
-        ]);
+
+        queryClient.invalidateQueries({ queryKey: ["tranfers"] });
       },
       onError: () => {
         message.error({
@@ -106,7 +102,7 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
       >
         <Layout className="bg-white">
           <Layout.Content>
-          <Form.Item
+            <Form.Item
               name="sender"
               label="Expéditeur"
               rules={[
@@ -137,7 +133,7 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
                 />
               </Form.Item>
             </div>
-            
+
             <Form.Item
               name="date"
               label="Date de transfert"
