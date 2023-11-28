@@ -207,7 +207,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 valueType="text"
                 title="Créateur de l'utilisateur (Opérateur)"
               >
-                {`${user?.createdBy.firstName} ${user?.createdBy.lastName} (${user?.createdBy?.username})`}
+                {`${user?.createdBy?.firstName} ${user?.createdBy?.lastName} (${user?.createdBy?.username})`}
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
