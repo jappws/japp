@@ -5,7 +5,7 @@ import { getHSLColor } from "@/lib/utils";
 import { EditOutlined, UserOutlined } from "@ant-design/icons";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
-import { Avatar, Button, Switch } from "antd";
+import { Avatar, Button, Switch, Tag } from "antd";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
@@ -36,7 +36,7 @@ export const AccountOwner = () => {
         <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
           <ProDescriptions.Item
             label=""
-            valueType="avatar"
+            // valueType="avatar"
             render={() => (
               <Avatar
                 style={{
@@ -88,7 +88,15 @@ export const AccountOwner = () => {
             {account?.owner?.address}
           </ProDescriptions.Item>
 
-          <ProDescriptions.Item label="Rôle" valueType="text">
+          <ProDescriptions.Item
+            label="Rôle"
+            valueType="text"
+            render={() => (
+              <Tag className="mr-0 uppercase" bordered={false} color="success">
+                {account?.owner.role}
+              </Tag>
+            )}
+          >
             {account?.owner?.role}
           </ProDescriptions.Item>
           <ProDescriptions.Item
@@ -105,6 +113,10 @@ export const AccountOwner = () => {
           ></ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
+      <ProCard
+        className=""
+        title="Informations de Création"
+      ></ProCard>
     </div>
   );
 };

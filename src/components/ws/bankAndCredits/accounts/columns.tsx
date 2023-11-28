@@ -7,8 +7,7 @@ export const transactionsColumns: TableColumnsType<AccountType> = [
     title: "No compte",
     dataIndex: "accountNumber",
     key: "accountNumber",
-    width:100,
-    ellipsis:true
+    width:80,
   },
   {
     title: "Photo",
