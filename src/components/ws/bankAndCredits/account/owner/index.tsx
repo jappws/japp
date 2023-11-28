@@ -144,7 +144,7 @@ export const AccountOwner = () => {
             valueType="text"
             title="Créateur du compte (Opérateur)"
           >
-            {`${account?.owner?.createdBy.firstName} ${account?.owner?.createdBy.lastName}`}
+            {`${account?.owner?.createdBy.firstName} ${account?.owner?.createdBy.lastName} (${account?.owner.createdBy.username})`}
           </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
