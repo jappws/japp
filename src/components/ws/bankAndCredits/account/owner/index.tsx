@@ -9,6 +9,7 @@ import { Avatar, Button, Switch, Tag } from "antd";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
+import dayjs from "dayjs";
 
 export const AccountOwner = () => {
   const { data: session } = useSession();
@@ -25,7 +26,7 @@ export const AccountOwner = () => {
   return (
     <div>
       <ProCard
-        className=""
+        className=" ml"
         title="Profile"
         extra={[
           <Button key="1" icon={<EditOutlined />} className="shadow-none">
@@ -115,22 +116,30 @@ export const AccountOwner = () => {
           ></ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
-      <ProCard className=" m" title="Informations de Création">
+      <ProCard className=" m" title="Autres informations">
         <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
-          <ProDescriptions.Item valueType="date" title="Date de création">
+          <ProDescriptions.Item
+            title="Date de création"
+            render={() => dayjs(account?.owner.createdAt).format("DD/MM/YYYY")}
+          >
             {`${account?.owner?.createdAt}`}
+          </ProDescriptions.Item>
+          <ProDescriptions.Item
+            title="Dernière modification"
+            render={() => dayjs(account?.owner.updatedAt).format("DD/MM/YYYY")}
+          >
+            {`${account?.owner?.updatedAt}`}
           </ProDescriptions.Item>
           <ProDescriptions.Item
             label=""
             // valueType="avatar"
-            render={() => (
-              <Avatar
-                size="large"
-                icon={<UserOutlined />}
-              />
-            )}
+            render={() => <Avatar size="small" icon={<UserOutlined />} />}
+          ></ProDescriptions.Item>
+          <ProDescriptions.Item
+            valueType="text"
+            title="Créateur du compte (Opérateur)"
           >
-           
+            {`${account?.owner?.createdBy.firstName} ${account?.owner?.createdBy.lastName}`}
           </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
