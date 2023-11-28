@@ -9,16 +9,16 @@ export async function GET(
     const currentYear = new Date().getFullYear();
     const accountNumberPrefix = String(currentYear).substring(2);
 
-    const accountNumbers = await prisma.account.findMany({
-      where: { accountNumber: { startsWith: accountNumberPrefix } },
-      select: { accountNumber: true },
+    const accountNumbers = await prisma.user.findMany({
+      where: { username: { startsWith: accountNumberPrefix } },
+      select: { username: true },
     });
 
     let accountNumber: string;
     let accountNumbersEnds: number[] = [];
 
     accountNumbers.forEach((element) => {
-      accountNumbersEnds.push(Number(element.accountNumber.substring(2)));
+      accountNumbersEnds.push(Number(element.username.substring(2)));
     });
 
     let accountNumberSuffix = String(accountNumbersEnds.length + 1).padStart(
