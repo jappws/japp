@@ -7,13 +7,13 @@ export const transactionsColumns: TableColumnsType<AccountType> = [
     title: "No",
     dataIndex: "accountNumber",
     key: "accountNumber",
-    width:80,
+    width: 80,
   },
   {
     title: "Photo",
     dataIndex: "owner",
     key: "owner",
-    responsive:["md"],
+    responsive: ["md"],
     render: (value, record) => (
       <Avatar
         style={{
@@ -38,6 +38,13 @@ export const transactionsColumns: TableColumnsType<AccountType> = [
       `${record.owner.firstName} ${record.owner.lastName} ${record.owner.surname}`,
   },
   {
+    title: "Sexe",
+    dataIndex: "sex",
+    key: "sex",
+    width: 52,
+    render: (_, record) => `${record.owner.sex}`,
+  },
+  {
     title: "Solde",
     dataIndex: "amount",
     key: "amount",
@@ -55,7 +62,7 @@ export const transactionsColumns: TableColumnsType<AccountType> = [
     title: "Compte",
     dataIndex: "owner",
     key: "owner",
-    responsive:["md"],
+    responsive: ["md"],
     render: () => (
       <Switch
         checkedChildren="Éligible au crédit"

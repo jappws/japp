@@ -106,6 +106,9 @@ export const CurrentUserRightSider: React.FC<Props> = ({
               <ProDescriptions.Item label="Prénom" valueType="text">
                 {session?.user?.surname}
               </ProDescriptions.Item>
+              <ProDescriptions.Item label="Sexe" valueType="text">
+                {session?.user?.sex}
+              </ProDescriptions.Item>
               <ProDescriptions.Item label="Email">
                 {session?.user?.email}
               </ProDescriptions.Item>

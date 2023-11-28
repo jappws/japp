@@ -107,6 +107,9 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               <ProDescriptions.Item label="Prénom" valueType="text">
                 {user?.surname}
               </ProDescriptions.Item>
+              <ProDescriptions.Item label="Sexe" valueType="text">
+                {user?.sex}
+              </ProDescriptions.Item>
               <ProDescriptions.Item label="Email">
                 {user?.email}
               </ProDescriptions.Item>

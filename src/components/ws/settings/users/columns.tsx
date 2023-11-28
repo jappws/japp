@@ -33,6 +33,12 @@ export const usersColumns: TableColumnsType<UserType> = [
       `${record.firstName} ${record.lastName} ${record.surname}`,
   },
   {
+    title: "Sexe",
+    dataIndex: "sex",
+    key: "sex",
+    width:52
+  },
+  {
     title: "Email",
     dataIndex: "email",
     key: "email",
@@ -55,7 +61,7 @@ export const usersColumns: TableColumnsType<UserType> = [
     dataIndex: "role",
     key: "role",
     render: (value, record) => (
-      <Tag color="purple" className="mr-0" bordered={false}>
+      <Tag color={value==="ADMIN"?"success":"purple"} className="mr-0" bordered={false}>
         {value}
       </Tag>
     ),
