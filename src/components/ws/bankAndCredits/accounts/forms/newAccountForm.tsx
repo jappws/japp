@@ -107,10 +107,11 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm();
+          return Promise.all([
+            queryClient.invalidateQueries({ queryKey: ["accounts"] }),
+          ]);
         }
-        return Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["accounts"] }),
-        ]);
+        
       },
       onError: () => {
         message.error({
