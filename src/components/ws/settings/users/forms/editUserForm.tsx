@@ -116,9 +116,7 @@ export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => 
       >
         <div className="bg-white">
           <ProCard
-            title="Profile"
             bordered
-            collapsible
             style={{ marginBlockEnd: 16, maxWidth: "100%" }}
           >
             <Row gutter={24}>
