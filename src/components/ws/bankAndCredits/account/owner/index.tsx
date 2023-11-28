@@ -45,8 +45,10 @@ export const AccountOwner = () => {
                   ),
                 }}
                 size="large"
-                icon={<UserOutlined />}
-              />
+              >
+                {account?.owner.firstName?.charAt(0).toUpperCase()}
+                {account?.owner.lastName?.charAt(0).toUpperCase()}
+              </Avatar>
             )}
           >
             {account?.owner?.firstName}
@@ -92,7 +94,7 @@ export const AccountOwner = () => {
             label="Rôle"
             valueType="text"
             render={() => (
-              <Tag className="mr-0 uppercase" bordered={false} color="success">
+              <Tag className="mr-0 lowercase" bordered={false} color="success">
                 {account?.owner.role}
               </Tag>
             )}
@@ -113,10 +115,25 @@ export const AccountOwner = () => {
           ></ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
-      <ProCard
-        className=""
-        title="Informations de Création"
-      ></ProCard>
+      <ProCard className=" m" title="Informations de Création">
+        <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
+          <ProDescriptions.Item valueType="date" title="Date de création">
+            {`${account?.owner?.createdAt}`}
+          </ProDescriptions.Item>
+          <ProDescriptions.Item
+            label=""
+            // valueType="avatar"
+            render={() => (
+              <Avatar
+                size="large"
+                icon={<UserOutlined />}
+              />
+            )}
+          >
+           
+          </ProDescriptions.Item>
+        </ProDescriptions>
+      </ProCard>
     </div>
   );
 };

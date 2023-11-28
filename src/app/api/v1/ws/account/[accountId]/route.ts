@@ -9,7 +9,7 @@ export async function GET(
     // get a account
     const account = await prisma.account.findUnique({
       where: { id: Number(params.accountId) },
-      include: { owner: {} },
+      include: { owner: { include: { createdBy: {} } } },
     });
 
     return new Response(JSON.stringify(account));
