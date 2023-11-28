@@ -3,7 +3,7 @@
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Layout, Space, theme, Button, Modal, Avatar, Drawer, Tag } from "antd";
 import { useState, Dispatch, SetStateAction } from "react";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 import { EditUserForm } from "../forms/editUserForm";
 import { UserType } from "@/lib/types";
@@ -19,10 +19,7 @@ type Props = {
   user?: UserType;
 };
 
-export const CurrentUserRightSider: React.FC<Props> = ({
-  open,
-  trigger,
-}) => {
+export const CurrentUserRightSider: React.FC<Props> = ({ open, trigger }) => {
   const {
     token: { colorPrimary },
   } = theme.useToken();
@@ -33,7 +30,6 @@ export const CurrentUserRightSider: React.FC<Props> = ({
     useState<boolean>(false);
 
   const { data: session } = useSession();
-  
 
   return (
     <Drawer
@@ -83,17 +79,17 @@ export const CurrentUserRightSider: React.FC<Props> = ({
             title="Profile"
             collapsible
             bordered
-            extra={[
-              <Button
-                key="1"
-                icon={<EditOutlined />}
-                className="shadow-none"
-                onClick={() => setOpenEditProfileForm(true)}
-                disabled={session?.user?.role !== "ADMIN"}
-                shape="circle"
-                type="link"
-              />,
-            ]}
+            // extra={[
+            //   <Button
+            //     key="1"
+            //     icon={<EditOutlined />}
+            //     className="shadow-none"
+            //     onClick={() => setOpenEditProfileForm(true)}
+            //     disabled={session?.user?.role !== "ADMIN"}
+            //     shape="circle"
+            //     type="link"
+            //   />,
+            // ]}
             style={{ marginBlockEnd: 16 }}
           >
             <ProDescriptions column={1} emptyText="">
@@ -127,7 +123,7 @@ export const CurrentUserRightSider: React.FC<Props> = ({
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
-          <ProCard
+          {/* <ProCard
             className=" ml"
             title="Sécurité du compte"
             collapsible
@@ -153,6 +149,20 @@ export const CurrentUserRightSider: React.FC<Props> = ({
                 {""}
               </ProDescriptions.Item>
             </ProDescriptions>
+          </ProCard> */}
+          <ProCard
+            className=" ml"
+            style={{ marginBlockEnd: 16 }}
+          >
+            <Button
+              block
+              className="shadow-none"
+              onClick={() => {
+                signOut({ redirect: true, callbackUrl: "/" });
+              }}
+            >
+              Déconnexion
+            </Button>
           </ProCard>
         </Layout.Content>
       </Layout>

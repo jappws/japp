@@ -43,6 +43,7 @@ export const transactionsColumns: TableColumnsType<AccountType> = [
     key: "sex",
     width: 52,
     render: (_, record) => `${record.owner.sex}`,
+    align:"center"
   },
   {
     title: "Solde",
