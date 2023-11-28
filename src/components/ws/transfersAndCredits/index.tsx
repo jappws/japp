@@ -23,7 +23,7 @@ export const TransfersAndCreditsClient = () => {
       axios
         .get(`/api/v1/ws/transfers`)
         .then(
-          (res) => res.data as { balance: number | null; trans: TransferType[] }
+          (res) => res.data as { balance: number; trans: TransferType[] }
         ),
   });
 

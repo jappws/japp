@@ -6,7 +6,13 @@ export async function GET(request: Request) {
     const transfers = await prisma.transfer.findMany({
       orderBy: { date: "desc" },
     });
-    const res = transfers;
+
+    const balance = await prisma.transferBalance.findUnique({
+      where: { id: 1 },
+    });
+
+    const res = { balance: balance?.balance ?? 0, trans: transfers };
+
     return new Response(JSON.stringify(res), { status: 200 });
   } catch (e: any) {
     //Tracking prisma error
