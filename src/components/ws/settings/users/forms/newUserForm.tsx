@@ -96,7 +96,7 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
 
   return (
     <Modal
-      title={<div className="">Nouveau (Opérateur)</div>}
+      title={<div className="">Nouveau utilisateur</div>}
       open={open}
       footer={null}
       onCancel={toggleForm}
@@ -375,7 +375,7 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
                     options={[
                       {
                         value: "AGENT",
-                        label: "Opérateur (Utilisateur)",
+                        label: "Opérateur agent",
                       },
                       {
                         value: "ADMIN",
@@ -384,7 +384,7 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
                       {
                         value: "CLIENT",
                         label: "Client partenaire",
-                        disable: true,
+                        disabled: true,
                       },
                     ]}
                   />
