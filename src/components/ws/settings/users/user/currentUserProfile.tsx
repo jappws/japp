@@ -3,17 +3,13 @@
 import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { Layout, Space, theme, Button, Modal, Avatar, Drawer, Tag } from "antd";
 import { useState, Dispatch, SetStateAction } from "react";
-
-import { useQueryClient } from "@tanstack/react-query";
-
 import { useSession } from "next-auth/react";
 
-import { EditUserForm } from "./forms/editUserForm";
+import { EditUserForm } from "../forms/editUserForm";
 import { UserType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { getHSLColor } from "@/lib/utils";
-import dayjs from "dayjs";
-import { EditPasswordForm } from "./forms/editPassword";
+import { EditPasswordForm } from "../forms/editPassword";
 
 const { confirm } = Modal;
 
@@ -23,7 +19,10 @@ type Props = {
   user?: UserType;
 };
 
-export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
+export const CurrentUserRightSider: React.FC<Props> = ({
+  open,
+  trigger,
+}) => {
   const {
     token: { colorPrimary },
   } = theme.useToken();
@@ -34,7 +33,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
     useState<boolean>(false);
 
   const { data: session } = useSession();
-  const queryClient = useQueryClient();
+  
 
   return (
     <Drawer
@@ -44,17 +43,17 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
             <Avatar
               style={{
                 backgroundColor: getHSLColor(
-                  `${user?.firstName} ${user?.surname}`
+                  `${session?.user?.firstName} ${session?.user?.surname}`
                 ),
               }}
               size="small"
             >
-              {user?.firstName?.charAt(0).toUpperCase()}
-              {user?.lastName?.charAt(0).toUpperCase()}
+              {session?.user?.firstName?.charAt(0).toUpperCase()}
+              {session?.user?.lastName?.charAt(0).toUpperCase()}
             </Avatar>
-            Utilisateur{" "}
+            Mon profile
             <Tag className="mr-0" color="purple" bordered={false}>
-              {user?.username}
+              {session?.user?.username}
             </Tag>
           </Space>
           <div className="flex-1" />
@@ -99,29 +98,29 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
           >
             <ProDescriptions column={1} emptyText="">
               <ProDescriptions.Item ellipsis label="Nom" valueType="text">
-                {user?.firstName}
+                {session?.user?.firstName}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="Postnom" valueType="text">
-                {user?.lastName}
+                {session?.user?.lastName}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="Prénom" valueType="text">
-                {user?.surname}
+                {session?.user?.surname}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="Email">
-                {user?.email}
+                {session?.user?.email}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="Téléphone">
-                {user?.phone}
+                {session?.user?.phone}
               </ProDescriptions.Item>
               <ProDescriptions.Item
                 label="Rôle"
                 render={() => (
                   <Tag color="success" className="mr-0" bordered={false}>
-                    {user?.role}
+                    {session?.user?.role}
                   </Tag>
                 )}
               >
-                {user?.role}
+                {session?.user?.role}
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
@@ -152,45 +151,18 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
-          <ProCard
-            className=" ml"
-            title="Autres informations"
-            collapsible
-            bordered
-            style={{ marginBlockEnd: 16 }}
-          >
-            <ProDescriptions column={1} emptyText="">
-              <ProDescriptions.Item
-                title="Date de création"
-                render={() => dayjs(user?.createdAt).format("DD/MM/YYYY")}
-              >
-                {`${user?.createdAt}`}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item
-                title="Dernière modification"
-                render={() => dayjs(user?.updatedAt).format("DD/MM/YYYY")}
-              >
-                {`${user?.updatedAt}`}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item valueType="text" title="Opérateur créateur">
-                {`${user?.createdBy?.firstName ?? ""} ${
-                  user?.createdBy?.lastName ?? ""
-                } (${user?.createdBy?.username ?? ""})`}
-              </ProDescriptions.Item>
-            </ProDescriptions>
-          </ProCard>
         </Layout.Content>
       </Layout>
-      <EditUserForm
+      {/* <EditUserForm
         open={openEditProfileForm}
         toggle={setOpenEditProfileForm}
-        initialData={user}
+        initialData={session?.user}
       />
       <EditPasswordForm
         open={openEditPasswordForm}
         toggle={setOpenEditPasswordForm}
-        user={user}
-      />
+        user={session?.user}
+      /> */}
     </Drawer>
   );
 };

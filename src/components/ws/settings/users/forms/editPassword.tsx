@@ -4,17 +4,14 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Col,
-  Empty,
   Form,
   Input,
   Modal,
   Row,
-  Select,
   Space,
   message,
 } from "antd";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
 import {
   CheckOutlined,
@@ -23,7 +20,6 @@ import {
 } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { UserType } from "@/lib/types";
-import { User } from "@prisma/client";
 
 type NewUserFormData = {
   password: string;
@@ -44,12 +40,11 @@ export const EditPasswordForm: React.FC<Props> = ({ open, toggle, user }) => {
     form.resetFields();
   };
 
-  const { data: session } = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/user/${user?.id}/password`, data),
+      axios.put(`/api/v1/ws/user/${user?.id}/password`, data),
   });
 
   const submit = (formData: NewUserFormData) => {
@@ -60,11 +55,9 @@ export const EditPasswordForm: React.FC<Props> = ({ open, toggle, user }) => {
       onSuccess: (res) => {
         if (res.data) {
           message.success({
-            content: "Enregistré",
+            content: "Modification enregistrée",
             icon: <CheckOutlined />,
           });
-
-          queryClient.invalidateQueries({ queryKey: ["company"] });
           queryClient.invalidateQueries({ queryKey: ["users"] });
           form.resetFields();
           toggleForm();

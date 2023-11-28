@@ -14,10 +14,8 @@ import {
   message,
 } from "antd";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
-import dayjs from "dayjs";
-import { CheckOutlined, EditOutlined, LoadingOutlined, UserAddOutlined } from "@ant-design/icons";
+import { CheckOutlined, EditOutlined, LoadingOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";
@@ -36,8 +34,6 @@ type NewUserFormData = {
     valid: boolean;
   };
   email: string;
-  password: string;
-  passwordConfirmed: string;
   role: RoleType;
 };
 
@@ -55,11 +51,10 @@ export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => 
     form.resetFields();
   };
 
-  const { data: session } = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) => axios.post(`/api/v1/ws/user`, data),
+    mutationFn: (data: any) => axios.put(`/api/v1/ws/user/${initialData?.id}`, data),
   });
 
   const submit = (formData: NewUserFormData) => {
@@ -70,19 +65,15 @@ export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => 
       email: formData?.email,
       phone: `+${formData?.phone.countryCode}${formData?.phone.areaCode}${formData?.phone.phoneNumber}`,
       sex: formData?.sex,
-      password: formData?.password,
       role:formData.role,
-      createdById: session?.user.id,
     };
     mutate(data, {
       onSuccess: (res) => {
         if (res.data) {
           message.success({
-            content: "Enregistré",
+            content: "Modification enregistrées",
             icon: <CheckOutlined />,
           });
-
-          queryClient.invalidateQueries({ queryKey: ["company"] });
           queryClient.invalidateQueries({ queryKey: ["users"] });
           form.resetFields();
           toggleForm();
@@ -110,7 +101,7 @@ export const EditUserForm: React.FC<Props> = ({ open, toggle, initialData }) => 
         layout="horizontal"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{ ...initialData }}
+        initialValues={{ ...initialData}}
         onFinish={submit}
         disabled={isPending}
       >

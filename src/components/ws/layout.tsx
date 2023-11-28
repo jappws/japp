@@ -21,12 +21,16 @@ import { signOut, useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { CompanyType } from "@/lib/types";
+import { CurrentUserRightSider } from "./settings/users/user/currentUserProfile";
 
 const currentYear = dayjs().format("YYYY");
 
 export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const { data: session } = useSession();
+
+  const [openUserProfile, setOpenUserProfile] = useState<boolean>(false);
+
   const [settings, setSetting] = useState<Partial<ProSettings> | undefined>({
     fixSiderbar: true,
     layout: "side",
@@ -62,19 +66,8 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
           location={{
             pathname,
           }}
-          token={{
-            header: {
-              // colorBgMenuItemSelected: 'rgba(0,0,0,0.04)',
-            },
-          }}
-          // siderMenuType="group"
           hasSiderMenu={true}
           defaultCollapsed={true}
-          menu={
-            {
-              // collapsedShowGroupTitle: true,
-            }
-          }
           avatarProps={{
             className: " bg-primary",
             icon: <UserOutlined />,
@@ -99,7 +92,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
                     ],
                     onClick: ({ key }) => {
                       if (key === "profile") {
-                        // push("")
+                        setOpenUserProfile(true);
                       } else if (key === "logout") {
                         signOut({ redirect: true, callbackUrl: "/" });
                       }
@@ -168,6 +161,10 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
               }}
               disableUrlParams={true}
             /> */}
+          <CurrentUserRightSider
+            open={openUserProfile}
+            trigger={setOpenUserProfile}
+          />
         </ProLayout>
       </ProConfigProvider>
     </div>
