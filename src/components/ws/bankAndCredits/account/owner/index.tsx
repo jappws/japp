@@ -10,10 +10,14 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
+import { EditAccountForm } from "../../accounts/forms/editAccountForm";
+import { useState } from "react";
 
 export const AccountOwner = () => {
   const { data: session } = useSession();
   const { accountId } = useParams();
+
+  const [openEditForm, setOpenEditForm] = useState<boolean>(false);
 
   const { data: account, isLoading } = useQuery({
     queryKey: ["account", accountId],
@@ -26,10 +30,16 @@ export const AccountOwner = () => {
   return (
     <div>
       <ProCard
+        loading={isLoading}
         className=" ml"
         title="Profile"
         extra={[
-          <Button key="1" icon={<EditOutlined />} className="shadow-none">
+          <Button
+            key="1"
+            icon={<EditOutlined />}
+            className="shadow-none"
+            onClick={() => setOpenEditForm(true)}
+          >
             Editer
           </Button>,
         ]}
@@ -118,7 +128,7 @@ export const AccountOwner = () => {
         </ProDescriptions>
       </ProCard>
       <ProCard
-        className=" m"
+        loading={isLoading}
         title="Autres informations"
         style={{ marginBlockEnd: 16 }}
       >
@@ -135,11 +145,6 @@ export const AccountOwner = () => {
           >
             {`${account?.owner?.updatedAt}`}
           </ProDescriptions.Item>
-          {/* <ProDescriptions.Item
-            label=""
-            // valueType="avatar"
-            render={() => <Avatar size="small" icon={<UserOutlined />} />}
-          ></ProDescriptions.Item> */}
           <ProDescriptions.Item
             valueType="text"
             title="Créateur du compte (Opérateur)"
@@ -148,6 +153,11 @@ export const AccountOwner = () => {
           </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
+      <EditAccountForm
+        open={openEditForm}
+        toggle={setOpenEditForm}
+        initialData={account}
+      />
     </div>
   );
 };

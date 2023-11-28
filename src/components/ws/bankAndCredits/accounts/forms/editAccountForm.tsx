@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   Col,
@@ -18,12 +18,12 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
 import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
-import { SexType } from "@/lib/types";
+import { AccountType, SexType } from "@/lib/types";
 import { ProCard } from "@ant-design/pro-components";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";
 
-type NewAccountFormData = {
+type EditAccountFormData = {
   firstName: string;
   lastName: string;
   surname: string;
@@ -52,35 +52,32 @@ type NewAccountFormData = {
 type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
+  initialData?: AccountType;
 };
 
-export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
+export const EditAccountForm: React.FC<Props> = ({
+  open,
+  toggle,
+  initialData,
+}) => {
   const [form] = Form.useForm();
-
-  const { data: numberData, isLoading: isLoadingNumberData } = useQuery({
-    queryKey: ["accountNumber"],
-    queryFn: () =>
-      axios
-        .get(`/api/v1/ws/account/number`)
-        .then((res) => res.data as { accountNumber: string }),
-  });
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
     form.resetFields();
   };
 
-  const { data: session } = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) => axios.post(`/api/v1/ws/account`, data),
+    mutationFn: (data: any) =>
+      axios.put(`/api/v1/ws/account/${initialData?.id}`, data),
   });
 
-  const submit = (formData: NewAccountFormData) => {
+  const submit = (formData: EditAccountFormData) => {
     const data = {
-      accountNumber: numberData?.accountNumber,
       owner: {
+        ownerId:initialData?.ownerId,
         firstName: formData.firstName,
         lastName: formData.lastName,
         surname: formData.surname,
@@ -96,20 +93,19 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
         province: formData.province,
         city: formData.city,
         address: formData.address,
-        createdById: session?.user.id,
       },
     };
     mutate(data, {
       onSuccess: (res) => {
         if (res.data) {
           message.success({
-            content: "Enregistré",
+            content: "Modifications enregistrées",
             icon: <CheckOutlined />,
           });
           form.resetFields();
           toggleForm();
           return Promise.all([
-            queryClient.invalidateQueries({ queryKey: ["accounts"] }),
+            queryClient.invalidateQueries({ queryKey: ["account", initialData?.accountNumber] }),
           ]);
         }
       },
@@ -125,9 +121,9 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
     <Modal
       title={
         <Space className="">
-          Nouveau compte
+          Modification compte
           <Tag className="mr-0 font-bold" color="purple" bordered={false}>
-            {numberData?.accountNumber}
+            {initialData?.accountNumber}
           </Tag>
         </Space>
       }
@@ -142,7 +138,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
         layout="horizontal"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{  }}
+        initialValues={{ ...initialData?.owner }}
         onFinish={submit}
         disabled={isPending}
       >

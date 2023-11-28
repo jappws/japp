@@ -32,7 +32,7 @@ export const AccountsClient = () => {
     const items = data?.filter(
       (item) =>
         item.accountNumber.toLowerCase().includes(value.toLowerCase()) ||
-        `${item.owner.firstName.toLowerCase()} ${item.owner.lastName.toLowerCase()} ${item.owner.surname?.toLowerCase()}`.includes(
+        `${item.owner.firstName.toLowerCase()} ${item.owner.lastName.toLowerCase()} ${item.owner.surname?.toLowerCase()} ${item.owner.nickname?.toLowerCase()}`.includes(
           value.toLowerCase()
         )
     );
