@@ -15,7 +15,6 @@ import {
   message,
 } from "antd";
 import axios from "axios";
-import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
 import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
 import { AccountType, SexType } from "@/lib/types";

@@ -108,9 +108,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm();
-          return Promise.all([
-            queryClient.invalidateQueries({ queryKey: ["accounts"] }),
-          ]);
+          queryClient.invalidateQueries({ queryKey: ["accounts"] });
         }
       },
       onError: () => {
@@ -142,7 +140,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
         layout="horizontal"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{  }}
+        initialValues={{}}
         onFinish={submit}
         disabled={isPending}
       >
