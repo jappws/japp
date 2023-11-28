@@ -7,12 +7,17 @@ import { useParams, usePathname, useRouter } from "next/navigation";
 import { useState } from "react";
 import { NewInOrCreditForm } from "./forms/inOrCreditForm";
 import { NewOutOrDebitForm } from "./forms/outOrDebitForm";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { AccountType } from "@/lib/types";
+import { useSession } from "next-auth/react";
 
 export default function AccountClientLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const {data:session}=useSession()
   const { accountId } = useParams();
   const { push } = useRouter();
   const pathname = usePathname();
@@ -21,17 +26,25 @@ export default function AccountClientLayout({
   const [openNewOutOrDebitForm, setOpenNewOutOrDebitForm] =
     useState<boolean>(false);
 
+    const { data :account, isLoading } = useQuery({
+      queryKey: ["account"],
+      queryFn: () =>
+        axios.get(`/api/v1/ws/account/${accountId}`).then((res) => res.data as AccountType),
+        enabled: !!session?.user && !!accountId,
+    });
+
   return (
     <div className="">
       <PageContainer
-        title="Kahindo Lwanzo Alfred"
+      loading={isLoading}
+        title={`${account?.owner.firstName} ${account?.owner.lastName} ${account?.owner.surname}`}
         fixedHeader
         token={{
           paddingInlinePageContainerContent: 16,
           paddingBlockPageContainerContent: 16,
         }}
         breadcrumbRender={() => (
-          <Breadcrumb items={[{ title: "Compte" }, { title: "56347" }]} />
+          <Breadcrumb items={[{ title: "Compte" }, { title: account?.accountNumber }]} />
         )}
         tabBarExtraContent={
           <Space>
@@ -97,7 +110,7 @@ export default function AccountClientLayout({
             value={`${new Intl.NumberFormat("fr-FR", {
               style: "currency",
               currency: "USD",
-            }).format(150000000)}`}
+            }).format(Number(account?.balance))}`}
           />,
         ]}
       >
