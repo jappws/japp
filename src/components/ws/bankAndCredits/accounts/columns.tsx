@@ -4,7 +4,7 @@ import { TableColumnsType, Avatar, Switch } from "antd";
 
 export const transactionsColumns: TableColumnsType<AccountType> = [
   {
-    title: "No compte",
+    title: "No",
     dataIndex: "accountNumber",
     key: "accountNumber",
     width:80,

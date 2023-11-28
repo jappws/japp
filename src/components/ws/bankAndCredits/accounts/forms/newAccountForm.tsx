@@ -106,9 +106,9 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
             content: "Enregistré",
             icon: <CheckOutlined />,
           });
-          form.resetFields();
-          toggleForm();
           queryClient.invalidateQueries({ queryKey: ["accounts"] });
+          form.resetFields();
+          toggleForm(); 
         }
       },
       onError: () => {
@@ -124,7 +124,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
       title={
         <Space className="">
           Nouveau compte
-          <Tag className="mr-0 font-bold" color="purple" bordered={false}>
+          <Tag className="mr-0 font-bold" color="purple" bordered={false} >
             {numberData?.accountNumber}
           </Tag>
         </Space>

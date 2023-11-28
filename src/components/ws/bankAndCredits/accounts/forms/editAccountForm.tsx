@@ -101,12 +101,10 @@ export const EditAccountForm: React.FC<Props> = ({
             content: "Modifications enregistrées",
             icon: <CheckOutlined />,
           });
-          form.resetFields();
-          toggleForm();
-
           queryClient.invalidateQueries({
             queryKey: ["account", initialData?.accountNumber],
           });
+          toggleForm();
         }
       },
       onError: () => {

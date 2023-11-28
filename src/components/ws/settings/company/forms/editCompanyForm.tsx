@@ -73,9 +73,8 @@ export const EditCompanyForm: React.FC<Props> = ({ open, toggle, initialData }) 
             content: "Modifications enregistrées",
             icon: <CheckOutlined />,
           });
-          form.resetFields();
-          toggleForm();
           queryClient.invalidateQueries({ queryKey: ["company"] });
+          toggleForm();
         }
       },
       onError: () => {
