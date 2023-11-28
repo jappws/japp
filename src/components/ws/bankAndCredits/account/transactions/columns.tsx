@@ -51,11 +51,17 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     ellipsis: true,
   },
   {
-    title: "Solde",
+    title: "Solde après",
     dataIndex: "balanceAfter",
     key: "balanceAfter",
     ellipsis: true,
     align: "right",
+    render: (_, record) => (
+      <span className="">{`${new Intl.NumberFormat("fr-FR", {
+        style: "currency",
+        currency: "USD",
+      }).format(record.balanceAfter)}`}</span>
+    ),
   },
   {
     title: "Note",

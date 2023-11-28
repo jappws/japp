@@ -15,7 +15,7 @@ export const TransactionsList:React.FC<Props> =({data})=>{
 
     return <Table
     // loading={isLoading}
-    rowClassName={(rowData) => "bg-[#f5f5f5] odd:bg-white"}
+    rowClassName={(rowData) => "bg-[#f5f5f5] odd:bg-white hover:cursor-pointer"}
     columns={transactionsColumns}
     dataSource={data}
     size="small"
