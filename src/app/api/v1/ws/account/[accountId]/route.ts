@@ -3,8 +3,8 @@ import { SexType } from "@/lib/types";
 import { Prisma } from "@prisma/client";
 
 type BodyRequestType = {
+  ownerId: number;
   owner: {
-    ownerId: number;
     firstName?: string;
     lastName?: string;
     surname?: string | null;
@@ -70,7 +70,7 @@ export async function PUT(
     });
 
     const editedUser = await prisma.user.update({
-      where: { id: body.owner.ownerId },
+      where: { id: body.ownerId },
       data: { ...body.owner },
     });
 

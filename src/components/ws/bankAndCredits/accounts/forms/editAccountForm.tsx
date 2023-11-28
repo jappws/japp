@@ -76,8 +76,8 @@ export const EditAccountForm: React.FC<Props> = ({
 
   const submit = (formData: EditAccountFormData) => {
     const data = {
+      ownerId: initialData?.ownerId,
       owner: {
-        ownerId:initialData?.ownerId,
         firstName: formData.firstName,
         lastName: formData.lastName,
         surname: formData.surname,
@@ -105,7 +105,9 @@ export const EditAccountForm: React.FC<Props> = ({
           form.resetFields();
           toggleForm();
           return Promise.all([
-            queryClient.invalidateQueries({ queryKey: ["account", initialData?.accountNumber] }),
+            queryClient.invalidateQueries({
+              queryKey: ["account", initialData?.accountNumber],
+            }),
           ]);
         }
       },
