@@ -13,7 +13,7 @@ export const AccountTransactions = () => {
   const { accountId } = useParams();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["accounts"],
+    queryKey: ["transactions", accountId],
     queryFn: () =>
       axios
         .get(`/api/v1/ws/account/${accountId}/transactions`)
@@ -23,7 +23,7 @@ export const AccountTransactions = () => {
   return (
     <div>
       {/* <ProCard className="min-h-[800px]"> */}
-      <TransactionsList data={data} />
+      <TransactionsList data={data} isLoading={isLoading} />
       {/* </ProCard> */}
     </div>
   );

@@ -106,9 +106,9 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
             content: "Enregistré",
             icon: <CheckOutlined />,
           });
-          queryClient.invalidateQueries({ queryKey: ["accounts"] });
           form.resetFields();
           toggleForm(); 
+          queryClient.invalidateQueries({ queryKey: ["accounts"] });
         }
       },
       onError: () => {
