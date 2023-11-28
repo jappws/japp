@@ -17,7 +17,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
 import dayjs from "dayjs";
-import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
+import { CheckOutlined, LoadingOutlined, UserAddOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";
@@ -70,6 +70,7 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
       phone: `+${formData?.phone.countryCode}${formData?.phone.areaCode}${formData?.phone.phoneNumber}`,
       sex: formData?.sex,
       password: formData?.password,
+      role:formData.role,
       createdById: session?.user.id,
     };
     mutate(data, {
@@ -96,7 +97,7 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
 
   return (
     <Modal
-      title={<div className="">Nouveau utilisateur</div>}
+      title={<div className=""><UserAddOutlined/> Nouveau utilisateur</div>}
       open={open}
       footer={null}
       onCancel={toggleForm}
