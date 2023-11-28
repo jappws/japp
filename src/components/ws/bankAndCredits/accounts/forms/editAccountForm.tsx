@@ -104,11 +104,10 @@ export const EditAccountForm: React.FC<Props> = ({
           });
           form.resetFields();
           toggleForm();
-          return Promise.all([
-            queryClient.invalidateQueries({
-              queryKey: ["account", initialData?.accountNumber],
-            }),
-          ]);
+
+          queryClient.invalidateQueries({
+            queryKey: ["account", initialData?.accountNumber],
+          });
         }
       },
       onError: () => {
