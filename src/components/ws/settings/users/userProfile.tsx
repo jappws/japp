@@ -1,16 +1,16 @@
 "use client";
 
-import { CloseOutlined, EditOutlined, UserOutlined } from "@ant-design/icons";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import {
   Layout,
   Space,
-  Typography,
   theme,
   Button,
   Modal,
   Avatar,
   Drawer,
   Tag,
+  Descriptions,
 } from "antd";
 import { useState, Dispatch, SetStateAction } from "react";
 
@@ -84,13 +84,11 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 className="shadow-none"
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
-              >
-                Editer
-              </Button>,
+              />,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
-            <ProDescriptions column={{ sm: 1, md: 1 }} emptyText="">
+            <ProDescriptions column={1} emptyText="">
               <ProDescriptions.Item
                 label=""
                 // valueType="avatar"
@@ -131,9 +129,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 className="shadow-none"
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
-              >
-                Editer
-              </Button>,
+              />,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
@@ -153,7 +149,6 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
             </ProDescriptions>
           </ProCard>
 
-
           <ProCard
             className=" ml"
             title="Sécurité"
@@ -164,9 +159,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 className="shadow-none"
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
-              >
-                Editer
-              </Button>,
+              />,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
@@ -179,7 +172,11 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               </ProDescriptions.Item>
               <ProDescriptions.Item
                 label="Rôle"
-                render={()=><Tag color="success" className="mr-0">{user?.role}</Tag>}
+                render={() => (
+                  <Tag color="success" className="mr-0">
+                    {user?.role}
+                  </Tag>
+                )}
               >
                 {user?.role}
               </ProDescriptions.Item>
@@ -207,7 +204,9 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 valueType="text"
                 title="Créateur de l'utilisateur (Opérateur)"
               >
-                {`${user?.createdBy?.firstName} ${user?.createdBy?.lastName} (${user?.createdBy?.username})`}
+                {`${user?.createdBy?.firstName ?? ""} ${
+                  user?.createdBy?.lastName ?? ""
+                } (${user?.createdBy?.username ?? ""})`}
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
