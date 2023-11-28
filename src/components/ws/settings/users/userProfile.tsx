@@ -1,16 +1,11 @@
 "use client";
 
-import {
-  CloseOutlined,
-  EditOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
+import { CloseOutlined, EditOutlined, UserOutlined } from "@ant-design/icons";
 import {
   Layout,
   Space,
   Typography,
   theme,
-  Tooltip,
   Button,
   Modal,
   Avatar,
@@ -27,6 +22,7 @@ import { EditUserForm } from "./forms/editUserForm";
 import { UserType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { getHSLColor } from "@/lib/utils";
+import dayjs from "dayjs";
 
 const { confirm } = Modal;
 
@@ -125,39 +121,97 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
+          <ProCard
+            className=" ml"
+            title="Identifiants"
+            extra={[
+              <Button
+                key="1"
+                icon={<EditOutlined />}
+                className="shadow-none"
+                onClick={() => setOpenEditProfileForm(true)}
+                disabled={session?.user?.role !== "ADMIN"}
+              >
+                Editer
+              </Button>,
+            ]}
+            style={{ marginBlockEnd: 16 }}
+          >
+            <ProDescriptions column={{ sm: 1, md: 1 }} emptyText="">
+              <ProDescriptions.Item
+                label="Email"
+                // valueType="avatar"
+              >
+                {user?.email}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item
+                label="Téléphone"
+                // valueType="avatar"
+              >
+                {user?.phone}
+              </ProDescriptions.Item>
+            </ProDescriptions>
+          </ProCard>
+
+
+          <ProCard
+            className=" ml"
+            title="Sécurité"
+            extra={[
+              <Button
+                key="1"
+                icon={<EditOutlined />}
+                className="shadow-none"
+                onClick={() => setOpenEditProfileForm(true)}
+                disabled={session?.user?.role !== "ADMIN"}
+              >
+                Editer
+              </Button>,
+            ]}
+            style={{ marginBlockEnd: 16 }}
+          >
+            <ProDescriptions column={{ sm: 1, md: 1 }} emptyText="">
+              <ProDescriptions.Item
+                label="Mot de passe"
+                // valueType="avatar"
+              >
+                {""}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item
+                label="Rôle"
+                render={()=><Tag color="success" className="mr-0">{user?.role}</Tag>}
+              >
+                {user?.role}
+              </ProDescriptions.Item>
+            </ProDescriptions>
+          </ProCard>
+          <ProCard
+            className=" ml"
+            title="Autres informations"
+            style={{ marginBlockEnd: 16 }}
+          >
+            <ProDescriptions column={{ sm: 1, md: 1 }} emptyText="">
+              <ProDescriptions.Item
+                title="Date de création"
+                render={() => dayjs(user?.createdAt).format("DD/MM/YYYY")}
+              >
+                {`${user?.createdAt}`}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item
+                title="Dernière modification"
+                render={() => dayjs(user?.updatedAt).format("DD/MM/YYYY")}
+              >
+                {`${user?.updatedAt}`}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item
+                valueType="text"
+                title="Créateur de l'utilisateur (Opérateur)"
+              >
+                {`${user?.createdBy.firstName} ${user?.createdBy.lastName} (${user?.createdBy?.username})`}
+              </ProDescriptions.Item>
+            </ProDescriptions>
+          </ProCard>
         </Layout.Content>
-        <Layout.Footer
-          style={{
-            display: "flex",
-            backgroundColor: "#fff",
-          }}
-          className="px-0"
-        >
-          <div className="flex flex-col">
-            <div className="flex">
-              <Typography.Text className="flex-1 font-semibold text-[#dedede] ">
-                Opérateur créateur
-              </Typography.Text>
-            </div>
-            <Space align="center" className="">
-              <Avatar icon={<UserOutlined />} />
-              <div className="">
-                <Typography.Text
-                  className="m-0 w-full text-[12px]"
-                  style={{ fontSize: 12 }}
-                  ellipsis={true}
-                >
-                  {`${user?.createdBy?.firstName ?? ""} ${
-                    user?.createdBy?.firstName ?? ""
-                  }`}
-                </Typography.Text>
-                <Typography.Text className="m-0 text-[12px]">
-                  {user?.createdBy?.username ?? ""}
-                </Typography.Text>
-              </div>
-            </Space>
-          </div>
-        </Layout.Footer>
       </Layout>
       <EditUserForm
         open={openEditProfileForm}
