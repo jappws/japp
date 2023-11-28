@@ -33,6 +33,7 @@ export const AccountOwner = () => {
             Editer
           </Button>,
         ]}
+        style={{ marginBlockEnd: 16 }}
       >
         <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
           <ProDescriptions.Item
@@ -116,7 +117,11 @@ export const AccountOwner = () => {
           ></ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
-      <ProCard className=" m" title="Autres informations">
+      <ProCard
+        className=" m"
+        title="Autres informations"
+        style={{ marginBlockEnd: 16 }}
+      >
         <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
           <ProDescriptions.Item
             title="Date de création"
@@ -130,11 +135,11 @@ export const AccountOwner = () => {
           >
             {`${account?.owner?.updatedAt}`}
           </ProDescriptions.Item>
-          <ProDescriptions.Item
+          {/* <ProDescriptions.Item
             label=""
             // valueType="avatar"
             render={() => <Avatar size="small" icon={<UserOutlined />} />}
-          ></ProDescriptions.Item>
+          ></ProDescriptions.Item> */}
           <ProDescriptions.Item
             valueType="text"
             title="Créateur du compte (Opérateur)"
