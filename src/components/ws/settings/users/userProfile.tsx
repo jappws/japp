@@ -1,16 +1,8 @@
 "use client";
 
 import {
-  CheckCircleOutlined,
-  CheckOutlined,
-  CloseCircleOutlined,
   CloseOutlined,
-  DeleteOutlined,
   EditOutlined,
-  LoadingOutlined,
-  MailOutlined,
-  MoreOutlined,
-  PrinterOutlined,
   UserOutlined,
 } from "@ant-design/icons";
 import {
@@ -20,10 +12,10 @@ import {
   theme,
   Tooltip,
   Button,
-  Dropdown,
   Modal,
   Avatar,
   Drawer,
+  Tag,
 } from "antd";
 import { useState, Dispatch, SetStateAction } from "react";
 
@@ -33,6 +25,8 @@ import { useSession } from "next-auth/react";
 
 import { EditUserForm } from "./forms/editUserForm";
 import { UserType } from "@/lib/types";
+import { ProCard, ProDescriptions } from "@ant-design/pro-components";
+import { getHSLColor } from "@/lib/utils";
 
 const { confirm } = Modal;
 
@@ -42,11 +36,7 @@ type Props = {
   user?: UserType;
 };
 
-export const UserRightSider: React.FC<Props> = ({
-  open,
-  trigger,
-  user,
-}) => {
+export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
   const {
     token: { colorPrimary },
   } = theme.useToken();
@@ -60,18 +50,14 @@ export const UserRightSider: React.FC<Props> = ({
     <Drawer
       title={
         <div className="flex">
-          <Space>Utilisateur {user?.username}</Space>
+          <Space>
+            Utilisateur{" "}
+            <Tag className="mr-0" color="purple" bordered={false}>
+              {user?.username}
+            </Tag>
+          </Space>
           <div className="flex-1" />
           <Space>
-            <Tooltip title="Modifier" placement="bottomRight">
-              <Button
-                icon={<EditOutlined />}
-                type="text"
-                shape="circle"
-                onClick={() => setOpenEditProfileForm(true)}
-                disabled={session?.user.role !== "ADMIN"}
-              />
-            </Tooltip>
             <Button
               icon={<CloseOutlined />}
               type="text"
@@ -92,7 +78,53 @@ export const UserRightSider: React.FC<Props> = ({
     >
       <Layout className="">
         <Layout.Content className="bg-white">
-          {/* <BillingInfo billing={billing} /> */}
+          <ProCard
+            className=" ml"
+            title="Identité"
+            extra={[
+              <Button
+                key="1"
+                icon={<EditOutlined />}
+                className="shadow-none"
+                onClick={() => setOpenEditProfileForm(true)}
+                disabled={session?.user?.role !== "ADMIN"}
+              >
+                Editer
+              </Button>,
+            ]}
+            style={{ marginBlockEnd: 16 }}
+          >
+            <ProDescriptions column={{ sm: 1, md: 1 }} emptyText="">
+              <ProDescriptions.Item
+                label=""
+                // valueType="avatar"
+                render={() => (
+                  <Avatar
+                    style={{
+                      backgroundColor: getHSLColor(
+                        `${user?.firstName} ${user?.surname}`
+                      ),
+                    }}
+                    size="large"
+                  >
+                    {user?.firstName?.charAt(0).toUpperCase()}
+                    {user?.lastName?.charAt(0).toUpperCase()}
+                  </Avatar>
+                )}
+              >
+                {user?.firstName}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item ellipsis label="Nom" valueType="text">
+                {user?.firstName}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item label="Postnom" valueType="text">
+                {user?.lastName}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item label="Prénom" valueType="text">
+                {user?.surname}
+              </ProDescriptions.Item>
+            </ProDescriptions>
+          </ProCard>
         </Layout.Content>
         <Layout.Footer
           style={{
@@ -115,10 +147,12 @@ export const UserRightSider: React.FC<Props> = ({
                   style={{ fontSize: 12 }}
                   ellipsis={true}
                 >
-                  {`${user?.createdBy?.firstName??""} ${user?.createdBy?.firstName??""}`}
+                  {`${user?.createdBy?.firstName ?? ""} ${
+                    user?.createdBy?.firstName ?? ""
+                  }`}
                 </Typography.Text>
                 <Typography.Text className="m-0 text-[12px]">
-                  {user?.createdBy?.username??""}
+                  {user?.createdBy?.username ?? ""}
                 </Typography.Text>
               </div>
             </Space>
