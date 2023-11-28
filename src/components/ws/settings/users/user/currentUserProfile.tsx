@@ -39,7 +39,7 @@ export const CurrentUserRightSider: React.FC<Props> = ({ open, trigger }) => {
             <Avatar
               style={{
                 backgroundColor: getHSLColor(
-                  `${session?.user?.firstName} ${session?.user?.surname}`
+                  `${session?.user?.firstName} ${session?.user.lastName} ${session?.user?.surname}`
                 ),
               }}
               size="small"
@@ -76,8 +76,8 @@ export const CurrentUserRightSider: React.FC<Props> = ({ open, trigger }) => {
         <Layout.Content className="bg-white">
           <ProCard
             className=" ml"
-            title="Profile"
-            collapsible
+            title="Utilisateur"
+            // collapsible
             bordered
             // extra={[
             //   <Button
@@ -151,6 +151,7 @@ export const CurrentUserRightSider: React.FC<Props> = ({ open, trigger }) => {
             </ProDescriptions>
           </ProCard> */}
           <ProCard
+            bordered
             className=" ml"
             style={{ marginBlockEnd: 16 }}
           >

@@ -53,7 +53,7 @@ export const AccountOwner = () => {
               <Avatar
                 style={{
                   backgroundColor: getHSLColor(
-                    `${account?.owner.firstName} ${account?.owner.surname}`
+                    `${account?.owner.firstName} ${account?.owner.lastName} ${account?.owner.surname}`
                   ),
                 }}
                 size="large"
