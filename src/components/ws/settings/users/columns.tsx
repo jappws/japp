@@ -36,7 +36,8 @@ export const usersColumns: TableColumnsType<UserType> = [
     title: "Sexe",
     dataIndex: "sex",
     key: "sex",
-    width:52
+    width:52,
+    align:"center"
   },
   {
     title: "Email",
