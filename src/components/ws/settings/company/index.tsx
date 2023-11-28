@@ -6,8 +6,13 @@ import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "antd";
 import axios from "axios";
+import { EditCompanyForm } from "./forms/editCompanyForm";
+import { useState } from "react";
 
 export const CompanyClient = () => {
+
+  const [openEditForm, setOpenEditForm]=useState<boolean>(false)
+
   const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: ["company"],
     queryFn: () =>
@@ -19,7 +24,7 @@ export const CompanyClient = () => {
         className=""
         title="Profile entreprise"
         extra={[
-          <Button key="1" icon={<EditOutlined />} className="shadow-none">
+          <Button key="1" icon={<EditOutlined />} className="shadow-none" onClick={()=>setOpenEditForm(true)}>
             Editer
           </Button>,
         ]}
@@ -82,6 +87,7 @@ export const CompanyClient = () => {
           </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
+      <EditCompanyForm open={openEditForm} toggle={setOpenEditForm} initialData={company}/>
     </div>
   );
 };

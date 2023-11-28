@@ -8,8 +8,8 @@ type BodyRequestType = {
     description?: string | null;
     logo?: string | null;
     icon?: string | null;
-    currency: IsoCodeCurrencyType;
-    country: string | null;
+    currency?: IsoCodeCurrencyType;
+    country?: string | null;
     province?: string | null;
     city?: string | null;
     address?: string | null;
