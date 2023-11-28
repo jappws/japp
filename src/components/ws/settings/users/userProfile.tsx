@@ -47,6 +47,17 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
       title={
         <div className="flex">
           <Space>
+            <Avatar
+              style={{
+                backgroundColor: getHSLColor(
+                  `${user?.firstName} ${user?.surname}`
+                ),
+              }}
+              size="small"
+            >
+              {user?.firstName?.charAt(0).toUpperCase()}
+              {user?.lastName?.charAt(0).toUpperCase()}
+            </Avatar>
             Utilisateur{" "}
             <Tag className="mr-0" color="purple" bordered={false}>
               {user?.username}
@@ -84,30 +95,13 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 className="shadow-none"
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
+                shape="circle"
+                type="text"
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
             <ProDescriptions column={1} emptyText="">
-              <ProDescriptions.Item
-                label=""
-                // valueType="avatar"
-                render={() => (
-                  <Avatar
-                    style={{
-                      backgroundColor: getHSLColor(
-                        `${user?.firstName} ${user?.surname}`
-                      ),
-                    }}
-                    size="large"
-                  >
-                    {user?.firstName?.charAt(0).toUpperCase()}
-                    {user?.lastName?.charAt(0).toUpperCase()}
-                  </Avatar>
-                )}
-              >
-                {user?.firstName}
-              </ProDescriptions.Item>
               <ProDescriptions.Item ellipsis label="Nom" valueType="text">
                 {user?.firstName}
               </ProDescriptions.Item>
@@ -129,11 +123,13 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 className="shadow-none"
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
+                shape="circle"
+                type="text"
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
-            <ProDescriptions column={{ sm: 1, md: 1 }} emptyText="">
+            <ProDescriptions column={1} emptyText="">
               <ProDescriptions.Item
                 label="Email"
                 // valueType="avatar"
@@ -159,11 +155,13 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
                 className="shadow-none"
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
+                shape="circle"
+                type="text"
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
-            <ProDescriptions column={{ sm: 1, md: 1 }} emptyText="">
+            <ProDescriptions column={1} emptyText="">
               <ProDescriptions.Item
                 label="Mot de passe"
                 // valueType="avatar"
@@ -187,7 +185,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
             title="Autres informations"
             style={{ marginBlockEnd: 16 }}
           >
-            <ProDescriptions column={{ sm: 1, md: 1 }} emptyText="">
+            <ProDescriptions column={1} emptyText="">
               <ProDescriptions.Item
                 title="Date de création"
                 render={() => dayjs(user?.createdAt).format("DD/MM/YYYY")}
