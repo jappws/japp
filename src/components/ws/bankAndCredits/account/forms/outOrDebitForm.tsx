@@ -52,34 +52,32 @@ export const NewOutOrDebitForm: React.FC<Props> = ({ open, toggle }) => {
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/finance/cash-transaction`, data),
+      axios.post(`/api/v1/ws/account/${accountId}/transaction`, data),
   });
 
   const submit = (formData: DebitFormData) => {
     const data = {
       title: getTransactionTitle(formData.type),
-      amount: -parseFloat(formData.amount),
+      amount: parseFloat(formData.amount),
       type: formData.type,
       message: formData.message,
       date: formData.date,
-      accountId: accountId,
       operatorId: session?.user.id,
     };
     mutate(data, {
       onSuccess: (res) => {
         if (res.data) {
           message.success({
-            content: "Enregistré",
+            content: "Opération effectuée",
             icon: <CheckOutlined />,
           });
           form.resetFields();
           toggleForm();
+          queryClient.invalidateQueries({
+            queryKey: ["transactions", accountId],
+          });
+          queryClient.invalidateQueries({ queryKey: ["account", accountId] });
         }
-        return Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["cash-transactions"] }),
-          queryClient.invalidateQueries({ queryKey: ["balance"] }),
-          queryClient.invalidateQueries({ queryKey: ["cash-accounts"] }),
-        ]);
       },
       onError: () => {
         message.error({

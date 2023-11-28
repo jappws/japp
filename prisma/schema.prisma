@@ -85,12 +85,12 @@ model Transaction {
 enum TransactionType {
   DEPOSIT
   WITHDRAWAL
-  TRANSFER
+  //TRANSFER
   LOAN_DISBURSEMENT // Décaissement de prêt
   LOAN_PAYMENT // Rembourssement de prêt
-  SERVICE_FEE  // Frais de service
-  INTEREST_EARNED // Intérêts perçus
-  INTEREST_PAID // Intérêts payés
+  //SERVICE_FEE  // Frais de service
+  //INTEREST_EARNED // Intérêts perçus
+  //INTEREST_PAID // Intérêts payés
 }
 
 model Company {
