@@ -17,24 +17,28 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
 import dayjs from "dayjs";
-import {
-  CheckOutlined,
-  DollarOutlined,
-  LoadingOutlined,
-} from "@ant-design/icons";
-import { TransactionTypeType } from "@/lib/types";
-import { useParams } from "next/navigation";
-import { getTransactionTitle } from "@/lib/utils";
+import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";
+import { RoleType, SexType } from "@/lib/types";
 
-type CreditFormData = {
-  type: TransactionTypeType;
-  amount: string;
-  goldQuantity: string;
-  date: string;
-  message?: string;
+type NewUserFormData = {
+  firstName: string;
+  lastName: string;
+  surname: string;
+  sex: SexType;
+  phone: {
+    countryCode: number;
+    areaCode: number;
+    phoneNumber: string;
+    isoCode: string;
+    valid: boolean;
+  };
+  email: string;
+  password: string;
+  passwordConfirmed: string;
+  role: RoleType;
 };
 
 type Props = {
@@ -44,7 +48,6 @@ type Props = {
 
 export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
   const [form] = Form.useForm();
-  const { accountId } = useParams();
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
@@ -55,20 +58,19 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/finance/cash-transaction`, data),
+    mutationFn: (data: any) => axios.post(`/api/v1/ws/user`, data),
   });
 
-  const submit = (formData: CreditFormData) => {
+  const submit = (formData: NewUserFormData) => {
     const data = {
-      title: getTransactionTitle(formData.type),
-      amount: parseFloat(formData.amount),
-      type: formData.type,
-      goldQuantity: formData.goldQuantity,
-      message: formData.message,
-      date: formData.date,
-      accountId: accountId,
-      operatorId: session?.user.id,
+      firstName: formData?.firstName,
+      lastName: formData?.lastName,
+      surname: formData?.surname,
+      email: formData?.email,
+      phone: `+${formData?.phone.countryCode}${formData?.phone.areaCode}${formData?.phone.phoneNumber}`,
+      sex: formData?.sex,
+      password: formData?.password,
+      createdById: session?.user.id,
     };
     mutate(data, {
       onSuccess: (res) => {
@@ -77,14 +79,12 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
             content: "Enregistré",
             icon: <CheckOutlined />,
           });
+
+          queryClient.invalidateQueries({ queryKey: ["company"] });
+          queryClient.invalidateQueries({ queryKey: ["users"] });
           form.resetFields();
           toggleForm();
         }
-        return Promise.all([
-          queryClient.invalidateQueries({ queryKey: ["cash-transactions"] }),
-          queryClient.invalidateQueries({ queryKey: ["balance"] }),
-          queryClient.invalidateQueries({ queryKey: ["cash-accounts"] }),
-        ]);
       },
       onError: () => {
         message.error({
@@ -113,7 +113,12 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
         disabled={isPending}
       >
         <div className="bg-white">
-        <ProCard title="Identité" bordered collapsible style={{ marginBlockEnd: 16, maxWidth: '100%'}}>
+          <ProCard
+            title="Identité"
+            bordered
+            collapsible
+            style={{ marginBlockEnd: 16, maxWidth: "100%" }}
+          >
             <Row gutter={24}>
               <Col span={24}>
                 <Form.Item
@@ -209,10 +214,15 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
                   />
                 </Form.Item>
               </Col>
-              </Row>
-              </ProCard>
-              <ProCard title="Identifiants" bordered collapsible style={{ marginBlockEnd: 16, maxWidth: '100%'}}>
-              <Row>
+            </Row>
+          </ProCard>
+          <ProCard
+            title="Identifiants"
+            bordered
+            collapsible
+            style={{ marginBlockEnd: 16, maxWidth: "100%" }}
+          >
+            <Row>
               <Col span={24}>
                 <Form.Item
                   name="email"
@@ -237,7 +247,7 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
                   rules={[
                     {
                       required: true,
-                      message:"Le numéro de téléphone est obligatoire"
+                      message: "Le numéro de téléphone est obligatoire",
                     },
                     { validator: phoneValidator },
                   ]}
@@ -248,14 +258,18 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
                     country="cd"
                     enableSearch={true}
                     preferredCountries={["cd"]}
-                    
                   />
                 </Form.Item>
               </Col>
-              </Row>
-              </ProCard>
-              <ProCard title="Sécurité" bordered collapsible style={{ marginBlockEnd: 16, maxWidth: '100%'}}>
-                <Row>
+            </Row>
+          </ProCard>
+          <ProCard
+            title="Sécurité"
+            bordered
+            collapsible
+            style={{ marginBlockEnd: 16, maxWidth: "100%" }}
+          >
+            <Row>
               <Col span={24}>
                 <Form.Item
                   name="password"
@@ -325,8 +339,59 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
                   <Input.Password style={{ backgroundColor: "#fff" }} />
                 </Form.Item>
               </Col>
+              <Col span={24}>
+                <Form.Item
+                  name="role"
+                  label="Rôle"
+                  rules={[
+                    {
+                      required: true,
+                    },
+                  ]}
+                >
+                  <Select
+                    showSearch
+                    className=""
+                    style={{ width: "100%" }}
+                    placeholder="Sélectionner un rôle"
+                    optionFilterProp="children"
+                    filterOption={(input, option) =>
+                      (option?.label ?? "")
+                        .toLowerCase()
+                        .includes(input.toLowerCase())
+                    }
+                    filterSort={(optionA, optionB) =>
+                      (optionA?.label ?? "")
+                        .toLowerCase()
+                        .localeCompare((optionB?.label ?? "").toLowerCase())
+                    }
+                    notFoundContent={
+                      <Empty
+                        description="Aucune donnée"
+                        image={Empty.PRESENTED_IMAGE_SIMPLE}
+                      />
+                    }
+                    menuItemSelectedIcon={<CheckOutlined />}
+                    options={[
+                      {
+                        value: "AGENT",
+                        label: "Opérateur (Utilisateur)",
+                      },
+                      {
+                        value: "ADMIN",
+                        label: "Administrateur",
+                      },
+                      {
+                        value: "CLIENT",
+                        label: "Client partenaire",
+                        disable: true,
+                      },
+                    ]}
+                  />
+                </Form.Item>
+              </Col>
             </Row>
-            </ProCard>
+          </ProCard>
           <div
             style={{
               display: "flex",
