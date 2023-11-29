@@ -24,7 +24,7 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     render: (_, record) => (
       <span
         className={cn(
-          record.type === "MONEY_TRANSFER" ? "text-red-500" : "text-green-500"
+          record.type === "MONEY_TRANSFER" ? "text-yellow-500" : "text-green-500"
         )}
       >{`${new Intl.NumberFormat("fr-FR", {
         style: "currency",
@@ -51,7 +51,7 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     key: "balanceAfter",
     align: "right",
     render: (_, record) => (
-      <span>{`${new Intl.NumberFormat("fr-FR", {
+      <span >{`${new Intl.NumberFormat("fr-FR", {
         style: "currency",
         currency: "USD",
       }).format(record.balanceAfter)}`}</span>

@@ -41,7 +41,7 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     align: "right",
     render: (_, record) =>
       record.type === "WITHDRAWAL" || record.type === "LOAN_DISBURSEMENT" ? (
-        <span className="text-red-500">{`${new Intl.NumberFormat("fr-FR", {
+        <span className="text-yellow-500">{`${new Intl.NumberFormat("fr-FR", {
           style: "currency",
           currency: "USD",
         }).format(record.amount)}`}</span>
