@@ -43,7 +43,7 @@ export const getTransactionTitle = (transType: TransactionTypeType) => {
   }
 };
 
-export const getTransferTitle = (transType: TransferTypeType) => {
+export const getTransferTitle = (transType?: TransferTypeType) => {
   switch (transType) {
     case "MONEY_TRANSFER":
       return "Transfet d'argent";
