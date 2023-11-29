@@ -2,7 +2,7 @@ import { isNull } from "lodash";
 import prisma from "./prisma";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { TransactionTypeType } from "./types";
+import { TransactionTypeType, TransferTypeType } from "./types";
 
 ///////////////////////////////////////////
 /////////// classname ////////////////////
@@ -36,6 +36,20 @@ export const getTransactionTitle = (transType: TransactionTypeType) => {
       break;
     case "LOAN_PAYMENT":
       return "Rembourssement de crédit";
+      break;
+    default:
+      return ""
+      break;
+  }
+};
+
+export const getTransferTitle = (transType: TransferTypeType) => {
+  switch (transType) {
+    case "MONEY_TRANSFER":
+      return "Transfet d'argent";
+      break;
+    case "GOLD_TRANSFER":
+      return "Expédition de l'or";
       break;
     default:
       return ""
