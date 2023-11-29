@@ -2,10 +2,10 @@
 
 import { CloseOutlined, PrinterOutlined } from "@ant-design/icons";
 import { Layout, Space, theme, Button, Modal, Drawer } from "antd";
-import {  Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { TransactionType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
-import dayjs from 'dayjs'
+import dayjs from "dayjs";
 
 const { confirm } = Modal;
 
@@ -15,19 +15,20 @@ type Props = {
   data?: TransactionType;
 };
 
-export const SelectedTransRightSider: React.FC<Props> = ({ open, trigger, data }) => {
+export const SelectedTransRightSider: React.FC<Props> = ({
+  open,
+  trigger,
+  data,
+}) => {
   const {
     token: { colorPrimary },
   } = theme.useToken();
-
 
   return (
     <Drawer
       title={
         <div className="flex">
-          <Space>
-            Mouvement
-          </Space>
+          <Space>Mouvement</Space>
           <div className="flex-1" />
           <Space>
             <Button
@@ -75,10 +76,16 @@ export const SelectedTransRightSider: React.FC<Props> = ({ open, trigger, data }
                 {data?.title}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="Montant" valueType="text">
-                {data?.amount}
+                {`${new Intl.NumberFormat("fr-FR", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(data?.amount ?? 0)}`}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="Solde" valueType="text">
-                {data?.balanceAfter}
+                {`${new Intl.NumberFormat("fr-FR", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(data?.balanceAfter ?? 0)}`}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="Note">
                 {data?.message}
@@ -88,20 +95,14 @@ export const SelectedTransRightSider: React.FC<Props> = ({ open, trigger, data }
               </ProDescriptions.Item> */}
             </ProDescriptions>
           </ProCard>
-          
-          <ProCard
-            bordered
-            className=" ml"
-            style={{ marginBlockEnd: 16 }}
-          >
+
+          <ProCard bordered className=" ml" style={{ marginBlockEnd: 16 }}>
             <Button
               block
               className="shadow-none"
-              onClick={() => {
-                
-              }}
+              onClick={() => {}}
               type="primary"
-              icon={<PrinterOutlined/>}
+              icon={<PrinterOutlined />}
             >
               Imprimer
             </Button>
@@ -119,7 +120,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({ open, trigger, data }
                 label="Opérateur"
                 // valueType="avatar"
               >
-                {`${data?.operator.firstName} ${data?.operator.lastName}`}
+                {`${data?.operator.firstName} ${data?.operator.lastName} (${data?.operator.username})`}
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>

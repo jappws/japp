@@ -27,7 +27,7 @@ export const TransactionsList: React.FC<Props> = ({ data, isLoading }) => {
       <Table
         loading={isLoading}
         rowClassName={(rowData) =>
-          cn("bg-[#f5f5f5] odd:bg-white hover:cursor-pointer", selectedTrans?.id===rowData.id && "bg-primary bg-opacity-50" )
+          cn("bg-[#f5f5f5] odd:bg-white hover:cursor-pointer", selectedTrans?.id===rowData.id && "bg-primary bg-opacity-25" )
         }
         columns={transactionsColumns}
         dataSource={data}
