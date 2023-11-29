@@ -9,6 +9,7 @@ export async function GET(
     const transactions = await prisma.transaction.findMany({
       where: { accountId: Number(params.accountId) },
       orderBy: { date: "desc" },
+      include:{operator:{}}
     });
     const res = transactions;
     return new Response(JSON.stringify(res), { status: 200 });

@@ -71,11 +71,11 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     responsive: ["md"],
     ellipsis: true,
   },
-  {
-    title: "Statut",
-    dataIndex: "status",
-    key: "status",
-    responsive: ["md"],
-    ellipsis: true,
-  },
+  // {
+  //   title: "Statut",
+  //   dataIndex: "status",
+  //   key: "status",
+  //   responsive: ["md"],
+  //   ellipsis: true,
+  // },
 ];
