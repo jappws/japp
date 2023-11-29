@@ -133,7 +133,7 @@ export const NewOutOrDebitForm: React.FC<Props> = ({ open, toggle }) => {
                   },
                   {
                     value:"TRANSFER",
-                    label:"Virement"
+                    label:"Virement (Transfert vers autre compte )"
                   }
                 ]}
               />
