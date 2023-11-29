@@ -29,7 +29,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
     <Drawer
       title={
         <div className="flex">
-          <Space>Mouvement</Space>
+          <Space>Transfer</Space>
           <div className="flex-1" />
           <Space>
             <Button
