@@ -5,6 +5,7 @@ export async function GET(request: Request) {
   try {
     const transfers = await prisma.transfer.findMany({
       orderBy: { date: "desc" },
+      include: { operator: {} },
     });
 
     const balance = await prisma.transferBalance.findUnique({
