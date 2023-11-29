@@ -1,4 +1,5 @@
 import { TransactionType } from "@/lib/types";
+import { cn } from "@/lib/utils";
 import { TableColumnsType } from "antd";
 import dayjs from "dayjs";
 
@@ -57,7 +58,7 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     ellipsis: true,
     align: "right",
     render: (_, record) => (
-      <span className="">{`${new Intl.NumberFormat("fr-FR", {
+      <span className={cn(record.balanceAfter<0?"text-red-500":"")}>{`${new Intl.NumberFormat("fr-FR", {
         style: "currency",
         currency: "USD",
       }).format(record.balanceAfter)}`}</span>
