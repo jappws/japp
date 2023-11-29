@@ -90,9 +90,9 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               <ProDescriptions.Item label="Note">
                 {data?.message}
               </ProDescriptions.Item>
-              {/* <ProDescriptions.Item label="No compte">
-                {`${data}`}
-              </ProDescriptions.Item> */}
+              <ProDescriptions.Item label="No compte">
+                {`${data?.account?.accountNumber}`}
+              </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
 
