@@ -16,7 +16,7 @@ export const TransfersList: React.FC<Props> = ({ data,isLoading }) => {
   return (
     <Table
       loading={isLoading}
-      rowClassName={(rowData) => "bg-[#f5f5f5] odd:bg-white"}
+      rowClassName={(rowData) => "bg-[#f5f5f5] odd:bg-white hover:cursor-pointer"}
       columns={transfersColumns}
       dataSource={data}
       size="small"
