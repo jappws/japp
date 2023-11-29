@@ -73,11 +73,6 @@ export default function AccountClientLayout({
                     label: "Sortie (Décaissement)",
                     icon: <MinusOutlined />,
                   },
-                  {
-                    key: "transfer",
-                    label: "Virement (transférer)",
-                    icon: <TransactionOutlined />,
-                  },
                 ],
                 onClick: ({ key }) => {
                   if (key === "outOrDebit") {

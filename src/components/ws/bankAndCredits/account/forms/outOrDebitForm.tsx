@@ -131,6 +131,10 @@ export const NewOutOrDebitForm: React.FC<Props> = ({ open, toggle }) => {
                     value: "LOAN_DISBURSEMENT",
                     label: "Décaissement de crédit",
                   },
+                  {
+                    value:"TRANSFER",
+                    label:"Virement"
+                  }
                 ]}
               />
             </Form.Item>
