@@ -51,7 +51,7 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     ellipsis: true,
   },
   {
-    title: "Solde après",
+    title: "Solde",
     dataIndex: "balanceAfter",
     key: "balanceAfter",
     ellipsis: true,

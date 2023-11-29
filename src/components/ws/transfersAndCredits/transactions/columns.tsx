@@ -46,7 +46,7 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     render: (_, record) => getTransferTitle(record.type),
   },
   {
-    title: "Solde Après",
+    title: "Solde",
     dataIndex: "balanceAfter",
     key: "balanceAfter",
     align: "right",
