@@ -8,7 +8,7 @@ export async function GET(
   try {
     const transactions = await prisma.transaction.findMany({
       where: { accountId: Number(params.accountId) },
-      orderBy: { date: "desc" },
+      orderBy: { date: "asc" },
       include: { operator: {}, account: {} },
     });
     const res = transactions;

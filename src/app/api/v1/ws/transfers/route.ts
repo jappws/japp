@@ -4,7 +4,7 @@ import { Prisma } from "@prisma/client";
 export async function GET(request: Request) {
   try {
     const transfers = await prisma.transfer.findMany({
-      orderBy: { date: "desc" },
+      orderBy: { date: "asc" },
       include: { operator: {} },
     });
 
