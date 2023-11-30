@@ -2,10 +2,10 @@
 
 import { AccountType } from "@/lib/types";
 import { getHSLColor } from "@/lib/utils";
-import { EditOutlined, UserOutlined } from "@ant-design/icons";
+import { EditOutlined } from "@ant-design/icons";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
-import { Avatar, Button, Switch, Tag } from "antd";
+import { Avatar, Button, Space, Switch, Tag } from "antd";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
@@ -115,14 +115,16 @@ export const AccountOwner = () => {
           </ProDescriptions.Item>
           <ProDescriptions.Item
             label="Compte"
-            valueType="switch"
             render={() => (
-              <Switch
-                checkedChildren="Éligible au crédit"
-                checked={account?.owner?.blocked ? false : true}
-                unCheckedChildren="Non autorisé"
-                disabled
-              />
+              <Space>
+                <Switch
+                  checkedChildren="Éligible au crédit"
+                  checked={account?.owner?.blocked ? false : true}
+                  unCheckedChildren="Non autorisé"
+                  disabled
+                />
+                <Button type="link">Gérer</Button>
+              </Space>
             )}
           ></ProDescriptions.Item>
         </ProDescriptions>
