@@ -145,32 +145,41 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
                 ]}
               />
             </Form.Item>
-            {form.getFieldValue("type") === "TRANSFER" && (
-              <Form.Item
-                name="receiverAccountId"
-                label="Bénéficiaire"
-                rules={[{ required: true }]}
-              >
-                <Select
-                  showSearch
-                  placeholder="Rechercher un compte"
-                  optionFilterProp="children"
-                  filterOption={(input, option) =>
-                    (String(option?.label).toLowerCase() ?? "").includes(
-                      input.toLowerCase()
-                    )
-                  }
-                  filterSort={(optionA, optionB) =>
-                    (String(optionA?.label) ?? "")
-                      .toLowerCase()
-                      .localeCompare(
-                        (String(optionB?.label) ?? "").toLowerCase()
-                      )
-                  }
-                  options={getAccountsAsOptions(accounts)}
-                />
-              </Form.Item>
-            )}
+            <Form.Item
+              noStyle
+              shouldUpdate={(prevValues, currentValues) =>
+                prevValues.type !== currentValues.type
+              }
+            >
+              {({ getFieldValue }) =>
+                getFieldValue("type") === "TRANSFER" ? (
+                  <Form.Item
+                    name="receiverAccountId"
+                    label="Bénéficiaire"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      showSearch
+                      placeholder="Rechercher un compte"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        (String(option?.label).toLowerCase() ?? "").includes(
+                          input.toLowerCase()
+                        )
+                      }
+                      filterSort={(optionA, optionB) =>
+                        (String(optionA?.label) ?? "")
+                          .toLowerCase()
+                          .localeCompare(
+                            (String(optionB?.label) ?? "").toLowerCase()
+                          )
+                      }
+                      options={getAccountsAsOptions(accounts)}
+                    />
+                  </Form.Item>
+                ) : null
+              }
+            </Form.Item>
             <div className="flex items-end">
               <Form.Item
                 name="amount"
