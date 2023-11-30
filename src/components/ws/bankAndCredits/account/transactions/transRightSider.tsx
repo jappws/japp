@@ -143,17 +143,23 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
           {/* To print */}
           <div className="hidden">
-            <div ref={refComponentToPrint}>
+            <div
+              ref={refComponentToPrint}
+              className=""
+              style={{ border: "1px solid #f0f0f0" }}
+            >
               <ProCard
-                title={`Compte ${account?.owner?.firstName} ${account?.owner?.lastName} ${account?.owner?.surname}`}
+                title={`Mouvement`}
+                bordered
+                style={{ marginBlockEnd: 16 }}
+                extra={[`${account?.accountNumber}`]}
+              ></ProCard>
+              <ProCard
+                title={`Détails `}
                 bordered
                 style={{ marginBlockEnd: 16 }}
               >
-                <ProDescriptions
-                  column={1}
-                  title="Détails mouvement"
-                  emptyText=""
-                >
+                <ProDescriptions column={1} title="" emptyText="">
                   <ProDescriptions.Item ellipsis label="Date" valueType="text">
                     {dayjs(data?.date).format("DD-MM-YYYY")}
                   </ProDescriptions.Item>
@@ -174,6 +180,9 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   </ProDescriptions.Item>
                   <ProDescriptions.Item label="Note">
                     {data?.message}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Compte">
+                    {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()}`}
                   </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
