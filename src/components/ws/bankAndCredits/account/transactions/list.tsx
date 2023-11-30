@@ -1,11 +1,15 @@
 "use client";
 
-import { TransactionType } from "@/lib/types";
+import { AccountType, TransactionType } from "@/lib/types";
 import { Table } from "antd";
 import { transactionsColumns } from "./columns";
 import React, { useState } from "react";
 import { SelectedTransRightSider } from "./transRightSider";
 import { cn } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { useParams } from "next/navigation";
+import axios from "axios";
 
 type Props = {
   data?: TransactionType[];
@@ -17,6 +21,18 @@ export const TransactionsList: React.FC<Props> = ({ data, isLoading }) => {
   const [openSelectedTransSider, setOpenSelectedTransSider] =
     useState<boolean>(false);
 
+  const { data: session } = useSession();
+  const { accountId } = useParams();
+
+  const { data: account, isLoading: isLoadingAccount } = useQuery({
+    queryKey: ["account", accountId],
+    queryFn: () =>
+      axios
+        .get(`/api/v1/ws/account/${accountId}`)
+        .then((res) => res.data as AccountType),
+    enabled: !!session?.user && !!accountId,
+  });
+
   const onRowClick = (record: TransactionType) => {
     setOpenSelectedTransSider(true);
     setSelectedTrans(record);
@@ -27,7 +43,10 @@ export const TransactionsList: React.FC<Props> = ({ data, isLoading }) => {
       <Table
         loading={isLoading}
         rowClassName={(rowData) =>
-          cn("bg-[#f5f5f5] odd:bg-white hover:cursor-pointer", selectedTrans?.id===rowData.id && "bg-primary bg-opacity-25" )
+          cn(
+            "bg-[#f5f5f5] odd:bg-white hover:cursor-pointer",
+            selectedTrans?.id === rowData.id && "bg-primary bg-opacity-25"
+          )
         }
         columns={transactionsColumns}
         dataSource={data}
@@ -45,6 +64,7 @@ export const TransactionsList: React.FC<Props> = ({ data, isLoading }) => {
         open={openSelectedTransSider}
         trigger={setOpenSelectedTransSider}
         data={selectedTrans}
+        account={account}
       />
     </>
   );

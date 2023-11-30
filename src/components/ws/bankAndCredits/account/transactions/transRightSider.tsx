@@ -3,7 +3,7 @@
 import { CloseOutlined, PrinterOutlined } from "@ant-design/icons";
 import { Layout, Space, theme, Button, Modal, Drawer, Tooltip } from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
-import { TransactionType } from "@/lib/types";
+import { AccountType, TransactionType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";
@@ -14,12 +14,14 @@ type Props = {
   open: boolean;
   trigger?: Dispatch<SetStateAction<boolean>>;
   data?: TransactionType;
+  account?: AccountType;
 };
 
 export const SelectedTransRightSider: React.FC<Props> = ({
   open,
   trigger,
   data,
+  account,
 }) => {
   const {
     token: { colorPrimary },
@@ -142,7 +144,11 @@ export const SelectedTransRightSider: React.FC<Props> = ({
           {/* To print */}
           <div className="hidden">
             <div ref={refComponentToPrint}>
-              <ProCard title="Nom djksdfgk">
+              <ProCard
+                title="Détails mouvement"
+                bordered
+                style={{ marginBlockEnd: 16 }}
+              >
                 <ProDescriptions column={1} emptyText="">
                   <ProDescriptions.Item ellipsis label="Date" valueType="text">
                     {dayjs(data?.date).format("DD-MM-YYYY")}
@@ -161,6 +167,26 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                       style: "currency",
                       currency: "USD",
                     }).format(data?.balanceAfter ?? 0)}`}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Note">
+                    {data?.message}
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              </ProCard>
+              <ProCard
+                title="Propriétaire du compte"
+                bordered
+                style={{ marginBlockEnd: 16 }}
+              >
+                <ProDescriptions column={1} emptyText="">
+                  <ProDescriptions.Item ellipsis label="Nom" valueType="text">
+                    {account?.owner?.firstName}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Postnom" valueType="text">
+                    {account?.owner?.lastName}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Prénom" valueType="text">
+                    {account?.owner?.surname}
                   </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
