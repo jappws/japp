@@ -38,12 +38,14 @@ type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
   accounts?: AccountType[];
+  isLoadingAccounts: boolean;
 };
 
 export const NewOutOrDebitForm: React.FC<Props> = ({
   open,
   toggle,
   accounts,
+  isLoadingAccounts,
 }) => {
   const [form] = Form.useForm();
 
@@ -160,7 +162,8 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
                   >
                     <Select
                       showSearch
-                      placeholder="Rechercher un compte"
+                      loading={isLoadingAccounts}
+                      placeholder="Sélectionner un compte"
                       optionFilterProp="children"
                       filterOption={(input, option) =>
                         (String(option?.label).toLowerCase() ?? "").includes(

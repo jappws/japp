@@ -138,6 +138,8 @@ export default function AccountClientLayout({
           <NewOutOrDebitForm
             open={openNewOutOrDebitForm}
             toggle={setOpenNewOutOrDebitForm}
+            accounts={accounts}
+            isLoadingAccounts={isLoadingAccounts}
           />
         </div>
       </PageContainer>
