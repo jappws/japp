@@ -157,6 +157,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               <ProCard
                 title={`Détails `}
                 bordered
+                collapsible
                 style={{ marginBlockEnd: 16 }}
               >
                 <ProDescriptions column={1} title="" emptyText="">
@@ -182,7 +183,9 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                     {data?.message}
                   </ProDescriptions.Item>
                   <ProDescriptions.Item label="Compte">
-                    {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()}`}
+                    {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()} (${
+                      account?.accountNumber
+                    })`}
                   </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
