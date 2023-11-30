@@ -29,7 +29,7 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     render: (_, record) =>
       record.type === "DEPOSIT" ||
       record.type === "LOAN_PAYMENT" ||
-      "RECEIPT_OF_TRANSFER" ? (
+      record.type === "RECEIPT_OF_TRANSFER" ? (
         <span className="text-green-500">{`${new Intl.NumberFormat("fr-FR", {
           style: "currency",
           currency: "USD",
@@ -47,7 +47,7 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     render: (_, record) =>
       record.type === "WITHDRAWAL" ||
       record.type === "LOAN_DISBURSEMENT" ||
-      "TRANSFER" ? (
+      record.type ==="TRANSFER" ? (
         <span className="text-yellow-500">{`${new Intl.NumberFormat("fr-FR", {
           style: "currency",
           currency: "USD",
