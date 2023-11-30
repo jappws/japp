@@ -161,7 +161,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 title={`Mouvement`}
                 bordered
                 style={{ marginBlockEnd: 16 }}
-                extra={[`${account?.accountNumber}`]}
+                extra={[<CheckOutlined key="1" />, <CheckOutlined key="2" />]}
               >
                 <ProDescriptions emptyText="">
                   <ProDescriptions.Item
@@ -187,12 +187,8 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               <ProCard
                 title={`Détails `}
                 bordered
-                collapsible
                 style={{ marginBlockEnd: 16 }}
-                extra={[
-                  <CheckOutlined key="1" className=" text-green-500" />,
-                  <CheckOutlined key="2" className=" text-green-500" />,
-                ]}
+                extra={[`${account?.accountNumber}`]}
               >
                 <ProDescriptions column={1} title="" emptyText="">
                   <ProDescriptions.Item ellipsis label="Date" valueType="text">
