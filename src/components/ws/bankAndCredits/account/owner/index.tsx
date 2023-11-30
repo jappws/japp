@@ -12,12 +12,15 @@ import { useParams } from "next/navigation";
 import dayjs from "dayjs";
 import { EditAccountForm } from "../../accounts/forms/editAccountForm";
 import { useState } from "react";
+import { BlockOrUnblockForm } from "../forms/blockOrUnblockForm";
 
 export const AccountOwner = () => {
   const { data: session } = useSession();
   const { accountId } = useParams();
 
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
+  const [openBlockOrUnBlockForm, setOpenBlockOrUnBlockForm] =
+    useState<boolean>(false);
 
   const { data: account, isLoading } = useQuery({
     queryKey: ["account", accountId],
@@ -123,7 +126,7 @@ export const AccountOwner = () => {
                   unCheckedChildren="Non autorisé"
                   disabled
                 />
-                <Button type="link">Gérer</Button>
+                <Button type="link" onClick={()=>setOpenBlockOrUnBlockForm(true)}>Gérer</Button>
               </Space>
             )}
           ></ProDescriptions.Item>
@@ -159,6 +162,11 @@ export const AccountOwner = () => {
         open={openEditForm}
         toggle={setOpenEditForm}
         initialData={account}
+      />
+      <BlockOrUnblockForm
+        open={openBlockOrUnBlockForm}
+        toggle={setOpenBlockOrUnBlockForm}
+        user={account?.owner}
       />
     </div>
   );

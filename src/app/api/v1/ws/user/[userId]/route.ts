@@ -10,6 +10,7 @@ type BodyRequestType = {
     phone?: string;
     sex?: SexType;
     role?:RoleType
+    blocked?:boolean;
 };
 
 export async function PUT(
