@@ -1,6 +1,5 @@
 "use client";
 
-import { ProCard } from "@ant-design/pro-components";
 import { TransactionsList } from "./list";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";

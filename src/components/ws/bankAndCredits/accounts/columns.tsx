@@ -1,3 +1,5 @@
+'use client'
+
 import { AccountType } from "@/lib/types";
 import { cn, getHSLColor } from "@/lib/utils";
 import { TableColumnsType, Avatar, Switch } from "antd";

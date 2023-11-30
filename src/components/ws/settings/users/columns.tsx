@@ -1,3 +1,5 @@
+'use client'
+
 import { TransactionType, UserType } from "@/lib/types";
 import { getHSLColor } from "@/lib/utils";
 import { Avatar, TableColumnsType, Tag } from "antd";

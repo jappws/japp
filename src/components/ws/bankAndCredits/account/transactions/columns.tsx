@@ -1,3 +1,5 @@
+'use client'
+
 import { TransactionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
 import { TableColumnsType } from "antd";

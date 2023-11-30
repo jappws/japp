@@ -1,3 +1,5 @@
+'use client'
+
 import { TransferType } from "@/lib/types";
 import { cn, getTransferTitle } from "@/lib/utils";
 import { TableColumnsType } from "antd";

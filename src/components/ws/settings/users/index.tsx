@@ -1,8 +1,11 @@
-'use client'
-import { UsersList } from "./list"
+"use client";
 
-export const UsersClient=()=>{
-    return <div>
-        <UsersList />
+import { UsersList } from "./list";
+
+export const UsersClient = () => {
+  return (
+    <div>
+      <UsersList />
     </div>
-}
+  );
+};

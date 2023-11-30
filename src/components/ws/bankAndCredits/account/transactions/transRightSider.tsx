@@ -1,11 +1,12 @@
 "use client";
 
 import { CloseOutlined, PrinterOutlined } from "@ant-design/icons";
-import { Layout, Space, theme, Button, Modal, Drawer } from "antd";
-import { Dispatch, SetStateAction } from "react";
+import { Layout, Space, theme, Button, Modal, Drawer, Tooltip } from "antd";
+import { Dispatch, SetStateAction, useRef } from "react";
 import { TransactionType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
+import ReactToPrint from "react-to-print";
 
 const { confirm } = Modal;
 
@@ -23,6 +24,8 @@ export const SelectedTransRightSider: React.FC<Props> = ({
   const {
     token: { colorPrimary },
   } = theme.useToken();
+
+  const refComponentToPrint = useRef(null);
 
   return (
     <Drawer
@@ -57,13 +60,19 @@ export const SelectedTransRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              <Button
+              <ReactToPrint
                 key="1"
-                icon={<PrinterOutlined />}
-                className="shadow-none"
-                onClick={() => {}}
-                shape="circle"
-                type="link"
+                trigger={() => (
+                  <Tooltip title="Imprimer" placement="bottom">
+                    <Button
+                      className="shadow-none"
+                      icon={<PrinterOutlined />}
+                      shape="circle"
+                      type="link"
+                    />
+                  </Tooltip>
+                )}
+                content={() => refComponentToPrint.current}
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
@@ -97,15 +106,20 @@ export const SelectedTransRightSider: React.FC<Props> = ({
           </ProCard>
 
           <ProCard bordered className=" ml" style={{ marginBlockEnd: 16 }}>
-            <Button
-              block
-              className="shadow-none"
-              onClick={() => {}}
-              type="primary"
-              icon={<PrinterOutlined />}
-            >
-              Imprimer
-            </Button>
+            <ReactToPrint
+              trigger={() => (
+                <Button
+                  block
+                  className="shadow-none"
+                  onClick={() => {}}
+                  type="primary"
+                  icon={<PrinterOutlined />}
+                >
+                  Imprimer
+                </Button>
+              )}
+              content={() => refComponentToPrint.current}
+            />
           </ProCard>
 
           <ProCard
@@ -124,6 +138,30 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
+          <div className="hidden" ref={refComponentToPrint}>
+            <ProCard title="Nom djksdfgk">
+              <ProDescriptions column={1} emptyText="">
+                <ProDescriptions.Item ellipsis label="Date" valueType="text">
+                  {dayjs(data?.date).format("DD-MM-YYYY")}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item label="Intitulé" valueType="text">
+                  {data?.title}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item label="Montant" valueType="text">
+                  {`${new Intl.NumberFormat("fr-FR", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(data?.amount ?? 0)}`}
+                </ProDescriptions.Item>
+                <ProDescriptions.Item label="Solde" valueType="text">
+                  {`${new Intl.NumberFormat("fr-FR", {
+                    style: "currency",
+                    currency: "USD",
+                  }).format(data?.balanceAfter ?? 0)}`}
+                </ProDescriptions.Item>
+              </ProDescriptions>
+            </ProCard>
+          </div>
         </Layout.Content>
       </Layout>
     </Drawer>
