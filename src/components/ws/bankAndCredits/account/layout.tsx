@@ -121,6 +121,7 @@ export default function AccountClientLayout({
         extra={[
           <Statistic
             key="1"
+            loading={isLoading}
             title="Solde"
             value={`${new Intl.NumberFormat("fr-FR", {
               style: "currency",
