@@ -1,9 +1,24 @@
 "use client";
 
-import { CheckOutlined, CloseOutlined, PrinterOutlined, TransactionOutlined } from "@ant-design/icons";
-import { Layout, Space, theme, Button, Modal, Drawer, Tooltip, Avatar } from "antd";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  PrinterOutlined,
+  SendOutlined,
+  TransactionOutlined,
+} from "@ant-design/icons";
+import {
+  Layout,
+  Space,
+  theme,
+  Button,
+  Modal,
+  Drawer,
+  Tooltip,
+  Avatar,
+} from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
-import {  TransferType } from "@/lib/types";
+import { TransferType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import { getTransferTitle } from "@/lib/utils";
@@ -74,7 +89,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                   </Tooltip>
                 )}
                 content={() => refComponentToPrint.current}
-                documentTitle={`T${data?.id}-${dayjs().year}`}
+                documentTitle={`T${data?.id}-${dayjs().year()}`}
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
@@ -89,6 +104,11 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
               <ProDescriptions.Item label="Expéditeur" valueType="text">
                 {data?.sender}
               </ProDescriptions.Item>
+              {data?.type === "GOLD_TRANSFER" && (
+                <ProDescriptions.Item label="Quantité en Or" valueType="text">
+                  {data?.goldQuantity}
+                </ProDescriptions.Item>
+              )}
               <ProDescriptions.Item label="Montant" valueType="text">
                 {`${new Intl.NumberFormat("fr-FR", {
                   style: "currency",
@@ -108,7 +128,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
           </ProCard>
 
           <ProCard bordered className=" ml" style={{ marginBlockEnd: 16 }}>
-          <ReactToPrint
+            <ReactToPrint
               trigger={() => (
                 <Button
                   block
@@ -121,7 +141,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                 </Button>
               )}
               content={() => refComponentToPrint.current}
-              documentTitle={`T${data?.id}-${dayjs().year}`}
+              documentTitle={`T${data?.id}-${dayjs().year()}`}
             />
           </ProCard>
 
@@ -142,31 +162,29 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
             </ProDescriptions>
           </ProCard>
 
-           {/* To print */}
-           <div className="hidden">
+          {/* To print */}
+          <div className="hidden">
             <div ref={refComponentToPrint} className="">
               <ProCard
-                title={`Transfert`}
+                title={
+                  data?.type === "GOLD_TRANSFER" ? "Expédition" : "Transfert"
+                }
                 bordered
                 style={{ marginBlockEnd: 16 }}
-                // extra={[
-                //   <Tag key="1" className="mr-0 uppercase" bordered={false}>
-                //     {getInOrOutType(data?.type)}
-                //   </Tag>,
-                // ]}
+                extra={[<SendOutlined key="1" />]}
               >
                 <ProDescriptions emptyText="">
-                  <ProDescriptions.Item
-                    label=""
-                    render={() => (
-                      <Space>
-                        <Avatar icon={<TransactionOutlined/>}/>
-                        {/* {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()}`} */}
-                      </Space>
-                    )}
-                  >
-                    {/* {account?.owner?.firstName} */}
-                  </ProDescriptions.Item>
+                  {data?.type === "MONEY_TRANSFER" && (
+                    <ProDescriptions.Item
+                      label=""
+                      render={() => (
+                        <Space>
+                          <Avatar icon={<TransactionOutlined />} />
+                          {`${data?.sender.toUpperCase()}`}
+                        </Space>
+                      )}
+                    ></ProDescriptions.Item>
+                  )}
                 </ProDescriptions>
               </ProCard>
               <ProCard
@@ -176,24 +194,32 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                 extra={[<CheckOutlined key="1" />, <CheckOutlined key="2" />]}
               >
                 <ProDescriptions column={1} title="" emptyText="">
-                <ProDescriptions.Item ellipsis label="Date" valueType="text">
-                {dayjs(data?.date).format("DD-MM-YYYY")}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item label="Type" valueType="text">
-                {getTransferTitle(data?.type)}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item label="Expéditeur" valueType="text">
-                {data?.sender}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item label="Montant" valueType="text">
-                {`${new Intl.NumberFormat("fr-FR", {
-                  style: "currency",
-                  currency: "USD",
-                }).format(data?.amount ?? 0)}`}
-              </ProDescriptions.Item>
-              <ProDescriptions.Item label="Note">
-                {data?.message}
-              </ProDescriptions.Item>
+                  <ProDescriptions.Item ellipsis label="Date" valueType="text">
+                    {dayjs(data?.date).format("DD-MM-YYYY")}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item
+                    label="Type de transfert"
+                    valueType="text"
+                  >
+                    {getTransferTitle(data?.type)}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Expéditeur" valueType="text">
+                    {data?.sender}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Montant" valueType="text">
+                    {`${new Intl.NumberFormat("fr-FR", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(data?.amount ?? 0)}`}
+                  </ProDescriptions.Item>
+                  {data?.type === "GOLD_TRANSFER" && (
+                    <ProDescriptions.Item label="Solde" valueType="text">
+                      {data?.balanceAfter}
+                    </ProDescriptions.Item>
+                  )}
+                  <ProDescriptions.Item label="Note">
+                    {data?.message}
+                  </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
             </div>
