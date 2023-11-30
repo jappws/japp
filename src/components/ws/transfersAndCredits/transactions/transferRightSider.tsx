@@ -1,12 +1,13 @@
 "use client";
 
-import { CloseOutlined, PrinterOutlined } from "@ant-design/icons";
-import { Layout, Space, theme, Button, Modal, Drawer } from "antd";
-import { Dispatch, SetStateAction } from "react";
-import { TransactionType, TransferType } from "@/lib/types";
+import { CheckOutlined, CloseOutlined, PrinterOutlined, TransactionOutlined } from "@ant-design/icons";
+import { Layout, Space, theme, Button, Modal, Drawer, Tooltip, Avatar } from "antd";
+import { Dispatch, SetStateAction, useRef } from "react";
+import {  TransferType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import { getTransferTitle } from "@/lib/utils";
+import ReactToPrint from "react-to-print";
 
 const { confirm } = Modal;
 
@@ -24,6 +25,8 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
   const {
     token: { colorPrimary },
   } = theme.useToken();
+
+  const refComponentToPrint = useRef(null);
 
   return (
     <Drawer
@@ -58,13 +61,20 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              <Button
+              <ReactToPrint
                 key="1"
-                icon={<PrinterOutlined />}
-                className="shadow-none"
-                onClick={() => {}}
-                shape="circle"
-                type="link"
+                trigger={() => (
+                  <Tooltip title="Imprimer" placement="bottom">
+                    <Button
+                      className="shadow-none"
+                      icon={<PrinterOutlined />}
+                      shape="circle"
+                      type="link"
+                    />
+                  </Tooltip>
+                )}
+                content={() => refComponentToPrint.current}
+                documentTitle={`T${data?.id}-${dayjs().year}`}
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
@@ -98,15 +108,21 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
           </ProCard>
 
           <ProCard bordered className=" ml" style={{ marginBlockEnd: 16 }}>
-            <Button
-              block
-              className="shadow-none"
-              onClick={() => {}}
-              type="primary"
-              icon={<PrinterOutlined />}
-            >
-              Imprimer
-            </Button>
+          <ReactToPrint
+              trigger={() => (
+                <Button
+                  block
+                  className="shadow-none"
+                  onClick={() => {}}
+                  type="primary"
+                  icon={<PrinterOutlined />}
+                >
+                  Imprimer
+                </Button>
+              )}
+              content={() => refComponentToPrint.current}
+              documentTitle={`T${data?.id}-${dayjs().year}`}
+            />
           </ProCard>
 
           <ProCard
@@ -125,6 +141,63 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
+
+           {/* To print */}
+           <div className="hidden">
+            <div ref={refComponentToPrint} className="">
+              <ProCard
+                title={`Transfert`}
+                bordered
+                style={{ marginBlockEnd: 16 }}
+                // extra={[
+                //   <Tag key="1" className="mr-0 uppercase" bordered={false}>
+                //     {getInOrOutType(data?.type)}
+                //   </Tag>,
+                // ]}
+              >
+                <ProDescriptions emptyText="">
+                  <ProDescriptions.Item
+                    label=""
+                    render={() => (
+                      <Space>
+                        <Avatar icon={<TransactionOutlined/>}/>
+                        {/* {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()}`} */}
+                      </Space>
+                    )}
+                  >
+                    {/* {account?.owner?.firstName} */}
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              </ProCard>
+              <ProCard
+                title={`Détails `}
+                bordered
+                style={{ marginBlockEnd: 16 }}
+                extra={[<CheckOutlined key="1" />, <CheckOutlined key="2" />]}
+              >
+                <ProDescriptions column={1} title="" emptyText="">
+                <ProDescriptions.Item ellipsis label="Date" valueType="text">
+                {dayjs(data?.date).format("DD-MM-YYYY")}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item label="Type" valueType="text">
+                {getTransferTitle(data?.type)}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item label="Expéditeur" valueType="text">
+                {data?.sender}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item label="Montant" valueType="text">
+                {`${new Intl.NumberFormat("fr-FR", {
+                  style: "currency",
+                  currency: "USD",
+                }).format(data?.amount ?? 0)}`}
+              </ProDescriptions.Item>
+              <ProDescriptions.Item label="Note">
+                {data?.message}
+              </ProDescriptions.Item>
+                </ProDescriptions>
+              </ProCard>
+            </div>
+          </div>
         </Layout.Content>
       </Layout>
     </Drawer>
