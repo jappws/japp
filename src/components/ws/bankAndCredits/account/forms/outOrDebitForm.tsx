@@ -22,23 +22,29 @@ import {
 import { useSession } from "next-auth/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { TransactionTypeType } from "@/lib/types";
+import { AccountType, TransactionTypeType } from "@/lib/types";
 import { useParams } from "next/navigation";
-import { getTransactionTitle } from "@/lib/utils";
+import { getAccountsAsOptions, getTransactionTitle } from "@/lib/utils";
 
 type DebitFormData = {
   type: TransactionTypeType;
   amount: string;
   message?: string;
   date: string;
+  receiverAccountId?: number;
 };
 
 type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
+  accounts?: AccountType[];
 };
 
-export const NewOutOrDebitForm: React.FC<Props> = ({ open, toggle }) => {
+export const NewOutOrDebitForm: React.FC<Props> = ({
+  open,
+  toggle,
+  accounts,
+}) => {
   const [form] = Form.useForm();
 
   const toggleForm = () => {
@@ -62,6 +68,7 @@ export const NewOutOrDebitForm: React.FC<Props> = ({ open, toggle }) => {
       type: formData.type,
       message: formData.message,
       date: formData.date,
+      receiverAccountId: formData.receiverAccountId,
       operatorId: session?.user.id,
     };
     mutate(data, {
@@ -132,12 +139,38 @@ export const NewOutOrDebitForm: React.FC<Props> = ({ open, toggle }) => {
                     label: "Décaissement de crédit",
                   },
                   {
-                    value:"TRANSFER",
-                    label:"Virement (Transfert vers autre compte )"
-                  }
+                    value: "TRANSFER",
+                    label: "Virement (Transfert vers autre compte)",
+                  },
                 ]}
               />
             </Form.Item>
+            {form.getFieldValue("type") === "TRANSFER" && (
+              <Form.Item
+                name="receiverAccountId"
+                label="Bénéficiaire"
+                rules={[{ required: true }]}
+              >
+                <Select
+                  showSearch
+                  placeholder="Rechercher un compte"
+                  optionFilterProp="children"
+                  filterOption={(input, option) =>
+                    (String(option?.label).toLowerCase() ?? "").includes(
+                      input.toLowerCase()
+                    )
+                  }
+                  filterSort={(optionA, optionB) =>
+                    (String(optionA?.label) ?? "")
+                      .toLowerCase()
+                      .localeCompare(
+                        (String(optionB?.label) ?? "").toLowerCase()
+                      )
+                  }
+                  options={getAccountsAsOptions(accounts)}
+                />
+              </Form.Item>
+            )}
             <div className="flex items-end">
               <Form.Item
                 name="amount"

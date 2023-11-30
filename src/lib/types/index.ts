@@ -83,12 +83,10 @@ export type TransactionType = {
 export enum TransactionTypeType {
   DEPOSIT = "DEPOSIT",
   WITHDRAWAL = "WITHDRAWAL",
-  TRANSFER = "TRANSFER",
+  TRANSFER = "TRANSFER", //Virement
+  RECEIPT_OF_TRANSFER="RECEIPT_OF_TRANSFER", // Réception du virement
   LOAN_DISBURSEMENT = "LOAN_DISBURSEMENT", // Décaissement de prêt
   LOAN_PAYMENT = "LOAN_PAYMENT", // Rembourssement de prêt
-  // SERVICE_FEE = "SERVICE_FEE", // Frais de service
-  // INTEREST_EARNED = "INTEREST_EARNED", // Intérêts perçus
-  // INTEREST_PAID = "INTEREST_PAID", // Intérêts payés
 }
 
 // Define the company type model

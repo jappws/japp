@@ -35,6 +35,12 @@ export default function AccountClientLayout({
     enabled: !!session?.user && !!accountId,
   });
 
+  const { data:accounts, isLoading:isLoadingAccounts } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
+  });
+
   return (
     <div className="">
       <PageContainer

@@ -11,6 +11,7 @@ type BodyRequestType = {
   message: string;
   type: TransactionTypeType;
   operatorId: number;
+  receiverAccountId?: number;
 };
 
 export async function POST(
@@ -19,6 +20,7 @@ export async function POST(
 ) {
   try {
     const body: BodyRequestType = await request.json();
+    const { receiverAccountId, ...bodyWithoutReceiverId } = body;
 
     let balanceAfter: number = 0;
 
@@ -31,6 +33,15 @@ export async function POST(
         select: { balance: true },
       });
       balanceAfter = account.balance;
+
+      const newTransaction = await prisma.transaction.create({
+        data: {
+          ...bodyWithoutReceiverId,
+          balanceAfter: balanceAfter,
+          accountId: Number(params.accountId),
+        },
+      });
+      return new Response(JSON.stringify({ ...newTransaction }));
     } else if (
       body.type === "WITHDRAWAL" ||
       body.type === "LOAN_DISBURSEMENT"
@@ -43,20 +54,63 @@ export async function POST(
         select: { balance: true },
       });
       balanceAfter = account.balance;
+
+      const newTransaction = await prisma.transaction.create({
+        data: {
+          ...bodyWithoutReceiverId,
+          balanceAfter: balanceAfter,
+          accountId: Number(params.accountId),
+        },
+      });
+
+      return new Response(JSON.stringify({ ...newTransaction }));
+    } else if ("TRANSFER") {
+      
+      const { receiverAccountId, type, ...bodyWithoutReceiverIdAndType } = body;
+      let senderBalanceAfter: number = 0;
+      let receiverBalanceAfter: number = 0;
+
+      await prisma.$transaction(async (tx) => {
+        const senderAccount = await tx.account.update({
+          where: { id: Number(params.accountId) },
+          data: {
+            balance: { decrement: body.amount },
+          },
+          select: { balance: true },
+        });
+
+        senderBalanceAfter = senderAccount.balance;
+
+        const receiverAccount = await tx.account.update({
+          where: { id: Number(body.receiverAccountId) },
+          data: {
+            balance: { increment: body.amount },
+          },
+          select: { balance: true },
+        });
+        receiverBalanceAfter = receiverAccount.balance;
+      });
+
+      const newTrans = await prisma.transaction.createMany({
+        data: [
+          {
+            ...bodyWithoutReceiverId,
+            balanceAfter: senderBalanceAfter,
+            accountId: Number(params.accountId),
+          },
+          {
+            ...bodyWithoutReceiverIdAndType,
+            balanceAfter: receiverBalanceAfter,
+            type: "RECEIPT_OF_TRANSFER",
+            accountId: Number(body.receiverAccountId),
+          },
+        ],
+      });
+
+      return new Response(JSON.stringify(newTrans));
     }
 
-    const newTransaction = await prisma.transaction.create({
-      data: {
-        ...body,
-        balanceAfter: balanceAfter,
-        accountId: Number(params.accountId),
-      },
-    });
-    const res = {
-      ...newTransaction,
-    };
-
-    return new Response(JSON.stringify(res));
+    return new Response(JSON.stringify({}));
   } catch (e: any) {
     //Tracking prisma error
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

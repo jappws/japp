@@ -2,7 +2,8 @@ import { isNull } from "lodash";
 import prisma from "./prisma";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { TransactionTypeType, TransferTypeType } from "./types";
+import { AccountType, TransactionTypeType, TransferTypeType } from "./types";
+import { SelectProps } from "antd";
 
 ///////////////////////////////////////////
 /////////// classname ////////////////////
@@ -36,6 +37,12 @@ export const getTransactionTitle = (transType: TransactionTypeType) => {
       break;
     case "LOAN_PAYMENT":
       return "Rembourssement de crédit";
+      break;
+    case "TRANSFER":
+      return "Virement";
+      break;
+    case "RECEIPT_OF_TRANSFER":
+      return "Réception du virement";
       break;
     default:
       return "";
@@ -74,10 +81,24 @@ export const getInOrOutType = (transType?: TransactionTypeType) => {
     case "TRANSFER":
       return "Sortie";
       break;
+    case "RECEIPT_OF_TRANSFER":
+      return "Entrée";
+      break;
     default:
       return "";
       break;
   }
+};
+
+export const getAccountsAsOptions = (data: AccountType[] | undefined) => {
+  const options = data?.map((item) => {
+    return {
+      label: `${item?.owner.firstName} ${item?.owner.lastName} ${item?.owner.surname} #${item.accountNumber}`,
+      value: item.id,
+    };
+  }) as SelectProps["options"];
+
+  return options;
 };
 
 ////////////////////////////////////////
