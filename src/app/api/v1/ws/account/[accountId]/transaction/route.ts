@@ -65,7 +65,7 @@ export async function POST(
 
       return new Response(JSON.stringify({ ...newTransaction }));
     } else if ("TRANSFER") {
-      
+
       const { receiverAccountId, type, ...bodyWithoutReceiverIdAndType } = body;
       let senderBalanceAfter: number = 0;
       let receiverBalanceAfter: number = 0;
@@ -91,7 +91,7 @@ export async function POST(
         receiverBalanceAfter = receiverAccount.balance;
       });
 
-      const newTrans = await prisma.transaction.createMany({
+       await prisma.transaction.createMany({
         data: [
           {
             ...bodyWithoutReceiverId,
@@ -107,7 +107,7 @@ export async function POST(
         ],
       });
 
-      return new Response(JSON.stringify(newTrans));
+      return new Response(JSON.stringify({message:"Transfer succeded"}));
     }
 
     return new Response(JSON.stringify({}));
