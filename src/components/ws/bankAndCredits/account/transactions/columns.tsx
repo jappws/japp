@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import { TransactionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -27,7 +27,9 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     key: "amount",
     align: "right",
     render: (_, record) =>
-      record.type === "DEPOSIT" || record.type === "LOAN_PAYMENT" ? (
+      record.type === "DEPOSIT" ||
+      record.type === "LOAN_PAYMENT" ||
+      "RECEIPT_OF_TRANSFER" ? (
         <span className="text-green-500">{`${new Intl.NumberFormat("fr-FR", {
           style: "currency",
           currency: "USD",
@@ -43,7 +45,9 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     key: "account",
     align: "right",
     render: (_, record) =>
-      record.type === "WITHDRAWAL" || record.type === "LOAN_DISBURSEMENT" ? (
+      record.type === "WITHDRAWAL" ||
+      record.type === "LOAN_DISBURSEMENT" ||
+      "TRANSFER" ? (
         <span className="text-yellow-500">{`${new Intl.NumberFormat("fr-FR", {
           style: "currency",
           currency: "USD",
@@ -60,7 +64,9 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     ellipsis: true,
     align: "right",
     render: (_, record) => (
-      <span className={cn(record.balanceAfter<0?"text-red-500":"")}>{`${new Intl.NumberFormat("fr-FR", {
+      <span
+        className={cn(record.balanceAfter < 0 ? "text-red-500" : "")}
+      >{`${new Intl.NumberFormat("fr-FR", {
         style: "currency",
         currency: "USD",
       }).format(record.balanceAfter)}`}</span>
