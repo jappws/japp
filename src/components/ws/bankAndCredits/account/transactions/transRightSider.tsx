@@ -135,6 +135,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 </Button>
               )}
               content={() => refComponentToPrint.current}
+              documentTitle={`M${data?.id}-${account?.accountNumber}}`}
             />
           </ProCard>
 
