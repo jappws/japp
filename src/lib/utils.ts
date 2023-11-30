@@ -38,7 +38,7 @@ export const getTransactionTitle = (transType: TransactionTypeType) => {
       return "Rembourssement de crédit";
       break;
     default:
-      return ""
+      return "";
       break;
   }
 };
@@ -52,7 +52,30 @@ export const getTransferTitle = (transType?: TransferTypeType) => {
       return "Expédition de l'or";
       break;
     default:
-      return ""
+      return "";
+      break;
+  }
+};
+
+export const getInOrOutType = (transType?: TransactionTypeType) => {
+  switch (transType) {
+    case "DEPOSIT":
+      return "Entrée";
+      break;
+    case "WITHDRAWAL":
+      return "Sortie";
+      break;
+    case "LOAN_DISBURSEMENT":
+      return "Sortie";
+      break;
+    case "LOAN_PAYMENT":
+      return "Entrée";
+      break;
+    case "TRANSFER":
+      return "Sortie";
+      break;
+    default:
+      return "";
       break;
   }
 };

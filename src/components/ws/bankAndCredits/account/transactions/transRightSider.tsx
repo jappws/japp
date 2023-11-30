@@ -20,6 +20,7 @@ import { AccountType, TransactionType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";
+import { getInOrOutType } from "@/lib/utils";
 
 const { confirm } = Modal;
 
@@ -161,7 +162,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 title={`Mouvement`}
                 bordered
                 style={{ marginBlockEnd: 16 }}
-                extra={[<CheckOutlined key="1" />, <CheckOutlined key="2" />]}
+                extra={[getInOrOutType(data?.type).toUpperCase()]}
               >
                 <ProDescriptions emptyText="">
                   <ProDescriptions.Item
@@ -188,7 +189,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 title={`Détails `}
                 bordered
                 style={{ marginBlockEnd: 16 }}
-                extra={[`${account?.accountNumber}`]}
+                extra={[<CheckOutlined key="1" />, <CheckOutlined key="2" />]}
               >
                 <ProDescriptions column={1} title="" emptyText="">
                   <ProDescriptions.Item ellipsis label="Date" valueType="text">
