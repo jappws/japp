@@ -1,7 +1,16 @@
 "use client";
 
 import { CloseOutlined, PrinterOutlined } from "@ant-design/icons";
-import { Layout, Space, theme, Button, Modal, Drawer, Tooltip } from "antd";
+import {
+  Layout,
+  Space,
+  theme,
+  Button,
+  Modal,
+  Drawer,
+  Tooltip,
+  Avatar,
+} from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { AccountType, TransactionType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
@@ -143,17 +152,31 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
           {/* To print */}
           <div className="hidden">
-            <div
-              ref={refComponentToPrint}
-              className=""
-              style={{ border: "1px solid #f0f0f0" }}
-            >
+            <div ref={refComponentToPrint} className="">
               <ProCard
                 title={`Mouvement`}
                 bordered
                 style={{ marginBlockEnd: 16 }}
                 extra={[`${account?.accountNumber}`]}
-              ></ProCard>
+              >
+                <ProDescriptions emptyText="">
+                  <ProDescriptions.Item
+                    label=""
+                    // valueType="avatar"
+                    render={() => (
+                      <Avatar>
+                        {account?.owner.firstName?.charAt(0).toUpperCase()}
+                        {account?.owner.lastName?.charAt(0).toUpperCase()}
+                      </Avatar>
+                    )}
+                  >
+                    {account?.owner?.firstName}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item>
+                    {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()}`}
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              </ProCard>
               <ProCard
                 title={`Détails `}
                 bordered
