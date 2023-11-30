@@ -1,32 +1,13 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Modal,
-  Row,
-  Space,
-  Switch,
-  message,
-} from "antd";
+import { Button, Modal, Space, Switch, message } from "antd";
 import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
-import {
-  CheckOutlined,
-  LoadingOutlined,
-  LockOutlined,
-} from "@ant-design/icons";
+import { CheckOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { UserType } from "@/lib/types";
 import { useParams } from "next/navigation";
-
-type NewUserFormData = {
-  password: string;
-  passwordConfirmed: string;
-};
 
 type Props = {
   open: boolean;
@@ -35,12 +16,10 @@ type Props = {
 };
 
 export const BlockOrUnblockForm: React.FC<Props> = ({ open, toggle, user }) => {
-  const [form] = Form.useForm();
   const { accountId } = useParams();
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
-    form.resetFields();
   };
 
   const queryClient = useQueryClient();
@@ -51,12 +30,7 @@ export const BlockOrUnblockForm: React.FC<Props> = ({ open, toggle, user }) => {
 
   return (
     <Modal
-      title={
-        <div className="">
-          <LockOutlined />
-          Etat du compte
-        </div>
-      }
+      title={<div className="">Etat du compte</div>}
       open={open}
       footer={null}
       onCancel={toggleForm}
@@ -68,7 +42,7 @@ export const BlockOrUnblockForm: React.FC<Props> = ({ open, toggle, user }) => {
           loading={isPending}
           checkedChildren="Éligible au crédit"
           checked={user?.blocked ? false : true}
-          unCheckedChildren="Non autorisé"
+          unCheckedChildren="Non éligible au crédit"
           onChange={(value) => {
             const data = {
               blocked: value ? false : true,
@@ -83,7 +57,6 @@ export const BlockOrUnblockForm: React.FC<Props> = ({ open, toggle, user }) => {
                   queryClient.invalidateQueries({
                     queryKey: ["account", accountId],
                   });
-                  form.resetFields();
                   toggleForm();
                 }
               },
@@ -108,7 +81,13 @@ export const BlockOrUnblockForm: React.FC<Props> = ({ open, toggle, user }) => {
         }}
       >
         <Space>
-          <Button>Fermer</Button>
+          <Button
+            disabled={isPending}
+            onClick={toggleForm}
+            className="shadow-none"
+          >
+            Fermer
+          </Button>
         </Space>
       </div>
     </Modal>
