@@ -1,6 +1,10 @@
 "use client";
 
-import { CloseOutlined, PrinterOutlined } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  CloseOutlined,
+  PrinterOutlined,
+} from "@ant-design/icons";
 import {
   Layout,
   Space,
@@ -164,17 +168,20 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                     label=""
                     // valueType="avatar"
                     render={() => (
-                      <Avatar>
-                        {account?.owner.firstName?.charAt(0).toUpperCase()}
-                        {account?.owner.lastName?.charAt(0).toUpperCase()}
-                      </Avatar>
+                      <Space>
+                        <Avatar>
+                          {account?.owner.firstName?.charAt(0).toUpperCase()}
+                          {account?.owner.lastName?.charAt(0).toUpperCase()}
+                        </Avatar>
+                        {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()}`}
+                      </Space>
                     )}
                   >
                     {account?.owner?.firstName}
                   </ProDescriptions.Item>
-                  <ProDescriptions.Item>
-                    {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()}`}
-                  </ProDescriptions.Item>
+                  {/* <ProDescriptions.Item>
+                   
+                  </ProDescriptions.Item> */}
                 </ProDescriptions>
               </ProCard>
               <ProCard
@@ -182,6 +189,10 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 bordered
                 collapsible
                 style={{ marginBlockEnd: 16 }}
+                extra={[
+                  <CheckOutlined key="1" className=" text-green-500" />,
+                  <CheckOutlined key="2" className=" text-green-500" />,
+                ]}
               >
                 <ProDescriptions column={1} title="" emptyText="">
                   <ProDescriptions.Item ellipsis label="Date" valueType="text">
