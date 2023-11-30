@@ -14,6 +14,7 @@ import {
   Drawer,
   Tooltip,
   Avatar,
+  Tag,
 } from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { AccountType, TransactionType } from "@/lib/types";
@@ -89,6 +90,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   </Tooltip>
                 )}
                 content={() => refComponentToPrint.current}
+                documentTitle={`M${data?.id}-${account?.accountNumber}`}
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
@@ -135,7 +137,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 </Button>
               )}
               content={() => refComponentToPrint.current}
-              documentTitle={`M${data?.id}-${account?.accountNumber}}`}
+              documentTitle={`M${data?.id}-${account?.accountNumber}`}
             />
           </ProCard>
 
@@ -163,12 +165,15 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 title={`Mouvement`}
                 bordered
                 style={{ marginBlockEnd: 16 }}
-                extra={[getInOrOutType(data?.type).toUpperCase()]}
+                extra={[
+                  <Tag key="1" className="mr-0 uppercase" bordered={false}>
+                    {getInOrOutType(data?.type)}
+                  </Tag>,
+                ]}
               >
                 <ProDescriptions emptyText="">
                   <ProDescriptions.Item
                     label=""
-                    // valueType="avatar"
                     render={() => (
                       <Space>
                         <Avatar>
@@ -181,9 +186,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   >
                     {account?.owner?.firstName}
                   </ProDescriptions.Item>
-                  {/* <ProDescriptions.Item>
-                   
-                  </ProDescriptions.Item> */}
                 </ProDescriptions>
               </ProCard>
               <ProCard
@@ -221,23 +223,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
-              {/* <ProCard
-                title="Propriétaire du compte"
-                bordered
-                style={{ marginBlockEnd: 16 }}
-              >
-                <ProDescriptions column={1} emptyText="">
-                  <ProDescriptions.Item ellipsis label="Nom" valueType="text">
-                    {account?.owner?.firstName}
-                  </ProDescriptions.Item>
-                  <ProDescriptions.Item label="Postnom" valueType="text">
-                    {account?.owner?.lastName}
-                  </ProDescriptions.Item>
-                  <ProDescriptions.Item label="Prénom" valueType="text">
-                    {account?.owner?.surname}
-                  </ProDescriptions.Item>
-                </ProDescriptions>
-              </ProCard> */}
             </div>
           </div>
         </Layout.Content>
