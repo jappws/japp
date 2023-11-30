@@ -91,21 +91,41 @@ export async function POST(
         receiverBalanceAfter = receiverAccount.balance;
       });
 
-       await prisma.transaction.createMany({
-        data: [
-          {
+      await prisma.$transaction(async (tx) => {
+        await tx.transaction.create({
+          data: {
             ...bodyWithoutReceiverId,
             balanceAfter: senderBalanceAfter,
             accountId: Number(params.accountId),
           },
-          {
-            ...bodyWithoutReceiverIdAndType,
-            balanceAfter: receiverBalanceAfter,
-            type: "RECEIPT_OF_TRANSFER",
-            accountId: Number(body.receiverAccountId),
-          },
-        ],
+        });
+        await tx.transaction.create({
+          data: 
+            {
+              ...bodyWithoutReceiverIdAndType,
+              balanceAfter: receiverBalanceAfter,
+              type: "RECEIPT_OF_TRANSFER",
+              accountId: Number(body.receiverAccountId),
+            },
+        
+        });
       });
+
+      //  await prisma.transaction.createMany({
+      //   data: [
+      //     {
+      //       ...bodyWithoutReceiverId,
+      //       balanceAfter: senderBalanceAfter,
+      //       accountId: Number(params.accountId),
+      //     },
+      //     {
+      //       ...bodyWithoutReceiverIdAndType,
+      //       balanceAfter: receiverBalanceAfter,
+      //       type: "RECEIPT_OF_TRANSFER",
+      //       accountId: Number(body.receiverAccountId),
+      //     },
+      //   ],
+      // });
 
       return new Response(JSON.stringify({message:"Transfer succeded"}));
     }
