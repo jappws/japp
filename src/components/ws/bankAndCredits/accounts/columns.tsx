@@ -69,7 +69,7 @@ export const transactionsColumns: TableColumnsType<AccountType> = [
     render: (_,record) => (
       <Switch
         checkedChildren="Éligible au crédit"
-        checked={record?false:true}
+        checked={record.owner.blocked?false:true}
         unCheckedChildren="Non éligible au crédit"
         disabled
       />
