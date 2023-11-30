@@ -138,29 +138,33 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
-          <div className="hidden" ref={refComponentToPrint}>
-            <ProCard title="Nom djksdfgk">
-              <ProDescriptions column={1} emptyText="">
-                <ProDescriptions.Item ellipsis label="Date" valueType="text">
-                  {dayjs(data?.date).format("DD-MM-YYYY")}
-                </ProDescriptions.Item>
-                <ProDescriptions.Item label="Intitulé" valueType="text">
-                  {data?.title}
-                </ProDescriptions.Item>
-                <ProDescriptions.Item label="Montant" valueType="text">
-                  {`${new Intl.NumberFormat("fr-FR", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(data?.amount ?? 0)}`}
-                </ProDescriptions.Item>
-                <ProDescriptions.Item label="Solde" valueType="text">
-                  {`${new Intl.NumberFormat("fr-FR", {
-                    style: "currency",
-                    currency: "USD",
-                  }).format(data?.balanceAfter ?? 0)}`}
-                </ProDescriptions.Item>
-              </ProDescriptions>
-            </ProCard>
+
+          {/* To print */}
+          <div className="hidden">
+            <div ref={refComponentToPrint}>
+              <ProCard title="Nom djksdfgk">
+                <ProDescriptions column={1} emptyText="">
+                  <ProDescriptions.Item ellipsis label="Date" valueType="text">
+                    {dayjs(data?.date).format("DD-MM-YYYY")}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Intitulé" valueType="text">
+                    {data?.title}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Montant" valueType="text">
+                    {`${new Intl.NumberFormat("fr-FR", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(data?.amount ?? 0)}`}
+                  </ProDescriptions.Item>
+                  <ProDescriptions.Item label="Solde" valueType="text">
+                    {`${new Intl.NumberFormat("fr-FR", {
+                      style: "currency",
+                      currency: "USD",
+                    }).format(data?.balanceAfter ?? 0)}`}
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              </ProCard>
+            </div>
           </div>
         </Layout.Content>
       </Layout>
