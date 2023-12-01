@@ -85,18 +85,22 @@ export const AccountsClient = () => {
           {
             key: "/ws/bank_and_credits",
             tab: "Comptes",
+            children: (
+              <div className="md:pt-4">
+                <AccountsList
+                  data={selectedCurrentData}
+                  isLoading={isLoading}
+                />
+                <NewAccountForm
+                  open={openNewAccountForm}
+                  toggle={setOpenNewAccountform}
+                />
+              </div>
+            ),
           },
         ]}
         extra={[<BankOutlined key="2" />]}
-      >
-        <div className="md:pt-4">
-          <AccountsList data={selectedCurrentData} isLoading={isLoading} />
-          <NewAccountForm
-            open={openNewAccountForm}
-            toggle={setOpenNewAccountform}
-          />
-        </div>
-      </PageContainer>
+      ></PageContainer>
     </div>
   );
 };
