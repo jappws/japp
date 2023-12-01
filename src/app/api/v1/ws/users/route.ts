@@ -5,6 +5,7 @@ export async function GET(request: Request) {
   try {
     const users = await prisma.user.findMany({
       where: { NOT:{role:"CLIENT"} },
+      orderBy:{createdAt:"asc"},
       include:{createdBy:{}}
     });
     const res = users;
