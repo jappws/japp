@@ -44,7 +44,7 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
             <Avatar
               style={{
                 backgroundColor: getHSLColor(
-                  `${user?.firstName} ${user?.surname}`
+                  `${user?.firstName} ${user?.lastName} ${user?.surname}`
                 ),
               }}
               size="small"
