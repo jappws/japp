@@ -19,7 +19,7 @@ export const AccountsClient = () => {
   >();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["accounts"],
+    queryKey: ["accounts","all"],
     queryFn: () =>
       axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
   });
@@ -88,8 +88,8 @@ export const AccountsClient = () => {
             children: (
               <div className="md:pt-4">
                 <AccountsList
-                  // data={selectedCurrentData}
-                  // isLoading={isLoading}
+                  data={selectedCurrentData}
+                  isLoading={isLoading}
                 />
                 <NewAccountForm
                   open={openNewAccountForm}

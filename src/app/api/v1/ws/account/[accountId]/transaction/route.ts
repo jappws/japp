@@ -66,7 +66,7 @@ export async function POST(
       return new Response(JSON.stringify({ ...newTransaction }));
     } else if ("TRANSFER") {
 
-      const { receiverAccountId, type, ...bodyWithoutReceiverIdAndType } = body;
+      const { receiverAccountId, type,message, ...bodyWithoutReceiverIdMessageAndType } = body;
       let senderBalanceAfter: number = 0;
       let receiverBalanceAfter: number = 0;
 
@@ -119,10 +119,11 @@ export async function POST(
             accountId: Number(params.accountId),
           },
           {
-            ...bodyWithoutReceiverIdAndType,
+            ...bodyWithoutReceiverIdMessageAndType,
             balanceAfter: receiverBalanceAfter,
             type: "RECEIPT_OF_TRANSFER",
             accountId: Number(body.receiverAccountId),
+            message:"Réception du virement"
           },
         ],
       });

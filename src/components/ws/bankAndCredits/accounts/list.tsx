@@ -9,20 +9,20 @@ import axios from "axios";
 import { useQuery } from "@tanstack/react-query";
 
 type Props = {
-  // data?: AccountType[];
-  // isLoading: boolean;
+  data?: AccountType[];
+  isLoading: boolean;
 };
 
 export const AccountsList: React.FC<Props> = ({
-  //  data, isLoading
+   data, isLoading
    }) => {
   const { push } = useRouter();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["accounts"],
-    queryFn: () =>
-      axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
-  });
+  // const { data, isLoading } = useQuery({
+  //   queryKey: ["accounts"],
+  //   queryFn: () =>
+  //     axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
+  // });
 
   const onRowClick = (record: AccountType) => {
     push(`/ws/bank_and_credits/${record.id}`);
