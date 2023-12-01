@@ -8,9 +8,12 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { UserRightSider } from "./user/userProfile";
 
-type Props = {};
+type Props = {
+  data?:UserType[];
+  isLoading:boolean
+};
 
-export const UsersList: React.FC<Props> = () => {
+export const UsersList: React.FC<Props> = ({data,isLoading}) => {
   const [selectedUser, setSelectedUser] = useState<UserType | undefined>(
     undefined
   );
@@ -20,11 +23,7 @@ export const UsersList: React.FC<Props> = () => {
     setOpenRightSider(true);
   };
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["users"],
-    queryFn: () =>
-      axios.get(`/api/v1/ws/users`).then((res) => res.data as UserType[]),
-  });
+ 
 
   return (
     <>
