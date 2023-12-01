@@ -88,8 +88,8 @@ export const AccountsClient = () => {
             children: (
               <div className="md:pt-4">
                 <AccountsList
-                  data={selectedCurrentData}
-                  isLoading={isLoading}
+                  // data={selectedCurrentData}
+                  // isLoading={isLoading}
                 />
                 <NewAccountForm
                   open={openNewAccountForm}
