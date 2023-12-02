@@ -10,7 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AccountType } from "@/lib/types";
 
-export const Accounts = () => {
+export const AccountsClient = () => {
   const { token } = theme.useToken();
   const [openNewAccountForm, setOpenNewAccountform] = useState<boolean>(false);
 
@@ -19,30 +19,30 @@ export const Accounts = () => {
   >();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["accounts",],
+    queryKey: ["accounts"],
     queryFn: () =>
       axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
   });
 
-  // const search = (e: ChangeEvent<HTMLInputElement>) => {
-  //   const value = e.target.value;
-  //   const items = data?.filter(
-  //     (item) =>
-  //       item.accountNumber.toLowerCase().includes(value.toLowerCase()) ||
-  //       `${item.owner.firstName.toLowerCase()} ${item.owner.lastName.toLowerCase()} ${item.owner.surname?.toLowerCase()} ${item.owner.nickname?.toLowerCase()}`.includes(
-  //         value.toLowerCase()
-  //       )
-  //   );
-  //   setSelectedCurrentData(items);
-  // };
+  const search = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const items = data?.filter(
+      (item) =>
+        item.accountNumber.toLowerCase().includes(value.toLowerCase()) ||
+        `${item.owner.firstName.toLowerCase()} ${item.owner.lastName.toLowerCase()} ${item.owner.surname?.toLowerCase()} ${item.owner.nickname?.toLowerCase()}`.includes(
+          value.toLowerCase()
+        )
+    );
+    setSelectedCurrentData(items);
+  };
 
-  // useEffect(() => {
-  //   setSelectedCurrentData(data);
-  // }, [data]);
+  useEffect(() => {
+    setSelectedCurrentData(data);
+  }, [data]);
 
   return (
     <div>
-      {/* <PageContainer
+      <PageContainer
         loading={isLoading}
         fixedHeader
         token={{
@@ -89,14 +89,14 @@ export const Accounts = () => {
         ]}
         extra={[<BankOutlined key="2" />]}
       >
-        <div className="md:pt-4"> */}
-      <AccountsList data={data} isLoading={isLoading} />
-      {/* <NewAccountForm
-                  open={openNewAccountForm}
-                  toggle={setOpenNewAccountform}
-                />
-              </div>
-      </PageContainer> */}
+        <div className="md:pt-4">
+          <AccountsList data={selectedCurrentData} isLoading={isLoading} />
+          <NewAccountForm
+            open={openNewAccountForm}
+            toggle={setOpenNewAccountform}
+          />
+        </div>
+      </PageContainer>
     </div>
   );
 };

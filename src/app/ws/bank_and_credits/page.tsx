@@ -1,9 +1,9 @@
-import { Accounts } from "@/components/ws/bankAndCredits/accounts";
+import { AccountsClient } from "@/components/ws/bankAndCredits/accounts";
 
 export default function AccountsPage() {
   return (
     <div className="">
-      <Accounts />
+      <AccountsClient/>
     </div>
   );
 }
