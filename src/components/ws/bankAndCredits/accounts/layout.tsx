@@ -10,7 +10,11 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { AccountType } from "@/lib/types";
 
-export const AccountsClient1 = () => {
+export const AccountsClientLayout = ({
+    children,
+  }: {
+    children: React.ReactNode;
+  }) => {
   const { token } = theme.useToken();
   const [openNewAccountForm, setOpenNewAccountform] = useState<boolean>(false);
 
@@ -19,7 +23,7 @@ export const AccountsClient1 = () => {
   >();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["accounts","all"],
+    queryKey: ["accounts"],
     queryFn: () =>
       axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
   });
@@ -89,7 +93,9 @@ export const AccountsClient1 = () => {
         ]}
         extra={[<BankOutlined key="2" />]}
       >
-        <div className="md:pt-4">
+        
+        <div className="md:pt-4">¨
+        {children}
                 <AccountsList
                   data={selectedCurrentData}
                   isLoading={isLoading}

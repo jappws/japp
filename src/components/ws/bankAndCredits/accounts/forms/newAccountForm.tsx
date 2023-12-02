@@ -108,7 +108,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm(); 
-          queryClient.invalidateQueries({ queryKey: ["accounts","all"] });
+          queryClient.invalidateQueries({ queryKey: ["accounts"] });
         }
       },
       onError: () => {

@@ -107,7 +107,7 @@ export const EditAccountForm: React.FC<Props> = ({
             queryKey: ["account", initialData?.accountNumber],
           });
           queryClient.invalidateQueries({
-            queryKey: ["accounts","all"],
+            queryKey: ["accounts"],
           });
         }
       },
