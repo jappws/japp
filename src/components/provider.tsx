@@ -25,13 +25,13 @@ const Provider = ({
 
   return (
     <SessionProvider session={session}>
-      <StyledComponentsRegistry>
+      {/* <StyledComponentsRegistry> */}
         <ConfigProvider theme={themeConfig} locale={locale}>
           <QueryClientProvider client={queryClient}> {/* React query provider */}
             <AppContextProvider>{children}</AppContextProvider>
           </QueryClientProvider>
         </ConfigProvider>
-      </StyledComponentsRegistry>
+      {/* </StyledComponentsRegistry> */}
     </SessionProvider>
   );
 };
