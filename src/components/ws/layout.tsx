@@ -58,7 +58,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
         // overflow: "auto",
       }}
     >
-      {/* <ProConfigProvider hashed={false}>
+       <ProConfigProvider hashed={false}>
         <ProLayout
           title={company?.shortName ?? ""}
           logo={<LaptopOutlined />}
@@ -147,7 +147,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           )}
           {...settings}
-        > */}
+        > 
           {children}
           {/* <SettingDrawer
               pathname={pathname}
@@ -162,12 +162,12 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
               }}
               disableUrlParams={true}
             /> */}
-          {/* <CurrentUserRightSider
+          <CurrentUserRightSider
             open={openUserProfile}
             trigger={setOpenUserProfile}
           />
         </ProLayout>
-      </ProConfigProvider> */}
+      </ProConfigProvider>
     </div>
   );
 };
