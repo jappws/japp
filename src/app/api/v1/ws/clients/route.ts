@@ -1,10 +1,10 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
-export async function GET(request: Request) {
-  
+export async function GET(request: Request, { params }: { params: {} }) {
   try {
     const accounts = await prisma.account.findMany({
+      where: { owner: { deleted: false } },
       orderBy: { createdAt: "desc" },
       include: { owner: {} },
     });
