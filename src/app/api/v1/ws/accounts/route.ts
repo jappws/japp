@@ -2,11 +2,13 @@ import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
 export async function GET(request: Request) {
+  
   try {
     const accounts = await prisma.account.findMany({
       orderBy: { createdAt: "desc" },
       include: { owner: {} },
     });
+
     const res = accounts;
     return new Response(JSON.stringify(res), { status: 200 });
   } catch (e: any) {
