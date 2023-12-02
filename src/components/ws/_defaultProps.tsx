@@ -6,7 +6,7 @@ import {
 
 export const wsLayoutDefaultProps = {
   route: {
-    path: "/ws",
+    path: "/",
     routes: [
       {
         key:"/ws",
@@ -29,6 +29,6 @@ export const wsLayoutDefaultProps = {
     ],
   },
   location: {
-    pathname: "/ws",
+    pathname: "/",
   },
 };
