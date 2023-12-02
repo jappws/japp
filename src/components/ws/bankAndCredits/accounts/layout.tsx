@@ -11,43 +11,43 @@ import axios from "axios";
 import { AccountType } from "@/lib/types";
 
 export const AccountsClientLayout = ({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) => {
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
   const { token } = theme.useToken();
   const [openNewAccountForm, setOpenNewAccountform] = useState<boolean>(false);
 
-  const [selectedCurrentData, setSelectedCurrentData] = useState<
-    AccountType[] | undefined
-  >();
+  //   const [selectedCurrentData, setSelectedCurrentData] = useState<
+  //     AccountType[] | undefined
+  //   >();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["accounts"],
-    queryFn: () =>
-      axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
-  });
+  //   const { data, isLoading } = useQuery({
+  //     queryKey: ["accounts"],
+  //     queryFn: () =>
+  //       axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
+  //   });
 
   const search = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const items = data?.filter(
-      (item) =>
-        item.accountNumber.toLowerCase().includes(value.toLowerCase()) ||
-        `${item.owner.firstName.toLowerCase()} ${item.owner.lastName.toLowerCase()} ${item.owner.surname?.toLowerCase()} ${item.owner.nickname?.toLowerCase()}`.includes(
-          value.toLowerCase()
-        )
-    );
-    setSelectedCurrentData(items);
+    // const items = data?.filter(
+    //   (item) =>
+    //     item.accountNumber.toLowerCase().includes(value.toLowerCase()) ||
+    //     `${item.owner.firstName.toLowerCase()} ${item.owner.lastName.toLowerCase()} ${item.owner.surname?.toLowerCase()} ${item.owner.nickname?.toLowerCase()}`.includes(
+    //       value.toLowerCase()
+    //     )
+    // );
+    // setSelectedCurrentData(items);
   };
 
-  useEffect(() => {
-    setSelectedCurrentData(data);
-  }, [data]);
+  //   useEffect(() => {
+  //     setSelectedCurrentData(data);
+  //   }, [data]);
 
   return (
     <div>
       <PageContainer
-        loading={isLoading}
+        // loading={isLoading}
         fixedHeader
         token={{
           paddingInlinePageContainerContent: 16,
@@ -93,18 +93,17 @@ export const AccountsClientLayout = ({
         ]}
         extra={[<BankOutlined key="2" />]}
       >
-        
-        <div className="md:pt-4">¨
-        {children}
-                <AccountsList
+        <div className="md:pt-4">
+          ¨{children}
+          {/* <AccountsList
                   data={selectedCurrentData}
                   isLoading={isLoading}
-                />
-                <NewAccountForm
-                  open={openNewAccountForm}
-                  toggle={setOpenNewAccountform}
-                />
-              </div>
+                /> */}
+          <NewAccountForm
+            open={openNewAccountForm}
+            toggle={setOpenNewAccountform}
+          />
+        </div>
       </PageContainer>
     </div>
   );
