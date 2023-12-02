@@ -72,7 +72,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
             className: " bg-primary",
             icon: <UserOutlined />,
             size: "small",
-            title: `${session?.user?.username??""}`,
+            title: `${session?.user?.username ?? ""}`,
             render: (props, dom) => {
               return (
                 <Dropdown
@@ -136,6 +136,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
           }}
           selectedKeys={[pathname]}
           onMenuHeaderClick={(e) => push("/ws")}
+          menu={{ locale: false }}
           menuItemRender={(item, dom) => (
             <div
               onClick={() => {
