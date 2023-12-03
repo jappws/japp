@@ -63,8 +63,27 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
-    }else{
-      message.error({content:"Erreur"})
+    }
+  };
+
+  const handleDownloadAndShare = async () => {
+    const element = refComponentToPrint.current;
+    if (!isNull(element)) {
+      const canvas = await html2canvas(element);
+
+      const imgData = canvas.toDataURL("image/jpg");
+      const link = document.createElement("a");
+
+      if (typeof link.download === "string") {
+        link.href = imgData;
+        link.download = `M${data?.id}${account?.accountNumber}.jpg`;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        window.open(imgData);
+      }
     }
   };
 
@@ -109,7 +128,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                       className="shadow-none"
                       icon={<PrinterOutlined />}
                       shape="circle"
-                      type="link"
+                      type="text"
                     />
                   </Tooltip>
                 )}
@@ -124,12 +143,12 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 className="shadow-none"
               />,
               <Button
-              key="3"
-              icon={<ShareAltOutlined />}
-              onClick={handleDownloadPdf}
-              type="text"
-              className="shadow-none"
-            />,
+                key="3"
+                icon={<ShareAltOutlined />}
+                onClick={handleDownloadPdf}
+                type="text"
+                className="shadow-none"
+              />,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
