@@ -53,7 +53,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
   const refComponentToPrint = useRef(null);
 
-  
   const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: ["company"],
     queryFn: () =>
@@ -120,7 +119,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
     // }
   };
 
-
   return (
     <Drawer
       title={
@@ -148,7 +146,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
     >
       <Layout className="">
         <Layout.Content className="bg-white">
-          <Image src={company?.logo} alt="" preview={false}/>
           <ProCard
             className=" ml"
             title="Détails"
@@ -253,10 +250,20 @@ export const SelectedTransRightSider: React.FC<Props> = ({
           {/* To print */}
           <div className="hidden">
             <div ref={refComponentToPrint} className="">
+              <div className="flex space-x-4">
+                <Image
+                  src={company?.logo}
+                  alt=""
+                  height={150}
+                  width={150}
+                  preview={false}
+                />{" "}
+                {company?.name}
+              </div>
               <ProCard
                 title={`Mouvement`}
                 bordered
-                style={{ marginBlockEnd: 16 }}
+                style={{ marginBlockEnd: 16, marginBlockStart: 16 }}
                 extra={[
                   <Tag key="1" className="mr-0 uppercase" bordered={false}>
                     {getInOrOutType(data?.type)}
