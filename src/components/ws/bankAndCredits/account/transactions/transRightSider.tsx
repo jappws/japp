@@ -27,7 +27,7 @@ import { getInOrOutType } from "@/lib/utils";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { isNull } from "lodash";
-import { Share } from '@capacitor/share';
+import { Share } from "@capacitor/share";
 
 const { confirm } = Modal;
 
@@ -63,14 +63,29 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
   //     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
   //     pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
-      
+
   //   }
   // };
 
   const handleDownloadAndShare = async () => {
     await Share.share({
-      title: ``,
-      text: ``,
+      title: `Mouvement M${data?.id}${account?.accountNumber}`,
+      text: `*Détails*\n\n
+      Date: *${dayjs(data?.date).format("DD-MM-YYYY")}*\n
+      Intitulé: *${data?.title}*\n
+      Montant: *${new Intl.NumberFormat("fr-FR", {
+        style: "currency",
+        currency: "USD",
+      }).format(data?.amount ?? 0)}*\n
+      Solde: *${new Intl.NumberFormat("fr-FR", {
+        style: "currency",
+        currency: "USD",
+      }).format(data?.balanceAfter ?? 0)}*\n
+      Note: *${data?.message}*\n
+      Compte: *${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()} (${
+        account?.accountNumber
+      })*\n`,
+
       dialogTitle: "Partager avec",
     });
 
@@ -88,7 +103,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
     //     document.body.appendChild(link);
     //     link.click();
     //     document.body.removeChild(link);
-       
+
     //   } else {
     //     window.open(imgData);
     //   }
@@ -254,7 +269,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 </ProDescriptions>
               </ProCard>
               <ProCard
-                title={`Détails `}
+                title={`Détails`}
                 bordered
                 style={{ marginBlockEnd: 16 }}
                 extra={[<CheckOutlined key="1" />, <CheckOutlined key="2" />]}
