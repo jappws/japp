@@ -12,7 +12,7 @@ import {
   ProLayout,
   SettingDrawer,
 } from "@ant-design/pro-components";
-import { Dropdown } from "antd";
+import { Avatar, Dropdown } from "antd";
 import React, { useState } from "react";
 import { wsLayoutDefaultProps } from "./_defaultProps";
 import { usePathname, useRouter } from "next/navigation";
@@ -62,7 +62,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
       <ProConfigProvider hashed={false}>
         <ProLayout
           title={company?.shortName ?? ""}
-          logo="https://drive.google.com/file/d/1QTzHxtN21LawOPSvoKIqTLTOQNy9K7ms/view?usp=sharing"
+          logo={<Avatar src="https://drive.google.com/file/d/1QTzHxtN21LawOPSvoKIqTLTOQNy9K7ms/view?usp=sharing"/>}
           {...wsLayoutDefaultProps}
           location={{
             pathname,
