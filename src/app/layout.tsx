@@ -5,14 +5,23 @@ import Provider from "@/components/provider";
 import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth/next";
 import { cn } from "@/lib/utils";
+import prisma from "@/lib/prisma";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export const metadata: Metadata = {
-  title: "Japp",
-  description: "Gérer et contrôler le flux james ",
-  robots: "noindex",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  // fetch data
+  const company = await prisma.company.findUnique({
+    where: { id: 1 },
+  });
+
+  return {
+    title: company?.name,
+    description: company?.description,
+    icons: { icon: company?.icon ?? "" },
+    robots: "noindex",
+  };
+}
 
 export default async function RootLayout({
   children,
