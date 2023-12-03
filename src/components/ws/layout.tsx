@@ -62,7 +62,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
       <ProConfigProvider hashed={false}>
         <ProLayout
           title={company?.shortName ?? ""}
-          logo={<Avatar src="https://drive.google.com/file/d/1QTzHxtN21LawOPSvoKIqTLTOQNy9K7ms/view?usp=sharing"/>}
+          logo={company?.logo}
           {...wsLayoutDefaultProps}
           location={{
             pathname,
