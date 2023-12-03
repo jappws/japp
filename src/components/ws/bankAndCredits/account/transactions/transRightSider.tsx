@@ -17,7 +17,6 @@ import {
   Tooltip,
   Avatar,
   Tag,
-  message,
 } from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { AccountType, TransactionType } from "@/lib/types";
@@ -28,6 +27,7 @@ import { getInOrOutType } from "@/lib/utils";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { isNull } from "lodash";
+import { Share } from '@capacitor/share';
 
 const { confirm } = Modal;
 
@@ -63,12 +63,14 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
+      
     }
   };
 
   const handleDownloadAndShare = async () => {
     const element = refComponentToPrint.current;
     if (!isNull(element)) {
+
       const canvas = await html2canvas(element);
 
       const imgData = canvas.toDataURL("image/jpg");
@@ -77,7 +79,9 @@ export const SelectedTransRightSider: React.FC<Props> = ({
       if (typeof link.download === "string") {
         link.href = imgData;
         link.download = `M${data?.id}${account?.accountNumber}.jpg`;
-
+        await Share.share({
+          url:imgData ,
+        });
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
