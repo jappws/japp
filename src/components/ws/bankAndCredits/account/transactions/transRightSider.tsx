@@ -17,9 +17,10 @@ import {
   Tooltip,
   Avatar,
   Tag,
+  Image,
 } from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
-import { AccountType, TransactionType } from "@/lib/types";
+import { AccountType, CompanyType, TransactionType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";
@@ -28,6 +29,8 @@ import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { isNull } from "lodash";
 import { Share } from "@capacitor/share";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const { confirm } = Modal;
 
@@ -49,6 +52,13 @@ export const SelectedTransRightSider: React.FC<Props> = ({
   } = theme.useToken();
 
   const refComponentToPrint = useRef(null);
+
+  
+  const { data: company, isLoading: isLoadingCompany } = useQuery({
+    queryKey: ["company"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/company`).then((res) => res.data as CompanyType),
+  });
 
   // const handleDownloadPdf = async () => {
   //   const element = refComponentToPrint.current;
@@ -84,8 +94,8 @@ export const SelectedTransRightSider: React.FC<Props> = ({
       Note: *${data?.message}*\n
       Compte: *${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()} (${
         account?.accountNumber
-      })*\n`,
-
+      })*\n\n\n\n
+      *${company?.name}*`,
       dialogTitle: "Partager avec",
     });
 
@@ -109,6 +119,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
     //   }
     // }
   };
+
 
   return (
     <Drawer
@@ -137,6 +148,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
     >
       <Layout className="">
         <Layout.Content className="bg-white">
+          <Image src={company?.logo} alt="" preview={false}/>
           <ProCard
             className=" ml"
             title="Détails"
