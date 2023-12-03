@@ -62,7 +62,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
       <ProConfigProvider hashed={false}>
         <ProLayout
           title={company?.shortName ?? ""}
-          logo={company?.logo}
+          logo={company?.icon}
           {...wsLayoutDefaultProps}
           location={{
             pathname,
