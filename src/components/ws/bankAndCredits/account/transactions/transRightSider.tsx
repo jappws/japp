@@ -50,46 +50,49 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
   const refComponentToPrint = useRef(null);
 
-  const handleDownloadPdf = async () => {
-    const element = refComponentToPrint.current;
-    if (!isNull(element)) {
-      const canvas = await html2canvas(element);
-      const imgData = canvas.toDataURL("image/png");
+  // const handleDownloadPdf = async () => {
+  //   const element = refComponentToPrint.current;
+  //   if (!isNull(element)) {
+  //     const canvas = await html2canvas(element);
+  //     const imgData = canvas.toDataURL("image/png");
 
-      const pdf = new jsPDF();
-      const imgProperties = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+  //     const pdf = new jsPDF();
+  //     const imgProperties = pdf.getImageProperties(imgData);
+  //     const pdfWidth = pdf.internal.pageSize.getWidth();
+  //     const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
 
-      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-      pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
+  //     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+  //     pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
       
-    }
-  };
+  //   }
+  // };
 
   const handleDownloadAndShare = async () => {
-    const element = refComponentToPrint.current;
-    if (!isNull(element)) {
+    await Share.share({
+      title: ``,
+      text: ``,
+      dialogTitle: "Partager avec",
+    });
 
-      const canvas = await html2canvas(element);
+    // const element = refComponentToPrint.current;
+    // if (!isNull(element)) {
 
-      const imgData = canvas.toDataURL("image/jpg");
-      const link = document.createElement("a");
+    //   const canvas = await html2canvas(element);
 
-      if (typeof link.download === "string") {
-        link.href = imgData;
-        link.download = `M${data?.id}${account?.accountNumber}.jpg`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        await Share.share({
-          url:imgData,
-          dialogTitle: 'Partager avec',
-        });
-      } else {
-        window.open(imgData);
-      }
-    }
+    //   const imgData =  canvas.toDataURL("image/jpg");
+    //   const link = document.createElement("a");
+
+    //   if (typeof link.download === "string") {
+    //     link.href = imgData;
+    //     link.download = `M${data?.id}${account?.accountNumber}.jpg`;
+    //     document.body.appendChild(link);
+    //     link.click();
+    //     document.body.removeChild(link);
+       
+    //   } else {
+    //     window.open(imgData);
+    //   }
+    // }
   };
 
   return (
@@ -140,13 +143,13 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 content={() => refComponentToPrint.current}
                 documentTitle={`M${data?.id}-${account?.accountNumber}`}
               />,
-              <Button
-                key="2"
-                icon={<FilePdfOutlined />}
-                onClick={handleDownloadPdf}
-                type="text"
-                className="shadow-none"
-              />,
+              // <Button
+              //   key="2"
+              //   icon={<FilePdfOutlined />}
+              //   onClick={handleDownloadPdf}
+              //   type="text"
+              //   className="shadow-none"
+              // />,
               <Button
                 key="3"
                 icon={<ShareAltOutlined />}
