@@ -145,7 +145,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               <Button
                 key="3"
                 icon={<ShareAltOutlined />}
-                onClick={handleDownloadPdf}
+                onClick={handleDownloadAndShare}
                 type="text"
                 className="shadow-none"
               />,
