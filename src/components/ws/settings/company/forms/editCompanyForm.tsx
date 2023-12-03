@@ -176,7 +176,6 @@ export const EditCompanyForm: React.FC<Props> = ({ open, toggle, initialData }) 
                   <Input
                     className="bg-white "
                     placeholder="Nom designant votre entreprise"
-                    disabled
                   />
                 </Form.Item>
               </Col>
@@ -197,7 +196,6 @@ export const EditCompanyForm: React.FC<Props> = ({ open, toggle, initialData }) 
                   <Input
                     className="bg-white"
                     placeholder="Nom court"
-                    disabled
                   />
                 </Form.Item>
               </Col>

@@ -22,6 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { CompanyType } from "@/lib/types";
 import { CurrentUserRightSider } from "./settings/users/user/currentUserProfile";
+import { getHSLColor } from "@/lib/utils";
 
 const currentYear = dayjs().format("YYYY");
 
@@ -58,7 +59,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
         // overflow: "auto",
       }}
     >
-       <ProConfigProvider hashed={false}>
+      <ProConfigProvider hashed={false}>
         <ProLayout
           title={company?.shortName ?? ""}
           logo={<LaptopOutlined />}
@@ -69,8 +70,17 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
           hasSiderMenu={true}
           defaultCollapsed={true}
           avatarProps={{
-            className: " bg-primary",
+            style: {
+              backgroundColor: getHSLColor(
+                `${session?.user?.firstName} ${session?.user?.lastName} ${session?.user?.surname}`
+              ),
+            },
             icon: <UserOutlined />,
+            children: `${session?.user?.firstName
+              ?.charAt(0)
+              .toUpperCase()}${session?.user?.lastName
+              ?.charAt(0)
+              .toUpperCase()}`,
             size: "small",
             title: `${session?.user?.username ?? ""}`,
             render: (props, dom) => {
@@ -147,7 +157,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
             </div>
           )}
           {...settings}
-        > 
+        >
           {children}
           {/* <SettingDrawer
               pathname={pathname}
