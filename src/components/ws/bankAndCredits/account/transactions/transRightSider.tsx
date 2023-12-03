@@ -250,15 +250,15 @@ export const SelectedTransRightSider: React.FC<Props> = ({
           {/* To print */}
           <div className="hidden">
             <div ref={refComponentToPrint} className="">
-              <div className="flex space-x-4">
+              <div className="flex items-end space-x-4">
                 <Image
                   src={company?.logo}
                   alt=""
-                  height={150}
-                  width={150}
+                  height={96}
+                  width={96}
                   preview={false}
                 />{" "}
-                {company?.name}
+                {company?.name?.toUpperCase()}
               </div>
               <ProCard
                 title={`Mouvement`}
