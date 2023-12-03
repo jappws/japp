@@ -3,6 +3,7 @@
 import {
   CheckOutlined,
   CloseOutlined,
+  FilePdfOutlined,
   PrinterOutlined,
 } from "@ant-design/icons";
 import {
@@ -22,6 +23,9 @@ import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";
 import { getInOrOutType } from "@/lib/utils";
+import html2canvas from "html2canvas";
+import { jsPDF } from "jspdf";
+import { isNull } from "lodash";
 
 const { confirm } = Modal;
 
@@ -43,6 +47,22 @@ export const SelectedTransRightSider: React.FC<Props> = ({
   } = theme.useToken();
 
   const refComponentToPrint = useRef(null);
+
+  const handleDownloadPdf = async () => {
+    const element = refComponentToPrint.current;
+    if (!isNull(element)) {
+      const canvas = await html2canvas(element);
+      const imgData = canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF();
+      const imgProperties = pdf.getImageProperties(imgData);
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+      pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
+    }
+  };
 
   return (
     <Drawer
@@ -91,6 +111,11 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 )}
                 content={() => refComponentToPrint.current}
                 documentTitle={`M${data?.id}-${account?.accountNumber}`}
+              />,
+              <Button
+                key="2"
+                icon={<FilePdfOutlined />}
+                onClick={handleDownloadPdf}
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
