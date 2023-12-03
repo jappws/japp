@@ -79,12 +79,13 @@ export const SelectedTransRightSider: React.FC<Props> = ({
       if (typeof link.download === "string") {
         link.href = imgData;
         link.download = `M${data?.id}${account?.accountNumber}.jpg`;
-        await Share.share({
-          url:imgData ,
-        });
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+        await Share.share({
+          url:imgData,
+          dialogTitle: 'Partager avec',
+        });
       } else {
         window.open(imgData);
       }
