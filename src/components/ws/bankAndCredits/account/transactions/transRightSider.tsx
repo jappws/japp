@@ -16,6 +16,7 @@ import {
   Tooltip,
   Avatar,
   Tag,
+  message,
 } from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { AccountType, TransactionType } from "@/lib/types";
@@ -61,6 +62,8 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
       pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
+    }else{
+      message.error({content:"Erreur"})
     }
   };
 
