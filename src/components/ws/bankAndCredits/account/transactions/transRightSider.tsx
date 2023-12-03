@@ -5,6 +5,7 @@ import {
   CloseOutlined,
   FilePdfOutlined,
   PrinterOutlined,
+  ShareAltOutlined,
 } from "@ant-design/icons";
 import {
   Layout,
@@ -119,7 +120,16 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 key="2"
                 icon={<FilePdfOutlined />}
                 onClick={handleDownloadPdf}
+                type="text"
+                className="shadow-none"
               />,
+              <Button
+              key="3"
+              icon={<ShareAltOutlined />}
+              onClick={handleDownloadPdf}
+              type="text"
+              className="shadow-none"
+            />,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
