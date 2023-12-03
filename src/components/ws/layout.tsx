@@ -138,8 +138,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
               >
                 <div>
                   © {currentYear}{" "}
-                  <span className=" uppercase">{company?.shortName ?? ""}</span>{" "}
-                  Designed by crudflow
+                  <span className="">{company?.name ?? ""}</span>
                 </div>
               </div>
             );
