@@ -75,7 +75,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
                 `${session?.user?.firstName} ${session?.user?.lastName} ${session?.user?.surname}`
               ),
             },
-            icon: <UserOutlined />,
+            // icon: <UserOutlined />,
             children: `${session?.user?.firstName
               ?.charAt(0)
               .toUpperCase()}${session?.user?.lastName
