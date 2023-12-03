@@ -62,7 +62,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
       <ProConfigProvider hashed={false}>
         <ProLayout
           title={company?.shortName ?? ""}
-          logo={<LaptopOutlined />}
+          logo="https://drive.google.com/file/d/0B21DW8BAAHkZWWwzS0dMaGV6ZzA/view?usp=drive_link&resourcekey=0-Qq8h0I_z3aiXgdco-AfroQ"
           {...wsLayoutDefaultProps}
           location={{
             pathname,
