@@ -254,8 +254,8 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 <Image
                   src={company?.logo}
                   alt=""
-                  height={72}
-                  width={72}
+                  height={64}
+                  width={64}
                   preview={false}
                 />{" "}
                 {company?.name?.toUpperCase()}
@@ -263,7 +263,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               <ProCard
                 title={`Mouvement`}
                 bordered
-                style={{ marginBlockEnd: 16, marginBlockStart: 16 }}
+                style={{ marginBlockEnd: 16, marginBlockStart:32 }}
                 extra={[
                   <Tag key="1" className="mr-0 uppercase" bordered={false}>
                     {getInOrOutType(data?.type)}
