@@ -116,7 +116,7 @@ export const DashboardClient = () => {
             </div>
           </div>
           <ProCard
-            title="Expéditions"
+            title="Transferts et expéditions"
             style={{ marginBlockEnd: 16 }}
             extra={[
               <Button
