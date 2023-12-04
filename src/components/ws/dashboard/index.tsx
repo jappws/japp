@@ -70,15 +70,15 @@ export const DashboardClient = () => {
             <div className="col-span-3">
               <ProCard
                 title="Banque et crédits"
-                extra={[
-                  <Button
-                    key="1"
-                    type="link"
-                    onClick={() => push("/ws/bank_and_credits")}
-                  >
-                    Voir plus
-                  </Button>,
-                ]}
+                // extra={[
+                //   <Button
+                //     key="1"
+                //     type="link"
+                //     onClick={() => push("/ws/bank_and_credits")}
+                //   >
+                //     Voir plus
+                //   </Button>,
+                // ]}
               >
                 <Row gutter={16} >
                   <Col span={12}>
@@ -101,16 +101,6 @@ export const DashboardClient = () => {
                       precision={2}
                     />
                   </Col>
-                  {/* <Col md={8}>
-                    <Statistic
-                      title="Difference"
-                      value={Number(data?.banckAndCredits.minBalance)}
-                      prefix={<ArrowDownOutlined />}
-                      suffix="$US"
-                      loading={isLoading}
-                      precision={2}
-                    />
-                  </Col> */}
                 </Row>
               </ProCard>
             </div>
