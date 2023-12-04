@@ -44,12 +44,12 @@ export const DashboardClient = () => {
           paddingInlinePageContainerContent: 16,
           paddingBlockPageContainerContent: 16,
         }}
-        tabList={[
-          {
-            key: "/ws",
-            tab: "",
-          },
-        ]}
+        // tabList={[
+        //   {
+        //     key: "/ws",
+        //     tab: "",
+        //   },
+        // ]}
         extra={[<DashboardOutlined key="1" />]}
       >
         <div className="md:pt-4">
