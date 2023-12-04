@@ -6,7 +6,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { RangeValue, TransactionType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
-import { Button, DatePicker, Select, Space } from "antd";
+import { Button, DatePicker, Space } from "antd";
 import {
   CloseOutlined,
   FilterOutlined,
@@ -55,22 +55,6 @@ export const AccountTransactions = () => {
     } else {
       newFilteredData = data;
     }
-
-    // if (
-    //   typeof paymentFilterValue === "string" &&
-    //   paymentFilterValue !== "all"
-    // ) {
-    //   const isPaid = paymentFilterValue === "paid" ? true : false;
-    //   newFilteredData = newFilteredData?.filter(
-    //     (item) => item.isPaid === isPaid
-    //   );
-    // }
-
-    // if (typeof statusFilterValue === "string" && statusFilterValue !== "all") {
-    //   newFilteredData = newFilteredData?.filter(
-    //     (item) => item.status === statusFilterValue
-    //   );
-    // }
     setDatesFilterValue(value);
     setSelectedCurrentData(newFilteredData);
   };
@@ -81,68 +65,13 @@ export const AccountTransactions = () => {
   return (
     <div>
       <header className="min-h-[64px] flex flex-col lg:flex-row lg:items-center space-y-3 space-x-3 lg:space-y-0  px-0 mb-4 lg:mb-0 ">
-        <div className="flex space-x-4">
-          <Button
-            icon={<FilterOutlined />}
-            className={cn("shadow-none", showFilter ? "hidden" : "block")}
-            onClick={() => {
-              setShowFilter(true);
-            }}
-          >
-            Filtrer
-          </Button>
-        </div>
-        {/* <div
-            className={cn(
-              "",
-              showFilter ? "flex items-center space-x-3" : "hidden"
-            )}
-          >
-            <p className="text-[#8c8c8c]">Paiements</p>
-            <Select
-              className=" min-w-[120px]"
-              defaultValue={paymentFilterValue}
-              value={paymentFilterValue}
-              style={{ width: 120 }}
-              onChange={filterByPaymentStatus}
-              options={[
-                { value: "all", label: "Tous" },
-                { value: "paid", label: "Payé(s)" },
-                { value: "unpaid", label: "Non payé(s)" },
-              ]}
-              menuItemSelectedIcon={<CheckOutlined />}
-            />
-          </div> */}
-        {/* <div
-            className={cn(
-              "",
-              showFilter ? "flex items-center space-x-3" : "hidden"
-            )}
-          >
-            <p className="text-[#8c8c8c]">Statuts</p>
-            <Select
-              className=" min-w-[120px]"
-              defaultValue={statusFilterValue}
-              value={statusFilterValue}
-              style={{ width: 120 }}
-              onChange={filterByStatus}
-              options={[
-                { value: "all", label: "Tous" },
-                { value: "opened", label: "En cours" },
-                { value: "counted", label: "Finalisé(s)" },
-                { value: "deleted", label: "Annulé(s)" },
-              ]}
-              menuItemSelectedIcon={<CheckOutlined />}
-            />
-          </div> */}
-
         <div
           className={cn(
             "",
             showFilter ? "flex items-center space-x-3" : "hidden"
           )}
         >
-          <p className="text-[#8c8c8c]">Dates</p>
+          <p className="text-[#8c8c8c]">DATES</p>
           <DatePicker.RangePicker
             allowClear={false}
             defaultValue={datesFilterValue}
@@ -152,7 +81,18 @@ export const AccountTransactions = () => {
             onChange={filterByDates}
           />
         </div>
+
+        <div className="flex-1 hidden lg:block" />
         <Space>
+          <Button
+            icon={<FilterOutlined />}
+            className={cn("shadow-none", showFilter ? "hidden" : "block")}
+            onClick={() => {
+              setShowFilter(true);
+            }}
+          >
+            Filtrer par date
+          </Button>
           <Button
             className={cn("", showFilter ? "block" : "hidden")}
             icon={<CloseOutlined />}
@@ -167,15 +107,10 @@ export const AccountTransactions = () => {
           >
             Effacer filtres
           </Button>
-        </Space>
-        <div className="flex-1 hidden lg:block" />
-        <div className="flex space-x-3">
-          <div className="flex-1" />
-
           <Button icon={<PrinterOutlined />} className="shadow-none">
             Imprimer
           </Button>
-        </div>
+        </Space>
       </header>
       <TransactionsList data={selectedCurrentData} isLoading={isLoading} />
     </div>
