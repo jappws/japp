@@ -34,6 +34,8 @@ type Props = {
 export const EditCompanyForm: React.FC<Props> = ({ open, toggle, initialData }) => {
   const [form] = Form.useForm();
 
+  const {data:session}=useSession()
+
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
     form.resetFields();

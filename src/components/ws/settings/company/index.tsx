@@ -8,10 +8,12 @@ import { Button } from "antd";
 import axios from "axios";
 import { EditCompanyForm } from "./forms/editCompanyForm";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
+import { useSession } from "next-auth/react";
 
 export const CompanyClient = () => {
-
-  const [openEditForm, setOpenEditForm]=useState<boolean>(false)
+  const [openEditForm, setOpenEditForm] = useState<boolean>(false);
+  const { data: session } = useSession();
 
   const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: ["company"],
@@ -24,7 +26,15 @@ export const CompanyClient = () => {
         className=""
         title="Profile entreprise"
         extra={[
-          <Button key="1" icon={<EditOutlined />} className="shadow-none" onClick={()=>setOpenEditForm(true)}>
+          <Button
+            key="1"
+            icon={<EditOutlined />}
+            className={cn(
+              "shadow-none",
+              session?.user.role === "ADMIN" ? "block" : "hidden"
+            )}
+            onClick={() => setOpenEditForm(true)}
+          >
             Editer
           </Button>,
         ]}
@@ -87,7 +97,11 @@ export const CompanyClient = () => {
           </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
-      <EditCompanyForm open={openEditForm} toggle={setOpenEditForm} initialData={company}/>
+      <EditCompanyForm
+        open={openEditForm}
+        toggle={setOpenEditForm}
+        initialData={company}
+      />
     </div>
   );
 };

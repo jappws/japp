@@ -3,8 +3,10 @@
 import {
   ArrowDownOutlined,
   ArrowUpOutlined,
+  BorderOutlined,
   DashboardOutlined,
   LineOutlined,
+  TeamOutlined,
 } from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { TransferBalance } from "@prisma/client";
@@ -66,14 +68,15 @@ export const DashboardClient = () => {
             <Row gutter={16}>
               <Col md={6}>
                 <Statistic
-                  title="Comptes"
+                  title="Comptes clients"
                   value={data?.banckAndCredits.numberOfAccounts}
                   loading={isLoading}
+                  prefix={<TeamOutlined />}
                 />
               </Col>
               <Col md={6}>
                 <Statistic
-                  title="Balance superieure"
+                  title="Supérieur"
                   value={Number(data?.banckAndCredits.maxBalance)}
                   prefix={<ArrowUpOutlined />}
                   suffix="$US"
@@ -83,16 +86,16 @@ export const DashboardClient = () => {
               </Col>
               <Col md={6}>
                 <Statistic
-                  title="Balance moyenne"
+                  title="Moyenne"
                   value={Number(data?.banckAndCredits.avgBalance)}
-                  prefix={<LineOutlined />}
+                  prefix={<BorderOutlined />}
                   suffix="$US"
                   loading={isLoading}
                 />
               </Col>
               <Col md={6}>
                 <Statistic
-                  title="Balance Inferieure"
+                  title="Inférieur"
                   value={Number(data?.banckAndCredits.minBalance)}
                   prefix={<ArrowDownOutlined />}
                   suffix="$US"

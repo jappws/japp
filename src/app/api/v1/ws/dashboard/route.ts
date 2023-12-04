@@ -1,35 +1,32 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
 export async function GET(request: Request, { params }: { params: {} }) {
   try {
-
     const transfersBalance = await prisma.transferBalance.findUnique({
-        where: { id:1 },
-      });
+      where: { id: 1 },
+    });
 
-      const bankAggregations = await prisma.account.aggregate({
-        where: { owner: { deleted: false } },
-        _avg: { balance: true },
-        _max: { balance: true },
-        _min: { balance: true },
-        _sum: { balance: true },
-        _count: true,
-      });
+    const bankAggregations = await prisma.account.aggregate({
+      where: { owner: { deleted: false } },
+      _avg: { balance: true },
+      _max: { balance: true },
+      _min: { balance: true },
+      _sum: { balance: true },
+      _count: true,
+    });
 
     const res = {
       banckAndCredits: {
         numberOfAccounts: bankAggregations._count,
         maxBalance: bankAggregations._max.balance,
-        avgBalance:bankAggregations._avg.balance,
+        avgBalance: bankAggregations._avg.balance,
         minBalance: bankAggregations._min.balance,
         totalBalance: bankAggregations._sum,
       },
-      transferAndCredits: {
-        balance:transfersBalance
-      },
+      transferAndCredits: transfersBalance,
     };
     return new Response(JSON.stringify(res), { status: 200 });
   } catch (e: any) {

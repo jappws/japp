@@ -11,7 +11,7 @@ import { useSession } from "next-auth/react";
 import { EditUserForm } from "../forms/editUserForm";
 import { UserType } from "@/lib/types";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
-import { getHSLColor } from "@/lib/utils";
+import { cn, getHSLColor } from "@/lib/utils";
 import dayjs from "dayjs";
 import { EditPasswordForm } from "../forms/editPassword";
 
@@ -88,7 +88,10 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               <Button
                 key="1"
                 icon={<EditOutlined />}
-                className="shadow-none"
+                className={cn(
+                  "shadow-none",
+                  session?.user.role === "ADMIN" ? "block" : "hidden"
+                )}
                 onClick={() => setOpenEditProfileForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
                 shape="circle"
@@ -137,7 +140,10 @@ export const UserRightSider: React.FC<Props> = ({ open, trigger, user }) => {
               <Button
                 key="1"
                 icon={<EditOutlined />}
-                className="shadow-none"
+                className={cn(
+                  "shadow-none",
+                  session?.user.role === "ADMIN" ? "block" : "hidden"
+                )}
                 onClick={() => setOpenEditPasswordForm(true)}
                 disabled={session?.user?.role !== "ADMIN"}
                 shape="circle"

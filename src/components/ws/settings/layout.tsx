@@ -5,7 +5,9 @@ import { usePathname, useRouter } from "next/navigation";
 import { SettingOutlined, UserAddOutlined } from "@ant-design/icons";
 import { Button, Tooltip } from "antd";
 import { NewUserForm } from "./users/forms/newUserForm";
-import {useState} from 'react'
+import { useState } from "react";
+import { useSession } from "next-auth/react";
+import { cn } from "@/lib/utils";
 
 export default function SettingsClientLayout({
   children,
@@ -13,13 +15,14 @@ export default function SettingsClientLayout({
   children: React.ReactNode;
 }) {
   const { push } = useRouter();
-  const pathname=usePathname()
-  const [openNewUserForm, setOpenNewUserForm]=useState<boolean>(false)
+  const pathname = usePathname();
+  const [openNewUserForm, setOpenNewUserForm] = useState<boolean>(false);
+  const { data: session } = useSession();
 
   return (
     <div>
       <PageContainer
-      fixedHeader
+        fixedHeader
         // style={{ backgroundColor: "#fff" }}
         title="Paramètres"
         token={{
@@ -38,9 +41,12 @@ export default function SettingsClientLayout({
             <Button
               type="primary"
               onClick={() => {
-                setOpenNewUserForm(true)
+                setOpenNewUserForm(true);
               }}
-              className="shadow-none uppercase"
+              className={cn(
+                "shadow-none uppercase",
+                session?.user.role === "ADMIN" ? "block" : "hidden"
+              )}
               icon={<UserAddOutlined />}
             />
           </Tooltip>
@@ -58,8 +64,8 @@ export default function SettingsClientLayout({
         extra={[<SettingOutlined key="2" className="shadow-none uppercase" />]}
       >
         <div className="md:pt-4">
-        {children}
-        <NewUserForm open={openNewUserForm} toggle={setOpenNewUserForm}/>
+          {children}
+          <NewUserForm open={openNewUserForm} toggle={setOpenNewUserForm} />
         </div>
       </PageContainer>
     </div>
