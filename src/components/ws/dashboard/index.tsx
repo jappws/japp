@@ -54,7 +54,7 @@ export const DashboardClient = () => {
         <div className="md:pt-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div className=" col-span-1">
-            <ProCard title="Comptes">
+            <ProCard title="Comptes"   style={{ marginBlockEnd: 16 }}>
               <Statistic
                 title="Clients"
                 value={data?.banckAndCredits.numberOfAccounts}
