@@ -181,7 +181,7 @@ export const AccountTransactions = () => {
             //   </Tag>,
             // ]}
           >
-            <ProDescriptions emptyText="">
+            <ProDescriptions emptyText="" column={1}>
               <ProDescriptions.Item
                 label=""
                 render={() => (
