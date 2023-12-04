@@ -65,7 +65,7 @@ export const AccountTransactions = () => {
   return (
     <div>
       <header className="min-h-[64px] flex flex-col lg:flex-row lg:items-center space-y-3 space-x-3 lg:space-y-0  px-0 mb-4 lg:mb-0 ">
-      <div className="flex-1 hidden lg:block" />
+        <div className="flex-1 hidden lg:block" />
         <div
           className={cn(
             "",
@@ -84,7 +84,6 @@ export const AccountTransactions = () => {
           />
         </div>
 
-        
         <Space>
           <Button
             icon={<FilterOutlined />}
@@ -100,6 +99,7 @@ export const AccountTransactions = () => {
             icon={<CloseOutlined />}
             onClick={() => {
               setDatesFilterValue(undefined);
+              setSelectedCurrentData(data);
               setShowFilter(false);
             }}
             danger
