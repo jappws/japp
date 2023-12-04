@@ -52,58 +52,65 @@ export const DashboardClient = () => {
         extra={[<DashboardOutlined key="1" />]}
       >
         <div className="md:pt-4">
-          <ProCard
-            title="Banque et crédits"
-            style={{ marginBlockEnd: 16 }}
-            extra={[
-              <Button
-                key="1"
-                type="link"
-                onClick={() => push("/ws/bank_and_credits")}
-              >
-                Voir plus
-              </Button>,
-            ]}
-          >
-            <Row gutter={16}>
-              <Col md={6}>
-                <Statistic
-                  title="Comptes clients"
-                  value={data?.banckAndCredits.numberOfAccounts}
-                  loading={isLoading}
-                  prefix={<TeamOutlined />}
-                />
-              </Col>
-              <Col md={6}>
-                <Statistic
-                  title="Supérieur"
-                  value={Number(data?.banckAndCredits.maxBalance)}
-                  prefix={<ArrowUpOutlined />}
-                  suffix="$US"
-                  precision={2}
-                  loading={isLoading}
-                />
-              </Col>
-              <Col md={6}>
-                <Statistic
-                  title="Moyenne"
-                  value={Number(data?.banckAndCredits.avgBalance)}
-                  prefix={<BorderOutlined />}
-                  suffix="$US"
-                  loading={isLoading}
-                />
-              </Col>
-              <Col md={6}>
-                <Statistic
-                  title="Inférieur"
-                  value={Number(data?.banckAndCredits.minBalance)}
-                  prefix={<ArrowDownOutlined />}
-                  suffix="$US"
-                  loading={isLoading}
-                />
-              </Col>
-            </Row>
-          </ProCard>
+          <div className="grid ">
+            <div>
+            <ProCard title="Comptes">
+              <Statistic
+                title="Clients"
+                value={data?.banckAndCredits.numberOfAccounts}
+                loading={isLoading}
+                prefix={<TeamOutlined />}
+                style={{ marginBlockEnd: 16 }}
+              />
+            </ProCard>
+            </div>
+            <div>
+            <ProCard
+              title="Banque et crédits"
+              style={{ marginBlockEnd: 16 }}
+              // extra={[
+              //   <Button
+              //     key="1"
+              //     type="link"
+              //     onClick={() => push("/ws/bank_and_credits")}
+              //   >
+              //     Voir plus
+              //   </Button>,
+              // ]}
+            >
+              <Row gutter={16}>
+                <Col md={8}>
+                  <Statistic
+                    title="Supérieur"
+                    value={Number(data?.banckAndCredits.maxBalance)}
+                    prefix={<ArrowUpOutlined />}
+                    suffix="$US"
+                    precision={2}
+                    loading={isLoading}
+                  />
+                </Col>
+                <Col md={8}>
+                  <Statistic
+                    title="Moyenne"
+                    value={Number(data?.banckAndCredits.avgBalance)}
+                    prefix={<BorderOutlined />}
+                    suffix="$US"
+                    loading={isLoading}
+                  />
+                </Col>
+                <Col md={8}>
+                  <Statistic
+                    title="Inférieur"
+                    value={Number(data?.banckAndCredits.minBalance)}
+                    prefix={<ArrowDownOutlined />}
+                    suffix="$US"
+                    loading={isLoading}
+                  />
+                </Col>
+              </Row>
+            </ProCard>
+            </div>
+          </div>
           <ProCard
             title="Transferts et expéditions"
             style={{ marginBlockEnd: 16 }}
