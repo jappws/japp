@@ -52,8 +52,8 @@ export const DashboardClient = () => {
         extra={[<DashboardOutlined key="1" />]}
       >
         <div className="md:pt-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div className=" col-span-1">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-y-4 md:gap-y-0 md:gap-x-4">
+            <div className="col-span-1">
             <ProCard title="Comptes"   style={{ marginBlockEnd: 16 }}>
               <Statistic
                 title="Clients"
