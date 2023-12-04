@@ -1,6 +1,11 @@
 "use client";
 
-import { ArrowUpOutlined, DashboardOutlined } from "@ant-design/icons";
+import {
+  ArrowDownOutlined,
+  ArrowUpOutlined,
+  DashboardOutlined,
+  LineOutlined,
+} from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { TransferBalance } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
@@ -68,9 +73,10 @@ export const DashboardClient = () => {
               </Col>
               <Col md={6}>
                 <Statistic
-                  title="Balance e"
+                  title="Balance superieure"
                   value={Number(data?.banckAndCredits.maxBalance)}
                   prefix={<ArrowUpOutlined />}
+                  suffix="$US"
                   precision={2}
                   loading={isLoading}
                 />
@@ -79,14 +85,18 @@ export const DashboardClient = () => {
                 <Statistic
                   title="Balance moyenne"
                   value={Number(data?.banckAndCredits.avgBalance)}
-                  loading
+                  prefix={<LineOutlined />}
+                  suffix="$US"
+                  loading={isLoading}
                 />
               </Col>
               <Col md={6}>
                 <Statistic
-                  title="Balance Inferieur"
-                  value={Number(data?.banckAndCredits.avgBalance)}
-                  loading
+                  title="Balance Inferieure"
+                  value={Number(data?.banckAndCredits.minBalance)}
+                  prefix={<ArrowDownOutlined />}
+                  suffix="$US"
+                  loading={isLoading}
                 />
               </Col>
             </Row>
@@ -107,6 +117,8 @@ export const DashboardClient = () => {
             <Statistic
               title="Balance"
               value={Number(data?.transferAndCredits?.balance)}
+              loading={isLoading}
+              suffix="$US"
             />
           </ProCard>
         </div>
