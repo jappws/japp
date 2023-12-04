@@ -58,7 +58,18 @@ export const DashboardClient = () => {
             style={{ marginBlockEnd: 16 }}
           >
             <div className="col-span-1">
-              <ProCard title="Comptes">
+              <ProCard
+                title="Comptes"
+                extra={[
+                  <Button
+                    key="1"
+                    type="link"
+                    onClick={() => push("/ws/bank_and_credits")}
+                  >
+                    Voir plus
+                  </Button>,
+                ]}
+              >
                 <Statistic
                   title="Clients"
                   value={data?.banckAndCredits.numberOfAccounts}
@@ -80,7 +91,7 @@ export const DashboardClient = () => {
                 //   </Button>,
                 // ]}
               >
-                <Row gutter={16} >
+                <Row gutter={16}>
                   <Col span={12}>
                     <Statistic
                       title="Banque"
