@@ -92,12 +92,14 @@ export const AccountTransactions = () => {
               setShowFilter(true);
             }}
             disabled={isLoading}
+            type="link"
           >
             Filtrer par date
           </Button>
           <Button
             className={cn(" shadow-none", showFilter ? "block" : "hidden")}
             icon={<CloseOutlined />}
+            type="text"
             onClick={() => {
               setDatesFilterValue(undefined);
               setSelectedCurrentData(data);
