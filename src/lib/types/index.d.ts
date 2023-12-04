@@ -144,3 +144,6 @@ export enum TransferTypeType {
   MONEY_TRANSFER = "MONEY_TRANSFER",
   GOLD_TRANSFER = "GOLD_TRANSFER",
 }
+
+// rangeValue type (ant.design DatePicker)
+export type RangeValue = [Dayjs | null, Dayjs | null] | null;

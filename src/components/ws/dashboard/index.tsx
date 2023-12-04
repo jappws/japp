@@ -75,6 +75,7 @@ export const DashboardClient = () => {
               >
                 <Statistic
                   title="Clients"
+                  className=" uppercase "
                   value={data?.banckAndCredits.numberOfAccounts}
                   loading={isLoading}
                   prefix={<ArrowRightOutlined key="1" />}
@@ -98,6 +99,7 @@ export const DashboardClient = () => {
                   <Col span={12}>
                     <Statistic
                       title="Banque"
+                      className=" uppercase "
                       value={Number(data?.banckAndCredits.totalBanck)}
                       prefix={<ArrowUpOutlined />}
                       suffix="$US"
@@ -109,6 +111,7 @@ export const DashboardClient = () => {
                   <Col span={12}>
                     <Statistic
                       title="Crédits"
+                      className=" uppercase "
                       value={Number(data?.banckAndCredits.totalCredit)}
                       prefix={<ArrowDownOutlined />}
                       suffix="$US"
