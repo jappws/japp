@@ -12,11 +12,12 @@ import {
   FilterOutlined,
   PrinterOutlined,
 } from "@ant-design/icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect , useRef} from "react";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import { isNull } from "lodash";
+import ReactToPrint from "react-to-print";
 
 dayjs.extend(isBetween);
 
@@ -31,6 +32,8 @@ export const AccountTransactions = () => {
   const [showFilter, setShowFilter] = useState<boolean>(false);
 
   const [datesFilterValue, setDatesFilterValue] = useState<RangeValue>();
+
+  const refComponentToPrint = useRef(null);
 
   const { data, isLoading } = useQuery({
     queryKey: ["transactions", accountId],
@@ -74,11 +77,12 @@ export const AccountTransactions = () => {
         >
           <p className="text-[#8c8c8c]">DATES</p>
           <DatePicker.RangePicker
+            bordered={false}
             allowClear={false}
             defaultValue={datesFilterValue}
             value={datesFilterValue}
             format="DD/MM/YYYY"
-            className="flex-1"
+            className="flex-1 bg-white rounded"
             onChange={filterByDates}
             disabled={!showFilter}
           />
@@ -110,18 +114,33 @@ export const AccountTransactions = () => {
           >
             Effacer filtres
           </Button>
-          <Button
-            disabled={isLoading}
-            icon={<PrinterOutlined />}
-            type="primary"
-            ghost
-            className="shadow-none"
-          >
-            Imprimer
-          </Button>
+          <ReactToPrint
+                key="1"
+                trigger={() => (
+                  <Button
+                  disabled={isLoading}
+                  icon={<PrinterOutlined />}
+                  type="primary"
+                  ghost
+                  className="shadow-none"
+                >
+                  Imprimer
+                </Button>
+                )}
+                content={() => refComponentToPrint.current}
+                // documentTitle={`M${data?.id}-${account?.accountNumber}`}
+              />,
+         
         </Space>
       </header>
       <TransactionsList data={selectedCurrentData} isLoading={isLoading} />
+
+      {/* To print */}
+      <div className=" hidden">
+            <div ref={refComponentToPrint}>
+
+            </div>
+      </div>
     </div>
   );
 };
