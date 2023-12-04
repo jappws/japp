@@ -4,10 +4,13 @@ import { DashboardOutlined } from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { TransferBalance } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { Button } from "antd";
+import { Button, Col, Row, Statistic } from "antd";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 export const DashboardClient = () => {
+  const { push } = useRouter();
+
   const { data: account, isLoading } = useQuery({
     queryKey: ["dashboard"],
     queryFn: () =>
@@ -46,12 +49,47 @@ export const DashboardClient = () => {
           <ProCard
             title="Banque et crédits"
             style={{ marginBlockEnd: 16 }}
-            extra={[<Button key="1">Voir plus</Button>]}
-          ></ProCard>
+            extra={[
+              <Button
+                key="1"
+                type="link"
+                onClick={() => push("/ws/bank_and_credits")}
+              >
+                Voir plus
+              </Button>,
+            ]}
+          >
+            <Row gutter={16}>
+              <Col span={12}>
+                <Statistic title="Active Users" value={112893} />
+              </Col>
+              <Col span={12}>
+                <Statistic
+                  title="Account Balance (CNY)"
+                  value={112893}
+                  precision={2}
+                />
+                <Button style={{ marginTop: 16 }} type="primary">
+                  Recharge
+                </Button>
+              </Col>
+              <Col span={12}>
+                <Statistic title="Active Users" value={112893} loading />
+              </Col>
+            </Row>
+          </ProCard>
           <ProCard
             title="Transferts et expéditions"
             style={{ marginBlockEnd: 16 }}
-            extra={[<Button key="1">Voir plus</Button>]}
+            extra={[
+              <Button
+                key="1"
+                type="link"
+                onClick={() => push("/ws/transfers_and_credits")}
+              >
+                Voir plus
+              </Button>,
+            ]}
           ></ProCard>
         </div>
       </PageContainer>
