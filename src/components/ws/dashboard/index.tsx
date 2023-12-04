@@ -54,17 +54,16 @@ export const DashboardClient = () => {
         <div className="md:pt-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-y-4 md:gap-y-0 md:gap-x-4">
             <div className="col-span-1">
-            <ProCard title="Comptes"   style={{ marginBlockEnd: 16 }}>
+            <ProCard title="Comptes"   >
               <Statistic
                 title="Clients"
                 value={data?.banckAndCredits.numberOfAccounts}
                 loading={isLoading}
                 prefix={<TeamOutlined />}
-                style={{ marginBlockEnd: 16 }}
               />
             </ProCard>
             </div>
-            <div className=" col-span-3">
+            <div className="col-span-3">
             <ProCard
               title="Banque et crédits"
               style={{ marginBlockEnd: 16 }}
