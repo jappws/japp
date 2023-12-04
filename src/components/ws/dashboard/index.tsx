@@ -69,7 +69,7 @@ export const DashboardClient = () => {
                     key="1"
                     type="link"
                     onClick={() => push("/ws/bank_and_credits")}
-                    icon={<ArrowRightOutlined />}
+                    icon={<TeamOutlined />}
                   />,
                 ]}
               >
@@ -77,7 +77,7 @@ export const DashboardClient = () => {
                   title="Clients"
                   value={data?.banckAndCredits.numberOfAccounts}
                   loading={isLoading}
-                  prefix={<TeamOutlined key="1" />}
+                  prefix={<ArrowRightOutlined key="1" />}
                   valueStyle={{ color: token.colorPrimary }}
                 />
               </ProCard>
@@ -135,6 +135,7 @@ export const DashboardClient = () => {
           >
             <Statistic
               title="Balance"
+              className=" uppercase "
               value={Number(data?.transferAndCredits?.balance)}
               loading={isLoading}
               precision={2}
