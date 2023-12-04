@@ -3,9 +3,9 @@
 import { useState } from "react";
 import { LaptopOutlined, UserOutlined } from "@ant-design/icons";
 import { Space, Card, Tabs, Typography, Avatar } from "antd";
-import { LoginType } from "@/lib/types";
 import { LoginFormByEmail } from "./email";
 import { LoginFormByPhone } from "./phone";
+import { LoginType } from "@/lib/types";
 
 export const LoginPageClientSide = () => {
   const [loginType, setLoginType] = useState<LoginType>(LoginType.EMAIL);
