@@ -1,6 +1,6 @@
 "use client";
 
-import { AccountType, TransactionType } from "@/lib/types";
+import { AccountType, TransactionType } from "@/lib/types/index.d";
 import { Table } from "antd";
 import { transactionsColumns } from "./columns";
 import React, { useState } from "react";

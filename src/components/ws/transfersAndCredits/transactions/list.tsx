@@ -1,6 +1,6 @@
 "use client";
 
-import { TransferType } from "@/lib/types";
+import { TransferType } from "@/lib/types/index.d";
 import { Table } from "antd";
 import { transfersColumns } from "./columns";
 import React, { useState } from "react";

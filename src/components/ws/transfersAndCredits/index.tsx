@@ -9,7 +9,7 @@ import { MoneyTransferForm } from "./forms/moneyTransferForm";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { TransferType } from "@/lib/types";
+import { TransferType } from "@/lib/types/index.d";
 
 export const TransfersAndCreditsClient = () => {
   const [openMoneyTransferForm, setOpenMoneyTransferForm] =

@@ -17,7 +17,7 @@ import { CheckOutlined} from "@ant-design/icons";
 import { Dispatch, SetStateAction } from "react";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";
-import { SexType } from "@/lib/types";
+import { SexType } from "@/lib/types/index.d";
 import { ProCard } from "@ant-design/pro-components";
 
 export type UserFormDataType = {

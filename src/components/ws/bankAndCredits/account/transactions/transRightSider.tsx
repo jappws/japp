@@ -20,7 +20,7 @@ import {
   Image,
 } from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
-import { AccountType, CompanyType, TransactionType } from "@/lib/types";
+import { AccountType, CompanyType, TransactionType } from "@/lib/types/index.d";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";

@@ -1,6 +1,6 @@
 "use client";
 
-import { AccountType } from "@/lib/types";
+import { AccountType } from "@/lib/types/index.d";
 import { Table } from "antd";
 import { transactionsColumns } from "./columns";
 import React from "react";

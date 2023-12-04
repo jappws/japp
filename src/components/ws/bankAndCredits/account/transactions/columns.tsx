@@ -1,6 +1,6 @@
 "use client";
 
-import { TransactionType } from "@/lib/types";
+import { TransactionType } from "@/lib/types/index.d";
 import { cn } from "@/lib/utils";
 import { TableColumnsType } from "antd";
 import dayjs from "dayjs";

@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { IsoCodeCurrencyType } from "@/lib/types";
+import { IsoCodeCurrencyType } from "@/lib/types/index.d";
 import { Prisma } from "@prisma/client";
 
 type BodyRequestType = {

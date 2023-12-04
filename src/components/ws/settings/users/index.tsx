@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { UsersList } from "./list";
 import axios from "axios";
-import { UserType } from "@/lib/types";
+import { UserType } from "@/lib/types/index.d";
 
 export const UsersClient = () => {
   const { data, isLoading } = useQuery({

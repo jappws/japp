@@ -17,7 +17,7 @@ import {
 import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
-import { AccountType, SexType } from "@/lib/types";
+import { AccountType, SexType } from "@/lib/types/index.d";
 import { ProCard } from "@ant-design/pro-components";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";

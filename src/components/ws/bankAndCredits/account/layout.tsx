@@ -9,7 +9,7 @@ import { NewInOrCreditForm } from "./forms/inOrCreditForm";
 import { NewOutOrDebitForm } from "./forms/outOrDebitForm";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { AccountType } from "@/lib/types";
+import { AccountType } from "@/lib/types/index.d";
 import { useSession } from "next-auth/react";
 
 export default function AccountClientLayout({

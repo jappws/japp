@@ -6,7 +6,7 @@ import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { CheckOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
-import { UserType } from "@/lib/types";
+import { UserType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 
 type Props = {

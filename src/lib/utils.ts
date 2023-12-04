@@ -2,7 +2,7 @@ import { isNull } from "lodash";
 import prisma from "./prisma";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { AccountType, TransactionTypeType, TransferTypeType } from "./types";
+import { AccountType, TransactionTypeType, TransferTypeType } from "./types/index.d";
 import { SelectProps } from "antd";
 
 ///////////////////////////////////////////

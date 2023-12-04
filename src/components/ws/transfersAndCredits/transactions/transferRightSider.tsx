@@ -18,7 +18,7 @@ import {
   Avatar,
 } from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
-import { TransferType } from "@/lib/types";
+import { TransferType } from "@/lib/types/index.d";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import { getTransferTitle } from "@/lib/utils";

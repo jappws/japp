@@ -1,6 +1,6 @@
 "use client";
 
-import { CompanyType } from "@/lib/types";
+import { CompanyType } from "@/lib/types/index.d";
 import { EditOutlined } from "@ant-design/icons";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";

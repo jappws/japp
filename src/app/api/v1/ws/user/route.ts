@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { RoleType, SexType } from "@/lib/types";
+import { RoleType, SexType } from "@/lib/types/index.d";
 import { Prisma } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 

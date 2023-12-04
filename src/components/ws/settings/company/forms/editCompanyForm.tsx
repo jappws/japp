@@ -17,7 +17,7 @@ import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
 import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
-import { CompanyType, SexType } from "@/lib/types";
+import { CompanyType, SexType } from "@/lib/types/index.d";
 import { ProCard } from "@ant-design/pro-components";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";

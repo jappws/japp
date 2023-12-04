@@ -1,6 +1,6 @@
 "use client";
 
-import { UserType } from "@/lib/types";
+import { UserType } from "@/lib/types/index.d";
 import { Table } from "antd";
 import { usersColumns } from "./columns";
 import React, { useState } from "react";

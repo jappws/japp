@@ -21,7 +21,7 @@ import { CheckOutlined, LoadingOutlined, UserAddOutlined } from "@ant-design/ico
 import { ProCard } from "@ant-design/pro-components";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";
-import { RoleType, SexType } from "@/lib/types";
+import { RoleType, SexType } from "@/lib/types/index.d";
 
 type NewUserFormData = {
   firstName: string;

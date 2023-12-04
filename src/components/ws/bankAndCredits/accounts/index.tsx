@@ -8,7 +8,7 @@ import { NewAccountForm } from "./forms/newAccountForm";
 import { useState, ChangeEvent, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { AccountType } from "@/lib/types";
+import { AccountType } from "@/lib/types/index.d";
 
 export const AccountsClient = () => {
   const { token } = theme.useToken();

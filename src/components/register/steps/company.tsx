@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction } from "react";
 import PhoneInput from "antd-phone-input";
 import { phoneValidator } from "@/lib/validators/phone";
 import { CheckOutlined } from "@ant-design/icons";
-import { IsoCodeCurrencyType } from "@/lib/types";
+import { IsoCodeCurrencyType } from "@/lib/types/index.d";
 import { ProCard } from "@ant-design/pro-components";
 
 export type CompanyFormDataType = {

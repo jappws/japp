@@ -10,7 +10,7 @@ import { stepsItems } from "./steps/items";
 import { CompanyFormDataType, StepCompanyForm } from "./steps/company";
 import { StepUserForm, UserFormDataType } from "./steps/user";
 import { StepFormOverview } from "./steps/overview";
-import { IsoCodeCurrencyType } from "@/lib/types";
+import { IsoCodeCurrencyType } from "@/lib/types/index.d";
 
 export const RegisterPageClientSider: React.FC = () => {
   const { push } = useRouter();

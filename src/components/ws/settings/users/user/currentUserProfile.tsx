@@ -6,7 +6,7 @@ import { useState, Dispatch, SetStateAction } from "react";
 import { signOut, useSession } from "next-auth/react";
 
 import { EditUserForm } from "../forms/editUserForm";
-import { UserType } from "@/lib/types";
+import { UserType } from "@/lib/types/index.d";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { getHSLColor } from "@/lib/utils";
 import { EditPasswordForm } from "../forms/editPassword";

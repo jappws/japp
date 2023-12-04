@@ -20,7 +20,7 @@ import dayjs from "dayjs";
 import { signOut, useSession } from "next-auth/react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { CompanyType } from "@/lib/types";
+import { CompanyType } from "@/lib/types/index.d";
 import { CurrentUserRightSider } from "./settings/users/user/currentUserProfile";
 import { getHSLColor } from "@/lib/utils";
 

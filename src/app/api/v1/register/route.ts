@@ -1,7 +1,7 @@
 import { Prisma } from "@prisma/client";
 import prisma from "@/lib/prisma";
 import * as bcrypt from "bcrypt";
-import { IsoCodeCurrencyType, SexType } from "@/lib/types";
+import { IsoCodeCurrencyType, SexType } from "@/lib/types/index.d";
 
 type BodyRequestType = {
   company: {

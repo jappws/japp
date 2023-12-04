@@ -1,6 +1,6 @@
 'use client'
 
-import { TransactionType, UserType } from "@/lib/types";
+import { TransactionType, UserType } from "@/lib/types/index.d";
 import { getHSLColor } from "@/lib/utils";
 import { Avatar, TableColumnsType, Tag } from "antd";
 import dayjs from "dayjs";

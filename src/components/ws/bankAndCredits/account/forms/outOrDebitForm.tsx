@@ -22,7 +22,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import { AccountType, TransactionTypeType } from "@/lib/types";
+import { AccountType, TransactionTypeType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 import { getAccountsAsOptions, getTransactionTitle } from "@/lib/utils";
 

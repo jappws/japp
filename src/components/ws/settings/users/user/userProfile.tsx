@@ -9,7 +9,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 
 import { EditUserForm } from "../forms/editUserForm";
-import { UserType } from "@/lib/types";
+import { UserType } from "@/lib/types/index.d";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { cn, getHSLColor } from "@/lib/utils";
 import dayjs from "dayjs";

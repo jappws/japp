@@ -1,6 +1,6 @@
 'use client'
 
-import { TransferType } from "@/lib/types";
+import { TransferType } from "@/lib/types/index.d";
 import { cn, getTransferTitle } from "@/lib/utils";
 import { TableColumnsType } from "antd";
 import dayjs from "dayjs";

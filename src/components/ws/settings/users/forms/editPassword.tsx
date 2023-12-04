@@ -19,7 +19,7 @@ import {
   LockOutlined,
 } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
-import { UserType } from "@/lib/types";
+import { UserType } from "@/lib/types/index.d";
 
 type NewUserFormData = {
   password: string;

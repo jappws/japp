@@ -1,6 +1,6 @@
 "use client";
 
-import { AccountType } from "@/lib/types";
+import { AccountType } from "@/lib/types/index.d";
 import { getHSLColor } from "@/lib/utils";
 import { EditOutlined } from "@ant-design/icons";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";

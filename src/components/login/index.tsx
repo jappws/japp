@@ -5,7 +5,7 @@ import { LaptopOutlined, UserOutlined } from "@ant-design/icons";
 import { Space, Card, Tabs, Typography, Avatar } from "antd";
 import { LoginFormByEmail } from "./email";
 import { LoginFormByPhone } from "./phone";
-import { LoginType } from "@/lib/types";
+import { LoginType } from "@/lib/types/index.d";
 
 export const LoginPageClientSide = () => {
   const [loginType, setLoginType] = useState<LoginType>(LoginType.EMAIL);

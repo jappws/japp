@@ -22,7 +22,7 @@ import {
   DollarOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { TransactionTypeType } from "@/lib/types";
+import { TransactionTypeType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 import { getTransactionTitle } from "@/lib/utils";
 

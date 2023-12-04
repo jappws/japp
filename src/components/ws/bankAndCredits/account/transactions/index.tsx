@@ -4,7 +4,7 @@ import { TransactionsList } from "./list";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { RangeValue, TransactionType } from "@/lib/types";
+import { RangeValue, TransactionType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 import { Button, DatePicker, Select, Space } from "antd";
 import {
