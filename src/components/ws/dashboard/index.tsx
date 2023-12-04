@@ -67,7 +67,7 @@ export const DashboardClient = () => {
                 extra={[
                   <Button
                     key="1"
-                    type="link"
+                    type="text"
                     onClick={() => push("/ws/bank_and_credits")}
                     icon={<TeamOutlined />}
                   />,
@@ -78,7 +78,7 @@ export const DashboardClient = () => {
                   className=" uppercase "
                   value={data?.banckAndCredits.numberOfAccounts}
                   loading={isLoading}
-                  prefix={<ArrowRightOutlined key="1" />}
+                  // prefix={<ArrowRightOutlined key="1" />}
                   valueStyle={{ color: token.colorPrimary }}
                 />
               </ProCard>
@@ -89,7 +89,7 @@ export const DashboardClient = () => {
                 extra={[
                   <Button
                     key="1"
-                    type="link"
+                    type="text"
                     icon={<BankOutlined />}
                     onClick={() => push("/ws/bank_and_credits")}
                   />,
@@ -130,7 +130,7 @@ export const DashboardClient = () => {
             extra={[
               <Button
                 key="1"
-                type="link"
+                type="text"
                 onClick={() => push("/ws/transfers_and_credits")}
                 icon={<TransactionOutlined />}
               />,

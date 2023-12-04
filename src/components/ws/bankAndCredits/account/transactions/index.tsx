@@ -67,7 +67,7 @@ export const AccountTransactions = () => {
   }, [data]);
   return (
     <div>
-      <header className="min-h-[64px] flex flex-col lg:flex-row lg:items-center space-y-3 space-x-3 lg:space-y-0  px-0 mb-4 lg:mb-0 ">
+      <header className="min-h-[64px] flex flex-col lg:flex-row lg:items-center space-y-3 lg:space-y-0 mb-4 lg:mb-0 ">
         <div className="flex-1 hidden lg:block" />
         <div
           className={cn(
@@ -75,14 +75,13 @@ export const AccountTransactions = () => {
             showFilter ? "flex items-center space-x-3" : "hidden"
           )}
         >
-          <p className="text-[#8c8c8c]">DATES</p>
+          <p className="text-[#8c8c8c]">Dates</p>
           <DatePicker.RangePicker
-            bordered={false}
             allowClear={false}
             defaultValue={datesFilterValue}
             value={datesFilterValue}
             format="DD/MM/YYYY"
-            className="flex-1 bg-white rounded"
+            className="flex-1"
             onChange={filterByDates}
             disabled={!showFilter}
           />
