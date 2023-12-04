@@ -1,3 +1,5 @@
+import { type } from "os";
+
 //Define LoginType enum
 export enum LoginType {
   PHONE = "PHONE",
