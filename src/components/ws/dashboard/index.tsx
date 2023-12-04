@@ -29,7 +29,8 @@ export const DashboardClient = () => {
               maxBalance: number | null;
               avgBalance: number | null;
               minBalance: number | null;
-              totalBalance: number | null;
+              totalBanck: number | null;
+              totalCredit: number | null;
             };
             transferAndCredits: TransferBalance | null;
           }
@@ -80,27 +81,27 @@ export const DashboardClient = () => {
                 ]}
               >
                 <Row gutter={16}>
-                  <Col md={8}>
+                  <Col md={12}>
                     <Statistic
                       title="Banque"
-                      value={Number(data?.banckAndCredits.maxBalance)}
+                      value={Number(data?.banckAndCredits.totalBanck)}
                       prefix={<ArrowUpOutlined />}
                       suffix="$US"
                       precision={2}
                       loading={isLoading}
                     />
                   </Col>
-                  <Col md={8}>
+                  <Col md={12}>
                     <Statistic
-                      title="Crédit"
-                      value={Number(data?.banckAndCredits.avgBalance)}
+                      title="Crédits"
+                      value={Number(data?.banckAndCredits.totalCredit)}
                       prefix={<BorderOutlined />}
                       suffix="$US"
                       loading={isLoading}
                       precision={2}
                     />
                   </Col>
-                  <Col md={8}>
+                  {/* <Col md={8}>
                     <Statistic
                       title="Difference"
                       value={Number(data?.banckAndCredits.minBalance)}
@@ -109,7 +110,7 @@ export const DashboardClient = () => {
                       loading={isLoading}
                       precision={2}
                     />
-                  </Col>
+                  </Col> */}
                 </Row>
               </ProCard>
             </div>

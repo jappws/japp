@@ -18,13 +18,27 @@ export async function GET(request: Request, { params }: { params: {} }) {
       _count: true,
     });
 
+
+    const totalBanck = await prisma.account.aggregate({
+      where: { owner: { deleted: false },balance:{gt:0} },
+      _sum: { balance: true },
+      _count: true,
+    });
+
+    const totalCredit = await prisma.account.aggregate({
+      where: { owner: { deleted: false },balance:{lt:0} },
+      _sum: { balance: true },
+      _count: true,
+    });
+
     const res = {
       banckAndCredits: {
         numberOfAccounts: bankAggregations._count,
         maxBalance: bankAggregations._max.balance,
         avgBalance: bankAggregations._avg.balance,
         minBalance: bankAggregations._min.balance,
-        totalBalance: bankAggregations._sum,
+        totalBanck:totalBanck._sum.balance,
+        totalCredit:totalCredit._sum.balance,
       },
       transferAndCredits: transfersBalance,
     };
