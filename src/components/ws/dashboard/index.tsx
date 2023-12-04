@@ -1,6 +1,6 @@
 "use client";
 
-import { DashboardOutlined } from "@ant-design/icons";
+import { ArrowUpOutlined, DashboardOutlined } from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { TransferBalance } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 export const DashboardClient = () => {
   const { push } = useRouter();
 
-  const { data: account, isLoading } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["dashboard"],
     queryFn: () =>
       axios.get(`/api/v1/ws/dashboard`).then(
@@ -20,12 +20,11 @@ export const DashboardClient = () => {
             banckAndCredits: {
               numberOfAccounts: number;
               maxBalance: number | null;
+              avgBalance: number | null;
               minBalance: number | null;
               totalBalance: number | null;
             };
-            transferAndCredits: {
-              balance: TransferBalance | null;
-            };
+            transferAndCredits: TransferBalance | null;
           }
       ),
   });
@@ -60,21 +59,35 @@ export const DashboardClient = () => {
             ]}
           >
             <Row gutter={16}>
-              <Col span={12}>
-                <Statistic title="Active Users" value={112893} />
-              </Col>
-              <Col span={12}>
+              <Col md={6}>
                 <Statistic
-                  title="Account Balance (CNY)"
-                  value={112893}
-                  precision={2}
+                  title="Comptes"
+                  value={data?.banckAndCredits.numberOfAccounts}
+                  loading={isLoading}
                 />
-                <Button style={{ marginTop: 16 }} type="primary">
-                  Recharge
-                </Button>
               </Col>
-              <Col span={12}>
-                <Statistic title="Active Users" value={112893} loading />
+              <Col md={6}>
+                <Statistic
+                  title="Balance e"
+                  value={Number(data?.banckAndCredits.maxBalance)}
+                  prefix={<ArrowUpOutlined />}
+                  precision={2}
+                  loading={isLoading}
+                />
+              </Col>
+              <Col md={6}>
+                <Statistic
+                  title="Balance moyenne"
+                  value={Number(data?.banckAndCredits.avgBalance)}
+                  loading
+                />
+              </Col>
+              <Col md={6}>
+                <Statistic
+                  title="Balance Inferieur"
+                  value={Number(data?.banckAndCredits.avgBalance)}
+                  loading
+                />
               </Col>
             </Row>
           </ProCard>
@@ -90,7 +103,12 @@ export const DashboardClient = () => {
                 Voir plus
               </Button>,
             ]}
-          ></ProCard>
+          >
+            <Statistic
+              title="Balance"
+              value={Number(data?.transferAndCredits?.balance)}
+            />
+          </ProCard>
         </div>
       </PageContainer>
     </div>

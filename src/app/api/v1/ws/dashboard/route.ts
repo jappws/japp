@@ -23,6 +23,7 @@ export async function GET(request: Request, { params }: { params: {} }) {
       banckAndCredits: {
         numberOfAccounts: bankAggregations._count,
         maxBalance: bankAggregations._max.balance,
+        avgBalance:bankAggregations._avg.balance,
         minBalance: bankAggregations._min.balance,
         totalBalance: bankAggregations._sum,
       },
