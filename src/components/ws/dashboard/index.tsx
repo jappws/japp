@@ -80,8 +80,8 @@ export const DashboardClient = () => {
                   </Button>,
                 ]}
               >
-                <Row gutter={16}>
-                  <Col md={12}>
+                <Row gutter={16} >
+                  <Col span={12}>
                     <Statistic
                       title="Banque"
                       value={Number(data?.banckAndCredits.totalBanck)}
@@ -91,11 +91,11 @@ export const DashboardClient = () => {
                       loading={isLoading}
                     />
                   </Col>
-                  <Col md={12}>
+                  <Col span={12}>
                     <Statistic
                       title="Crédits"
                       value={Number(data?.banckAndCredits.totalCredit)}
-                      prefix={<BorderOutlined />}
+                      prefix={<ArrowDownOutlined />}
                       suffix="$US"
                       loading={isLoading}
                       precision={2}
