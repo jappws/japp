@@ -4,20 +4,27 @@ import { TransactionsList } from "./list";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { RangeValue, TransactionType } from "@/lib/types/index.d";
+import {
+  AccountType,
+  CompanyType,
+  RangeValue,
+  TransactionType,
+} from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
-import { Button, DatePicker, Space } from "antd";
+import { Avatar, Button, DatePicker, Image, Space } from "antd";
 import {
   CloseOutlined,
   FilterOutlined,
   PrinterOutlined,
 } from "@ant-design/icons";
-import { useState, useEffect , useRef} from "react";
+import { useState, useEffect, useRef } from "react";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import { isNull } from "lodash";
 import ReactToPrint from "react-to-print";
+import { ProCard, ProDescriptions } from "@ant-design/pro-components";
+import { TransactionsListToPrint } from "./listToPrint";
 
 dayjs.extend(isBetween);
 
@@ -42,6 +49,21 @@ export const AccountTransactions = () => {
         .get(`/api/v1/ws/account/${accountId}/transactions`)
         .then((res) => res.data as TransactionType[]),
     enabled: !!session?.user && !!accountId,
+  });
+
+  const { data: account } = useQuery({
+    queryKey: ["account", accountId],
+    queryFn: () =>
+      axios
+        .get(`/api/v1/ws/account/${accountId}`)
+        .then((res) => res.data as AccountType),
+    enabled: !!session?.user && !!accountId,
+  });
+
+  const { data: company, isLoading: isLoadingCompany } = useQuery({
+    queryKey: ["company"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/company`).then((res) => res.data as CompanyType),
   });
 
   // filter by dates and other if exist
@@ -114,31 +136,68 @@ export const AccountTransactions = () => {
             Effacer filtres
           </Button>
           <ReactToPrint
-                key="1"
-                trigger={() => (
-                  <Button
-                  disabled={isLoading}
-                  icon={<PrinterOutlined />}
-                  type="primary"
-                  ghost
-                  className="shadow-none"
-                >
-                  Imprimer
-                </Button>
-                )}
-                content={() => refComponentToPrint.current}
-                // documentTitle={`M${data?.id}-${account?.accountNumber}`}
-              />,
-         
+            key="1"
+            trigger={() => (
+              <Button
+                disabled={isLoading}
+                icon={<PrinterOutlined />}
+                type="primary"
+                ghost
+                className="shadow-none"
+              >
+                Imprimer
+              </Button>
+            )}
+            content={() => refComponentToPrint.current}
+            // documentTitle={`M${data?.id}-${account?.accountNumber}`}
+          />
+          ,
         </Space>
       </header>
       <TransactionsList data={selectedCurrentData} isLoading={isLoading} />
 
       {/* To print */}
       <div className=" hidden">
-            <div ref={refComponentToPrint}>
-
-            </div>
+        <div ref={refComponentToPrint}>
+          <div className="flex items-end space-x-4 font-black">
+            <Image
+              src={company?.logo}
+              alt=""
+              height={64}
+              width={64}
+              preview={false}
+            />{" "}
+            {company?.name?.toUpperCase()}
+          </div>
+          <ProCard
+            title={`Fiche`}
+            bordered
+            style={{ marginBlockEnd: 16, marginBlockStart: 32 }}
+            // extra={[
+            //   <Tag key="1" className="mr-0 uppercase" bordered={false}>
+            //     {getInOrOutType(data?.type)}
+            //   </Tag>,
+            // ]}
+          >
+            <ProDescriptions emptyText="">
+              <ProDescriptions.Item
+                label=""
+                render={() => (
+                  <Space>
+                    <Avatar>
+                      {account?.owner.firstName?.charAt(0).toUpperCase()}
+                      {account?.owner.lastName?.charAt(0).toUpperCase()}
+                    </Avatar>
+                    {`${account?.owner?.firstName.toUpperCase()} ${account?.owner?.lastName.toUpperCase()} ${account?.owner?.surname.toUpperCase()}`}
+                  </Space>
+                )}
+              >
+                {account?.owner?.firstName}
+              </ProDescriptions.Item>
+            </ProDescriptions>
+          </ProCard>
+          <TransactionsListToPrint data={selectedCurrentData} />
+        </div>
       </div>
     </div>
   );
