@@ -73,12 +73,14 @@ export const AccountTransactions = () => {
         >
           <p className="text-[#8c8c8c]">DATES</p>
           <DatePicker.RangePicker
+            bordered={false}
             allowClear={false}
             defaultValue={datesFilterValue}
             value={datesFilterValue}
             format="DD/MM/YYYY"
             className="flex-1"
             onChange={filterByDates}
+            disabled={!showFilter}
           />
         </div>
 
@@ -94,12 +96,9 @@ export const AccountTransactions = () => {
             Filtrer par date
           </Button>
           <Button
-            className={cn("", showFilter ? "block" : "hidden")}
+            className={cn(" shadow-none", showFilter ? "block" : "hidden")}
             icon={<CloseOutlined />}
             onClick={() => {
-              // setSelectedCurrentData(data);
-              // setPaymentFilterValue("all");
-              // setStatusFilterValue("all");
               setDatesFilterValue(undefined);
               setShowFilter(false);
             }}
