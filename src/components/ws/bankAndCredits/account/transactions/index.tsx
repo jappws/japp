@@ -84,13 +84,14 @@ export const AccountTransactions = () => {
           />
         </div>
 
-        <Space>
+        <Space align="end">
           <Button
             icon={<FilterOutlined />}
             className={cn("shadow-none", showFilter ? "hidden" : "block")}
             onClick={() => {
               setShowFilter(true);
             }}
+            disabled={isLoading}
           >
             Filtrer par date
           </Button>
@@ -103,10 +104,17 @@ export const AccountTransactions = () => {
               setShowFilter(false);
             }}
             danger
+            disabled={isLoading}
           >
             Effacer filtres
           </Button>
-          <Button icon={<PrinterOutlined />} className="shadow-none">
+          <Button
+            disabled={isLoading}
+            icon={<PrinterOutlined />}
+            type="primary"
+            ghost
+            className="shadow-none"
+          >
             Imprimer
           </Button>
         </Space>
