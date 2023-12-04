@@ -65,6 +65,7 @@ export const AccountTransactions = () => {
   return (
     <div>
       <header className="min-h-[64px] flex flex-col lg:flex-row lg:items-center space-y-3 space-x-3 lg:space-y-0  px-0 mb-4 lg:mb-0 ">
+      <div className="flex-1 hidden lg:block" />
         <div
           className={cn(
             "",
@@ -73,7 +74,6 @@ export const AccountTransactions = () => {
         >
           <p className="text-[#8c8c8c]">DATES</p>
           <DatePicker.RangePicker
-            bordered={false}
             allowClear={false}
             defaultValue={datesFilterValue}
             value={datesFilterValue}
@@ -84,7 +84,7 @@ export const AccountTransactions = () => {
           />
         </div>
 
-        <div className="flex-1 hidden lg:block" />
+        
         <Space>
           <Button
             icon={<FilterOutlined />}
