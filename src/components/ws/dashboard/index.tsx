@@ -54,62 +54,61 @@ export const DashboardClient = () => {
         <div className="md:pt-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-y-4 md:gap-y-0 md:gap-x-4">
             <div className="col-span-1">
-            <ProCard title="Comptes"   >
-              <Statistic
-                title="Clients"
-                value={data?.banckAndCredits.numberOfAccounts}
-                loading={isLoading}
-                prefix={<TeamOutlined />}
-              />
-            </ProCard>
+              <ProCard title="Comptes" extra={[<TeamOutlined key="1" />]}>
+                <Statistic
+                  title="Clients"
+                  value={data?.banckAndCredits.numberOfAccounts}
+                  loading={isLoading}
+                />
+              </ProCard>
             </div>
             <div className="col-span-3">
-            <ProCard
-              title="Banque et crédits"
-              style={{ marginBlockEnd: 16 }}
-              // extra={[
-              //   <Button
-              //     key="1"
-              //     type="link"
-              //     onClick={() => push("/ws/bank_and_credits")}
-              //   >
-              //     Voir plus
-              //   </Button>,
-              // ]}
-            >
-              <Row gutter={16}>
-                <Col md={8}>
-                  <Statistic
-                    title="Supérieur"
-                    value={Number(data?.banckAndCredits.maxBalance)}
-                    prefix={<ArrowUpOutlined />}
-                    suffix="$US"
-                    precision={2}
-                    loading={isLoading}
-                  />
-                </Col>
-                <Col md={8}>
-                  <Statistic
-                    title="Moyenne"
-                    value={Number(data?.banckAndCredits.avgBalance)}
-                    prefix={<BorderOutlined />}
-                    suffix="$US"
-                    loading={isLoading}
-                    precision={2}
-                  />
-                </Col>
-                <Col md={8}>
-                  <Statistic
-                    title="Inférieur"
-                    value={Number(data?.banckAndCredits.minBalance)}
-                    prefix={<ArrowDownOutlined />}
-                    suffix="$US"
-                    loading={isLoading}
-                    precision={2}
-                  />
-                </Col>
-              </Row>
-            </ProCard>
+              <ProCard
+                title="Banque et crédits"
+                style={{ marginBlockEnd: 16 }}
+                extra={[
+                  <Button
+                    key="1"
+                    type="link"
+                    onClick={() => push("/ws/bank_and_credits")}
+                  >
+                    Voir plus
+                  </Button>,
+                ]}
+              >
+                <Row gutter={16}>
+                  <Col md={8}>
+                    <Statistic
+                      title="Banque"
+                      value={Number(data?.banckAndCredits.maxBalance)}
+                      prefix={<ArrowUpOutlined />}
+                      suffix="$US"
+                      precision={2}
+                      loading={isLoading}
+                    />
+                  </Col>
+                  <Col md={8}>
+                    <Statistic
+                      title="Crédit"
+                      value={Number(data?.banckAndCredits.avgBalance)}
+                      prefix={<BorderOutlined />}
+                      suffix="$US"
+                      loading={isLoading}
+                      precision={2}
+                    />
+                  </Col>
+                  <Col md={8}>
+                    <Statistic
+                      title="Difference"
+                      value={Number(data?.banckAndCredits.minBalance)}
+                      prefix={<ArrowDownOutlined />}
+                      suffix="$US"
+                      loading={isLoading}
+                      precision={2}
+                    />
+                  </Col>
+                </Row>
+              </ProCard>
             </div>
           </div>
           <ProCard
