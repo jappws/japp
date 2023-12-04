@@ -2,11 +2,14 @@
 
 import {
   ArrowDownOutlined,
+  ArrowRightOutlined,
   ArrowUpOutlined,
+  BankOutlined,
   BorderOutlined,
   DashboardOutlined,
   LineOutlined,
   TeamOutlined,
+  TransactionOutlined,
 } from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { TransferBalance } from "@prisma/client";
@@ -66,9 +69,8 @@ export const DashboardClient = () => {
                     key="1"
                     type="link"
                     onClick={() => push("/ws/bank_and_credits")}
-                  >
-                    Voir plus
-                  </Button>,
+                    icon={<ArrowRightOutlined />}
+                  />,
                 ]}
               >
                 <Statistic
@@ -83,15 +85,14 @@ export const DashboardClient = () => {
             <div className="col-span-3">
               <ProCard
                 title="Banque et crédits"
-                // extra={[
-                //   <Button
-                //     key="1"
-                //     type="link"
-                //     onClick={() => push("/ws/bank_and_credits")}
-                //   >
-                //     Voir plus
-                //   </Button>,
-                // ]}
+                extra={[
+                  <Button
+                    key="1"
+                    type="link"
+                    icon={<BankOutlined />}
+                    onClick={() => push("/ws/bank_and_credits")}
+                  />,
+                ]}
               >
                 <Row gutter={16}>
                   <Col span={12}>
@@ -128,9 +129,8 @@ export const DashboardClient = () => {
                 key="1"
                 type="link"
                 onClick={() => push("/ws/transfers_and_credits")}
-              >
-                Voir plus
-              </Button>,
+                icon={<TransactionOutlined />}
+              />,
             ]}
           >
             <Statistic
