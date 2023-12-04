@@ -11,11 +11,12 @@ import {
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { TransferBalance } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
-import { Button, Col, Row, Statistic } from "antd";
+import { Button, Col, Row, Statistic, theme } from "antd";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
 export const DashboardClient = () => {
+  const { token } = theme.useToken();
   const { push } = useRouter();
 
   const { data, isLoading } = useQuery({
@@ -75,6 +76,7 @@ export const DashboardClient = () => {
                   value={data?.banckAndCredits.numberOfAccounts}
                   loading={isLoading}
                   prefix={<TeamOutlined key="1" />}
+                  valueStyle={{ color: token.colorPrimary }}
                 />
               </ProCard>
             </div>
@@ -100,6 +102,7 @@ export const DashboardClient = () => {
                       suffix="$US"
                       precision={2}
                       loading={isLoading}
+                      valueStyle={{ color: token.colorSuccess }}
                     />
                   </Col>
                   <Col span={12}>
@@ -110,6 +113,7 @@ export const DashboardClient = () => {
                       suffix="$US"
                       loading={isLoading}
                       precision={2}
+                      valueStyle={{ color: token.colorWarning }}
                     />
                   </Col>
                 </Row>
@@ -135,6 +139,7 @@ export const DashboardClient = () => {
               loading={isLoading}
               precision={2}
               suffix="$US"
+              valueStyle={{ color: token.colorInfo }}
             />
           </ProCard>
         </div>
