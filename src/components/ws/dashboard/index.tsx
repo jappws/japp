@@ -54,11 +54,12 @@ export const DashboardClient = () => {
         <div className="md:pt-4">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-y-4 md:gap-y-0 md:gap-x-4">
             <div className="col-span-1">
-              <ProCard title="Comptes" extra={[<TeamOutlined key="1" />]}>
+              <ProCard title="Comptes" extra={[]}>
                 <Statistic
                   title="Clients"
                   value={data?.banckAndCredits.numberOfAccounts}
                   loading={isLoading}
+                  prefix={<TeamOutlined key="1" />}
                 />
               </ProCard>
             </div>
