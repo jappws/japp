@@ -165,11 +165,11 @@ export const AccountTransactions = () => {
             <Image
               src={company?.logo}
               alt=""
-              height={64}
-              width={64}
+              height={58}
+              width={58}
               preview={false}
             />{" "}
-            {company?.name?.toUpperCase()}
+            <h6>{company?.name?.toUpperCase()}</h6>
           </div>
           <ProCard
             title={`FICHE ${account?.accountNumber}`}
@@ -209,7 +209,7 @@ export const AccountTransactions = () => {
                   ? `Du ${dayjs(datesFilterValue?.[0]).format(
                       "DD/MM/YYYY"
                     )} au ${dayjs(datesFilterValue?.[1]).format("DD/MM/YYYY")}`
-                  : ""}
+                  : "Dépuis la création"}
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
