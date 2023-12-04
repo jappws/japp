@@ -18,7 +18,7 @@ import {
   PrinterOutlined,
 } from "@ant-design/icons";
 import { useState, useEffect, useRef } from "react";
-import { cn } from "@/lib/utils";
+import { cn, getHSLColor } from "@/lib/utils";
 import dayjs from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import { isNull } from "lodash";
@@ -72,7 +72,7 @@ export const AccountTransactions = () => {
 
     if (
       typeof value !== "undefined" &&
-      (!isNull(value?.[0]) || !isNull(value?.[0]))
+      (!isNull(value?.[0]) || !isNull(value?.[1]))
     ) {
       newFilteredData = data?.filter((item) =>
         dayjs(item?.date).isBetween(value?.[0], value?.[1], "dates", "[]")
@@ -149,7 +149,9 @@ export const AccountTransactions = () => {
               </Button>
             )}
             content={() => refComponentToPrint.current}
-            // documentTitle={`M${data?.id}-${account?.accountNumber}`}
+            documentTitle={`F${account?.accountNumber}${dayjs().format(
+              "DDMMYYYYHHmmss"
+            )}`}
           />
           ,
         </Space>
@@ -170,7 +172,7 @@ export const AccountTransactions = () => {
             {company?.name?.toUpperCase()}
           </div>
           <ProCard
-            title={`Fiche`}
+            title={`FICHE ${account?.accountNumber}`}
             bordered
             style={{ marginBlockEnd: 16, marginBlockStart: 32 }}
             // extra={[
@@ -184,7 +186,13 @@ export const AccountTransactions = () => {
                 label=""
                 render={() => (
                   <Space>
-                    <Avatar>
+                    <Avatar
+                      style={{
+                        backgroundColor: getHSLColor(
+                          `${account?.owner.firstName} ${account?.owner.lastName} ${account?.owner.surname}`
+                        ),
+                      }}
+                    >
                       {account?.owner.firstName?.charAt(0).toUpperCase()}
                       {account?.owner.lastName?.charAt(0).toUpperCase()}
                     </Avatar>
@@ -194,8 +202,18 @@ export const AccountTransactions = () => {
               >
                 {account?.owner?.firstName}
               </ProDescriptions.Item>
+              <ProDescriptions.Item label="Relevé de compte">
+                {typeof datesFilterValue !== "undefined" &&
+                (!isNull(datesFilterValue?.[0]) ||
+                  !isNull(datesFilterValue?.[1]))
+                  ? `Du ${dayjs(datesFilterValue?.[0]).format(
+                      "DD/MM/YYYY"
+                    )} au ${dayjs(datesFilterValue?.[1]).format("DD/MM/YYYY")}`
+                  : ""}
+              </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
+          <div></div>
           <TransactionsListToPrint data={selectedCurrentData} />
         </div>
       </div>
