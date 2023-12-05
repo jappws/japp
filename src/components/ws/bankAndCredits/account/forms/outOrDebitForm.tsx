@@ -39,6 +39,7 @@ type Props = {
   toggle?: Dispatch<SetStateAction<boolean>>;
   accounts?: AccountType[];
   isLoadingAccounts: boolean;
+  currentAccount?:AccountType
 };
 
 export const NewOutOrDebitForm: React.FC<Props> = ({
@@ -46,6 +47,7 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
   toggle,
   accounts,
   isLoadingAccounts,
+  currentAccount
 }) => {
   const [form] = Form.useForm();
 
@@ -62,6 +64,11 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
     mutationFn: (data: any) =>
       axios.post(`/api/v1/ws/account/${accountId}/transaction`, data),
   });
+
+  const otherAccounts=()=>{
+    const items= accounts?.filter(item=>item.id!==currentAccount?.id)
+    return items
+  }
 
   const submit = (formData: DebitFormData) => {
     const data = {
@@ -177,7 +184,7 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
                             (String(optionB?.label) ?? "").toLowerCase()
                           )
                       }
-                      options={getAccountsAsOptions(accounts)}
+                      options={getAccountsAsOptions(otherAccounts())}
                     />
                   </Form.Item>
                 ) : null
