@@ -47,7 +47,7 @@ export default function AccountClientLayout({
         loading={isLoading}
         title={`${account?.owner.firstName ?? ""} ${
           account?.owner.lastName ?? ""
-        } ${account?.owner.surname ?? ""}`}
+        } ${account?.owner.surname ?? ""}`.toUpperCase()}
         fixedHeader
         token={{
           paddingInlinePageContainerContent: 16,
