@@ -141,6 +141,7 @@ export default function AccountClientLayout({
             toggle={setOpenNewOutOrDebitForm}
             accounts={accounts}
             isLoadingAccounts={isLoadingAccounts}
+            currentAccount={account}
           />
         </div>
       </PageContainer>
