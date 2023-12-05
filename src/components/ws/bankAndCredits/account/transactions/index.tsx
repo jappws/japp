@@ -11,7 +11,7 @@ import {
   TransactionType,
 } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
-import { Avatar, Button, DatePicker, Image, Space } from "antd";
+import { Avatar, Button, DatePicker, Image, Space, Typography } from "antd";
 import {
   CloseOutlined,
   FilterOutlined,
@@ -161,7 +161,7 @@ export const AccountTransactions = () => {
       {/* To print */}
       <div className=" hidden">
         <div ref={refComponentToPrint}>
-          <div className="flex items-end space-x-4 font-black">
+          <div className="flex items-end ">
             <Image
               src={company?.logo}
               alt=""
@@ -169,7 +169,7 @@ export const AccountTransactions = () => {
               width={58}
               preview={false}
             />{" "}
-            <h6>{company?.name?.toUpperCase()}</h6>
+            <Typography.Text className="space-x-4 font-black uppercase">{company?.name}</Typography.Text>
           </div>
           <ProCard
             title={`FICHE ${account?.accountNumber}`}
