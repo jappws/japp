@@ -260,7 +260,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   preview={false}
                 />{" "}
               <div className="flex-1"/>
-            <Typography.Text className="font-semibold uppercase">{company?.name}</Typography.Text>
+            <Typography.Text className="uppercase">{company?.name}</Typography.Text>
               </div>
               <ProCard
                 title={`Mouvement`}
