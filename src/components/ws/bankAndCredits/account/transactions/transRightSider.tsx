@@ -18,6 +18,7 @@ import {
   Avatar,
   Tag,
   Image,
+  Typography,
 } from "antd";
 import { Dispatch, SetStateAction, useRef } from "react";
 import { AccountType, CompanyType, TransactionType } from "@/lib/types/index.d";
@@ -250,7 +251,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
           {/* To print */}
           <div className="hidden">
             <div ref={refComponentToPrint} className="">
-              <div className="flex items-end space-x-4 font-black">
+              <div className="flex items-end">
                 <Image
                   src={company?.logo}
                   alt=""
@@ -258,7 +259,8 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   width={64}
                   preview={false}
                 />{" "}
-                {company?.name?.toUpperCase()}
+              <div className="flex-1"/>
+            <Typography.Text className="font-semibold uppercase">{company?.name}</Typography.Text>
               </div>
               <ProCard
                 title={`Mouvement`}

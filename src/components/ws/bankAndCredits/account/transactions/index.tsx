@@ -170,7 +170,7 @@ export const AccountTransactions = () => {
               preview={false}
             />
             <div className="flex-1"/>
-            <Typography.Text className="font-medium uppercase">{company?.name}</Typography.Text>
+            <Typography.Text className="font-semibold uppercase">{company?.name}</Typography.Text>
           </div>
           <ProCard
             title={`FICHE ${account?.accountNumber}`}
