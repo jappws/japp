@@ -153,7 +153,6 @@ export const AccountTransactions = () => {
               "DDMMYYYYHHmmss"
             )}`}
           />
-          ,
         </Space>
       </header>
       <TransactionsList data={selectedCurrentData} isLoading={isLoading} />
