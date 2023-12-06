@@ -6,6 +6,7 @@ import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth/next";
 import { cn } from "@/lib/utils";
 import prisma from "@/lib/prisma";
+import { isNull } from "lodash";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,13 +15,16 @@ export async function generateMetadata(): Promise<Metadata> {
   const company = await prisma.company.findUnique({
     where: { id: 1 },
   });
-
-  return {
-    title: company?.name??"JAPP",
-    description: company?.description??"",
-    icons: { icon: company?.icon ?? "" },
-    robots: "noindex",
-  };
+  if (isNull(company)) {
+    return {};
+  } else {
+    return {
+      title: company.name,
+      description: company.description,
+      icons: { icon: company.icon ?? ""},
+      robots: "noindex",
+    };
+  }
 }
 
 export default async function RootLayout({
