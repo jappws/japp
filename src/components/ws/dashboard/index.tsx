@@ -12,7 +12,6 @@ import {
   TransactionOutlined,
 } from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
-import { TransferBalance } from "@prisma/client";
 import { useQuery } from "@tanstack/react-query";
 import { Button, Col, Row, Statistic, theme } from "antd";
 import axios from "axios";
@@ -36,7 +35,7 @@ export const DashboardClient = () => {
               totalBanck: number | null;
               totalCredit: number | null;
             };
-            transferAndCredits: TransferBalance | null;
+            transferAndCredits: number | null;
           }
       ),
   });
@@ -139,7 +138,7 @@ export const DashboardClient = () => {
             <Statistic
               title="Balance"
               className=" uppercase "
-              value={Number(data?.transferAndCredits?.balance)}
+              value={Number(data?.transferAndCredits)}
               loading={isLoading}
               precision={2}
               suffix="$US"

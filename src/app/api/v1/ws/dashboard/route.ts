@@ -5,8 +5,8 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request, { params }: { params: {} }) {
   try {
-    const transfersBalance = await prisma.transferBalance.findUnique({
-      where: { id: 1 },
+    const totalPartnersCredit = await prisma.partner.aggregate({
+      _sum: { balance: true },
     });
 
     const bankAggregations = await prisma.account.aggregate({
@@ -40,7 +40,7 @@ export async function GET(request: Request, { params }: { params: {} }) {
         totalBanck:totalBanck._sum.balance,
         totalCredit:totalCredit._sum.balance,
       },
-      transferAndCredits: transfersBalance,
+      transferAndCredits: totalPartnersCredit._sum.balance,
     };
     return new Response(JSON.stringify(res), { status: 200 });
   } catch (e: any) {
