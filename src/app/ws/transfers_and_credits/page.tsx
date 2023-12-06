@@ -1,4 +1,4 @@
-import { PartnersClientPage } from "@/components/ws/transfersAndCredits/partners/layout";
+import { PartnersClientPage } from "@/components/ws/transfersAndCredits/partners";
 
 export default function TransfersAndCreditsPage() {
   return (

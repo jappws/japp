@@ -126,6 +126,7 @@ export enum IsoCodeCurrencyType {
   CDF = "CDF",
 }
 
+// Define transfer type model
 export type TransferType = {
   id: number;
   date: Date;
@@ -135,17 +136,30 @@ export type TransferType = {
   goldQuantity: string;
   sender: string;
   message: string; // Un commentaire, une observation sur le transfer
+  partner: PartnerType
+  partnerId :number;
   operator: UserType;
   operatorId: number;
   createdAt: Date;
   updatedAt: Date;
 };
 
-
+//Define the TransferType enum
 export enum TransferTypeType {
   MONEY_TRANSFER = "MONEY_TRANSFER",
   GOLD_TRANSFER = "GOLD_TRANSFER",
 }
+
+// Define boss partner type model
+export type PartnerType= {
+  id:number;
+  code :string;
+  balance :number;
+  transfers: TransferType[]
+  createdAt: Date
+  updatedAt: Date
+}
+
 
 // rangeValue type (ant.design DatePicker)
 export type RangeValue = [Dayjs | null, Dayjs | null] | null;

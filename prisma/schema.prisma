@@ -130,26 +130,30 @@ enum IsoCodeCurrency {
 model Transfer {
   id Int @id  @default(autoincrement())
   date DateTime
-  type TransferTypeType
+  type TransferType
   amount Float
   balanceAfter Float
   goldQuantity String? @default("")
   sender String
   message String @default("") // Un commentaire, une observation sur le transfer
+  partner Partner @relation(fields: [partnerId],references: [id])
+  partnerId Int
   operator User @relation(fields: [operatorId],references: [id])
   operatorId Int
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 }
 
-model TransferBalance {
+model Partner {
   id Int @id @default(autoincrement())
+  code String @unique
   balance Float
+  transfers Transfer[]
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 }
 
-enum TransferTypeType {
+enum TransferType {
   MONEY_TRANSFER
   GOLD_TRANSFER
 }
