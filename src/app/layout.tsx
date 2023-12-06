@@ -9,19 +9,19 @@ import prisma from "@/lib/prisma";
 
 const inter = Inter({ subsets: ["latin"] });
 
-// export async function generateMetadata(): Promise<Metadata> {
-//   // fetch data
-//   const company = await prisma.company.findUnique({
-//     where: { id: 1 },
-//   });
+export async function generateMetadata(): Promise<Metadata> {
+  // fetch data
+  const company = await prisma.company.findUnique({
+    where: { id: 1 },
+  });
 
-//   return {
-//     title: company?.name,
-//     description: company?.description,
-//     icons: { icon: company?.icon ?? "" },
-//     robots: "noindex",
-//   };
-// }
+  return {
+    title: company?.name??"JAPP",
+    description: company?.description??"",
+    icons: { icon: company?.icon ?? "" },
+    robots: "noindex",
+  };
+}
 
 export default async function RootLayout({
   children,
