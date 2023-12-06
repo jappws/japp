@@ -35,7 +35,7 @@ export const DashboardClient = () => {
               totalBanck: number | null;
               totalCredit: number | null;
             };
-            transferAndCredits: number | null;
+            transfersAndCredits: number | null;
           }
       ),
   });
@@ -138,7 +138,7 @@ export const DashboardClient = () => {
             <Statistic
               title="Balance"
               className=" uppercase "
-              value={Number(data?.transferAndCredits)}
+              value={Number(data?.transfersAndCredits)}
               loading={isLoading}
               precision={2}
               suffix="$US"

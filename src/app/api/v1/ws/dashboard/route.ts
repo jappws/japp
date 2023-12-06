@@ -40,7 +40,7 @@ export async function GET(request: Request, { params }: { params: {} }) {
         totalBanck:totalBanck._sum.balance,
         totalCredit:totalCredit._sum.balance,
       },
-      transferAndCredits: totalPartnersCredit._sum.balance,
+      transfersAndCredits: totalPartnersCredit._sum.balance,
     };
     return new Response(JSON.stringify(res), { status: 200 });
   } catch (e: any) {
