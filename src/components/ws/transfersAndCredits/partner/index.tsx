@@ -3,7 +3,7 @@
 import { GoldOutlined, SendOutlined } from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { Button, Dropdown, Space, Statistic } from "antd";
-import { TransfersList } from "../transactions/list";
+import { TransfersList } from "./transactions/list";
 import { GoldTransferForm } from "./forms/goldTransferForm";
 import { MoneyTransferForm } from "./forms/moneyTransferForm";
 import { useState } from "react";
