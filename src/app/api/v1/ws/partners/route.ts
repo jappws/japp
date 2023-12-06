@@ -1,21 +1,16 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
-export const dynamic = 'force-dynamic'
+export const dynamic = "force-dynamic";
 
-export async function GET(request: Request) {
+export async function GET(request: Request, { params }: { params: {} }) {
   try {
-    const transfers = await prisma.transfer.findMany({
-      orderBy: { date: "asc" },
-      include: { operator: {} },
+    const accounts = await prisma.partner.findMany({
+      where: { deleted: false },
+      orderBy: { createdAt: "desc" },
     });
 
-    const balance = await prisma.transferBalance.findUnique({
-      where: { id: 1 },
-    });
-
-    const res = { balance: balance?.balance ?? 0, trans: transfers };
-
+    const res = accounts;
     return new Response(JSON.stringify(res), { status: 200 });
   } catch (e: any) {
     //Tracking prisma error

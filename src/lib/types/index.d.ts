@@ -67,7 +67,7 @@ export type TransactionType = {
   id: number;
   date: string;
   amount: number;
-  balanceAfter:number;
+  balanceAfter: number;
   goldQuantity: string;
   title: string;
   message: string; // Un commentaire, une observation sur la transaction
@@ -86,7 +86,7 @@ export enum TransactionTypeType {
   DEPOSIT = "DEPOSIT",
   WITHDRAWAL = "WITHDRAWAL",
   TRANSFER = "TRANSFER", //Virement
-  RECEIPT_OF_TRANSFER="RECEIPT_OF_TRANSFER", // Réception du virement
+  RECEIPT_OF_TRANSFER = "RECEIPT_OF_TRANSFER", // Réception du virement
   LOAN_DISBURSEMENT = "LOAN_DISBURSEMENT", // Décaissement de prêt
   LOAN_PAYMENT = "LOAN_PAYMENT", // Rembourssement de prêt
 }
@@ -99,13 +99,13 @@ export type CompanyType = {
   shortName: string;
   description: string;
   logo: string;
-  motto:string;
+  motto: string;
   icon: string;
   currency: IsoCodeCurrencyType;
-  webSiteUrl:string;
-  phone1:string;
-  phone2:string;
-  email:string;
+  webSiteUrl: string;
+  phone1: string;
+  phone2: string;
+  email: string;
   country: string;
   province: string;
   city: string;
@@ -132,12 +132,12 @@ export type TransferType = {
   date: Date;
   type: TransferTypeType;
   amount: number;
-  balanceAfter:number;
+  balanceAfter: number;
   goldQuantity: string;
   sender: string;
   message: string; // Un commentaire, une observation sur le transfer
-  partner: PartnerType
-  partnerId :number;
+  partner: PartnerType;
+  partnerId: number;
   operator: UserType;
   operatorId: number;
   createdAt: Date;
@@ -151,15 +151,15 @@ export enum TransferTypeType {
 }
 
 // Define boss partner type model
-export type PartnerType= {
-  id:number;
-  code :string;
-  balance :number;
-  transfers: TransferType[]
-  createdAt: Date
-  updatedAt: Date
-}
-
+export type PartnerType = {
+  id: number;
+  code: string;
+  balance: number;
+  transfers: TransferType[];
+  deleted: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+};
 
 // rangeValue type (ant.design DatePicker)
 export type RangeValue = [Dayjs | null, Dayjs | null] | null;

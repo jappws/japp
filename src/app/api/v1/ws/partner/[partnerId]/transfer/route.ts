@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { TransactionTypeType, TransferTypeType } from "@/lib/types/index.d";
+import { TransferTypeType } from "@/lib/types/index.d";
 
 import { Prisma } from "@prisma/client";
 
@@ -15,7 +15,7 @@ type BodyRequestType = {
 
 export async function POST(
   request: Request,
-  { params }: { params: { accountId: string } }
+  { params }: { params: { partnerId: string } }
 ) {
   try {
     const body: BodyRequestType = await request.json();
@@ -23,20 +23,18 @@ export async function POST(
     let balanceAfter: number = 0;
 
     if (body.type === "GOLD_TRANSFER") {
-      const account = await prisma.transferBalance.upsert({
-        where: { id: 1 },
-        create: { balance: body.amount },
-        update: {
+      const account = await prisma.partner.update({
+        where: { id: Number(params.partnerId) },
+        data: {
           balance: { increment: body.amount },
         },
         select: { balance: true },
       });
       balanceAfter = account.balance;
     } else if (body.type === "MONEY_TRANSFER") {
-      const account = await prisma.transferBalance.upsert({
-        where: { id: 1 },
-        create: { balance: -body.amount },
-        update: {
+      const account = await prisma.partner.update({
+        where: { id: Number(params.partnerId) },
+        data: {
           balance: { decrement: body.amount },
         },
         select: { balance: true },
@@ -48,6 +46,7 @@ export async function POST(
       data: {
         ...body,
         balanceAfter: balanceAfter,
+        partnerId: Number(params.partnerId),
       },
     });
     const res = {

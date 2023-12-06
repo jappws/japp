@@ -3,15 +3,15 @@
 import { GoldOutlined, SendOutlined } from "@ant-design/icons";
 import { PageContainer, ProCard } from "@ant-design/pro-components";
 import { Button, Dropdown, Space, Statistic } from "antd";
-import { TransfersList } from "./transactions/list";
-import { GoldTransferForm } from "./forms/goldTransferForm";
-import { MoneyTransferForm } from "./forms/moneyTransferForm";
+import { TransfersList } from "../transactions/list";
+import { GoldTransferForm } from "../forms/goldTransferForm";
+import { MoneyTransferForm } from "../forms/moneyTransferForm";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { TransferType } from "@/lib/types/index.d";
 
-export const TransfersAndCreditsClient = () => {
+export const PartnerClientPage = () => {
   const [openMoneyTransferForm, setOpenMoneyTransferForm] =
     useState<boolean>(false);
   const [openGoldTransferForm, setOpenGoldTransferForm] =
