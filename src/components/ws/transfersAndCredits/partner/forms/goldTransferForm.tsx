@@ -21,6 +21,7 @@ import {
 import { useSession } from "next-auth/react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
+import { useParams } from "next/navigation";
 
 type GoldTransferFormData = {
   date: string;
@@ -42,12 +43,13 @@ export const GoldTransferForm: React.FC<Props> = ({ open, toggle }) => {
     form.resetFields();
   };
 
+  const {partnerId}=useParams()
   const { data: session } = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/transfer`, data),
+      axios.post(`/api/v1/ws/partner/${partnerId}/transfer`, data),
   });
 
   const submit = (formData: GoldTransferFormData) => {
@@ -70,7 +72,7 @@ export const GoldTransferForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm();
-          queryClient.invalidateQueries({ queryKey: ["transfers"] });
+          queryClient.invalidateQueries({ queryKey: ["transfers", partnerId] });
         }
       },
       onError: () => {

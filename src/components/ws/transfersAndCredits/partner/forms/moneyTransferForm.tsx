@@ -21,6 +21,7 @@ import {
   DollarOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
+import { useParams } from "next/navigation";
 
 type MoneyTransferFormData = {
   amount: string;
@@ -41,12 +42,13 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
     toggle && toggle((prev) => !prev);
     form.resetFields();
   };
-
+  const { partnerId } = useParams();
   const { data: session } = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) => axios.post(`/api/v1/ws/transfer`, data),
+    mutationFn: (data: any) =>
+      axios.post(`/api/v1/ws/partner/${partnerId}/transfer`, data),
   });
 
   const submit = (formData: MoneyTransferFormData) => {
@@ -68,10 +70,8 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm();
-          queryClient.invalidateQueries({ queryKey: ["tranfers"] });
+          queryClient.invalidateQueries({ queryKey: ["tranfers", partnerId] });
         }
-
-       
       },
       onError: () => {
         message.error({

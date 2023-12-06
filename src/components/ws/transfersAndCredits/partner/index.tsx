@@ -1,7 +1,7 @@
 "use client";
 
 import { GoldOutlined, SendOutlined } from "@ant-design/icons";
-import { PageContainer, ProCard } from "@ant-design/pro-components";
+import { PageContainer } from "@ant-design/pro-components";
 import { Button, Dropdown, Space, Statistic } from "antd";
 import { TransfersList } from "./transactions/list";
 import { GoldTransferForm } from "./forms/goldTransferForm";
@@ -10,6 +10,8 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { TransferType } from "@/lib/types/index.d";
+import { useParams } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export const PartnerClientPage = () => {
   const [openMoneyTransferForm, setOpenMoneyTransferForm] =
@@ -17,14 +19,16 @@ export const PartnerClientPage = () => {
   const [openGoldTransferForm, setOpenGoldTransferForm] =
     useState<boolean>(false);
 
+  const { data: session } = useSession();
+  const { partnerId } = useParams();
+
   const { data, isLoading } = useQuery({
-    queryKey: ["transfers"],
+    queryKey: ["transfers", partnerId],
     queryFn: () =>
       axios
-        .get(`/api/v1/ws/transfers`)
-        .then(
-          (res) => res.data as { balance: number; trans: TransferType[] }
-        ),
+        .get(`/api/v1/ws/partner/${partnerId}/transfers`)
+        .then((res) => res.data as { balance: number; trans: TransferType[] }),
+    enabled: !!session?.user && !!partnerId,
   });
 
   return (
