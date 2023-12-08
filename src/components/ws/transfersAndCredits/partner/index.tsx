@@ -34,6 +34,7 @@ import { EditPartnerForm } from "../partners/forms/editPartnerForm";
 import ReactToPrint from "react-to-print";
 import dayjs from "dayjs";
 import { getHSLColor } from "@/lib/utils";
+import { TransfersListToPrint } from "./transactions/listToPrint";
 
 export const PartnerClientPage = () => {
   const [openMoneyTransferForm, setOpenMoneyTransferForm] =
@@ -194,7 +195,7 @@ export const PartnerClientPage = () => {
                 </Typography.Text>
               </div>
               <ProCard
-                title={`FICHE ${data?.partner?.code?.toUpperCase()}`}
+                title={`FICHE PARTENAIRE`}
                 bordered
                 style={{ marginBlockEnd: 16, marginBlockStart: 32 }}
                 // extra={[
@@ -209,7 +210,7 @@ export const PartnerClientPage = () => {
                     render={() => (
                       <Space>
                         <Avatar
-                          shape="circle"
+                          shape="square"
                           style={{
                             backgroundColor: getHSLColor(
                               `${data?.partner.code}`
@@ -226,8 +227,9 @@ export const PartnerClientPage = () => {
                   </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
-              <div></div>
-              {/* <TransactionsListToPrint data={selectedCurrentData} /> */}
+              <div>
+                <TransfersListToPrint data={data?.transfers} />
+              </div>
             </div>
           </div>
         </div>

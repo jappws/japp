@@ -1,11 +1,9 @@
-'use client'
-
-import { TransferType } from "@/lib/types/index.d";
-import { cn, getTransferTitle } from "@/lib/utils";
-import { TableColumnsType } from "antd";
+import { TransactionType, TransferType } from "@/lib/types";
+import { cn } from "@/lib/utils";
+import { Table, TableColumnsType } from "antd";
 import dayjs from "dayjs";
 
-export const transfersColumns: TableColumnsType<TransferType> = [
+const columns: TableColumnsType<TransferType> = [
   {
     title: "Date",
     dataIndex: "date",
@@ -47,36 +45,10 @@ export const transfersColumns: TableColumnsType<TransferType> = [
         ""
       ),
   },
-  // {
-  //   title: "Montant",
-  //   dataIndex: "amount",
-  //   key: "amount",
-  //   align: "right",
-  //   render: (_, record) => (
-  //     <span
-  //       className={cn(
-  //         record.type === "MONEY_TRANSFER"
-  //           ? "text-yellow-500"
-  //           : "text-green-500"
-  //       )}
-  //     >{`${new Intl.NumberFormat("fr-FR", {
-  //       style: "currency",
-  //       currency: "USD",
-  //     }).format(record.amount)}`}</span>
-  //   ),
-  // },
   {
     title: "Qté Or",
     dataIndex: "goldQuantity",
     key: "goldQuantity",
-    responsive: ["md"],
-  },
-  {
-    title: "Type de transfer",
-    dataIndex: "type",
-    key: "type",
-    render: (_, record) => getTransferTitle(record.type),
-    responsive: ["md"],
   },
   {
     title: "Solde",
@@ -96,7 +68,24 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     title: "Note",
     dataIndex: "message",
     key: "message",
-    ellipsis: true,
-    responsive: ["md"],
   },
 ];
+
+type Props = {
+  data?: TransferType[];
+};
+
+export const TransfersListToPrint: React.FC<Props> = ({ data }) => {
+  return (
+    <>
+      <Table
+        rowClassName="bg-[#f5f5f5] odd:bg-white"
+        columns={columns}
+        dataSource={data}
+        size="small"
+        pagination={false}
+        bordered={true}
+      />
+    </>
+  );
+};
