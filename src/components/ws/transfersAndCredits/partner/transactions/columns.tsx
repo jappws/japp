@@ -16,7 +16,6 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     title: "Expéditeur",
     dataIndex: "sender",
     key: "sender",
-    ellipsis: true,
   },
   {
     title: "Entrée",
@@ -32,7 +31,6 @@ export const transfersColumns: TableColumnsType<TransferType> = [
       ) : (
         ""
       ),
-    ellipsis: true,
   },
   {
     title: "Sortie",
@@ -48,7 +46,6 @@ export const transfersColumns: TableColumnsType<TransferType> = [
       ) : (
         ""
       ),
-    ellipsis: true,
   },
   // {
   //   title: "Montant",
@@ -72,13 +69,11 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     title: "Qté Or",
     dataIndex: "goldQuantity",
     key: "goldQuantity",
-    ellipsis: true,
   },
   {
     title: "Type de transfer",
     dataIndex: "type",
     key: "type",
-    ellipsis: true,
     render: (_, record) => getTransferTitle(record.type),
     responsive: ["md"],
   },
