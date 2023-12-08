@@ -2,14 +2,14 @@
 
 import { GoldOutlined, SendOutlined } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
-import { Button, Dropdown, Space, Statistic } from "antd";
+import { Breadcrumb, Button, Dropdown, Space, Statistic } from "antd";
 import { TransfersList } from "./transactions/list";
 import { GoldTransferForm } from "./forms/goldTransferForm";
 import { MoneyTransferForm } from "./forms/moneyTransferForm";
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { TransferType } from "@/lib/types/index.d";
+import { PartnerType, TransferType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 
@@ -27,15 +27,26 @@ export const PartnerClientPage = () => {
     queryFn: () =>
       axios
         .get(`/api/v1/ws/partner/${partnerId}/transfers`)
-        .then((res) => res.data as { balance: number; trans: TransferType[] }),
+        .then(
+          (res) => res.data as { partner: PartnerType; trans: TransferType[] }
+        ),
     enabled: !!session?.user && !!partnerId,
   });
 
   return (
     <div>
       <PageContainer
+        loading={isLoading}
+        title={`${data?.partner.code}`.toUpperCase()}
         fixedHeader
-        breadcrumbRender={false}
+        breadcrumbRender={() => (
+          <Breadcrumb
+            items={[
+              { title: "Partenaire" },
+              { title: data?.partner.code.toLowerCase() ?? "" },
+            ]}
+          />
+        )}
         token={{
           paddingInlinePageContainerContent: 16,
           paddingBlockPageContainerContent: 16,
@@ -48,7 +59,7 @@ export const PartnerClientPage = () => {
             value={`${new Intl.NumberFormat("fr-FR", {
               style: "currency",
               currency: "USD",
-            }).format(Number(data?.balance ?? 0))}`}
+            }).format(Number(data?.partner.balance ?? 0))}`}
           />,
         ]}
         tabBarExtraContent={
@@ -94,11 +105,10 @@ export const PartnerClientPage = () => {
         }
         tabList={[
           {
-            key: "/ws/transfers_and_credits",
+            key: `/ws/transfers_and_credits/${data?.partner.id}`,
             tab: "Transactions",
           },
         ]}
-        //   subTitle="Dashboard"
       >
         <div className="md:pt-4">
           <TransfersList data={data?.trans} isLoading={isLoading} />
