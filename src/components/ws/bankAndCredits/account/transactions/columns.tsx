@@ -37,7 +37,6 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
       ) : (
         ""
       ),
-    ellipsis: true,
   },
   {
     title: "Sortie",
@@ -55,13 +54,11 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
       ) : (
         ""
       ),
-    ellipsis: true,
   },
   {
     title: "Solde",
     dataIndex: "balanceAfter",
     key: "balanceAfter",
-    ellipsis: true,
     align: "right",
     render: (_, record) => (
       <span
