@@ -80,6 +80,7 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     key: "type",
     ellipsis: true,
     render: (_, record) => getTransferTitle(record.type),
+    responsive: ["md"],
   },
   {
     title: "Solde",
@@ -100,5 +101,6 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     dataIndex: "message",
     key: "message",
     ellipsis: true,
+    responsive: ["md"],
   },
 ];
