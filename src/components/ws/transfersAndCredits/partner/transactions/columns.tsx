@@ -69,6 +69,7 @@ export const transfersColumns: TableColumnsType<TransferType> = [
     title: "Qté Or",
     dataIndex: "goldQuantity",
     key: "goldQuantity",
+    responsive: ["md"],
   },
   {
     title: "Type de transfer",

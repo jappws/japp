@@ -1,18 +1,39 @@
 "use client";
 
-import { EditOutlined, GoldOutlined, SendOutlined } from "@ant-design/icons";
-import { PageContainer } from "@ant-design/pro-components";
-import { Breadcrumb, Button, Dropdown, Space, Statistic } from "antd";
+import {
+  EditOutlined,
+  GoldOutlined,
+  PrinterOutlined,
+  SendOutlined,
+} from "@ant-design/icons";
+import {
+  PageContainer,
+  ProCard,
+  ProDescriptions,
+} from "@ant-design/pro-components";
+import {
+  Breadcrumb,
+  Button,
+  Dropdown,
+  Space,
+  Statistic,
+  Image,
+  Typography,
+  Avatar,
+} from "antd";
 import { TransfersList } from "./transactions/list";
 import { GoldTransferForm } from "./forms/goldTransferForm";
 import { MoneyTransferForm } from "./forms/moneyTransferForm";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import { PartnerType, TransferType } from "@/lib/types/index.d";
+import { CompanyType, PartnerType, TransferType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { EditPartnerForm } from "../partners/forms/editPartnerForm";
+import ReactToPrint from "react-to-print";
+import dayjs from "dayjs";
+import { getHSLColor } from "@/lib/utils";
 
 export const PartnerClientPage = () => {
   const [openMoneyTransferForm, setOpenMoneyTransferForm] =
@@ -24,6 +45,8 @@ export const PartnerClientPage = () => {
   const { data: session } = useSession();
   const { partnerId } = useParams();
 
+  const refComponentToPrint = useRef(null);
+
   const { data, isLoading } = useQuery({
     queryKey: ["partner", partnerId],
     queryFn: () =>
@@ -34,6 +57,12 @@ export const PartnerClientPage = () => {
             res.data as { partner: PartnerType; transfers: TransferType[] }
         ),
     enabled: !!session?.user && !!partnerId,
+  });
+
+  const { data: company, isLoading: isLoadingCompany } = useQuery({
+    queryKey: ["company"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/company`).then((res) => res.data as CompanyType),
   });
 
   return (
@@ -77,6 +106,15 @@ export const PartnerClientPage = () => {
         ]}
         tabBarExtraContent={
           <Space>
+            <ReactToPrint
+              key="1"
+              trigger={() => <Button icon={<PrinterOutlined />} />}
+              content={() => refComponentToPrint.current}
+              documentTitle={`P${data?.partner.id}${dayjs().format(
+                "DDMMYYYYHHmmss"
+              )}`}
+            />
+
             <Dropdown
               menu={{
                 items: [
@@ -138,6 +176,60 @@ export const PartnerClientPage = () => {
             toggle={setOpenEditPartnerForm}
             partner={data?.partner}
           />
+
+          {/* To print */}
+          <div className=" hidden">
+            <div ref={refComponentToPrint}>
+              <div className="flex items-end ">
+                <Image
+                  src={company?.logo}
+                  alt=""
+                  height={58}
+                  width={58}
+                  preview={false}
+                />
+                <div className="flex-1" />
+                <Typography.Text className="uppercase">
+                  {company?.name}
+                </Typography.Text>
+              </div>
+              <ProCard
+                title={`FICHE ${data?.partner?.code?.toUpperCase()}`}
+                bordered
+                style={{ marginBlockEnd: 16, marginBlockStart: 32 }}
+                // extra={[
+                //   <Tag key="1" className="mr-0 uppercase" bordered={false}>
+                //     {getInOrOutType(data?.type)}
+                //   </Tag>,
+                // ]}
+              >
+                <ProDescriptions emptyText="" column={1}>
+                  <ProDescriptions.Item
+                    label=""
+                    render={() => (
+                      <Space>
+                        <Avatar
+                          shape="circle"
+                          style={{
+                            backgroundColor: getHSLColor(
+                              `${data?.partner.code}`
+                            ),
+                          }}
+                        >
+                          {data?.partner.code?.charAt(0).toUpperCase()}
+                        </Avatar>
+                        {`${data?.partner.code.toUpperCase()}`}
+                      </Space>
+                    )}
+                  >
+                    {""}
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              </ProCard>
+              <div></div>
+              {/* <TransactionsListToPrint data={selectedCurrentData} /> */}
+            </div>
+          </div>
         </div>
       </PageContainer>
     </div>
