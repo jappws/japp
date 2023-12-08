@@ -40,11 +40,10 @@ export const NewPartnerForm: React.FC<Props> = ({ open, toggle }) => {
     form.resetFields();
   };
 
-  const { data: session } = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) => axios.post(`/api/v1/ws/b-account`, data),
+    mutationFn: (data: any) => axios.post(`/api/v1/ws/partner`, data),
   });
 
   const submit = (formData: NewBossAccountFormData) => {
@@ -60,7 +59,7 @@ export const NewPartnerForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm();
-          queryClient.invalidateQueries({ queryKey: ["BAccounts"] });
+          queryClient.invalidateQueries({ queryKey: ["partners"] });
         }
       },
       onError: () => {
