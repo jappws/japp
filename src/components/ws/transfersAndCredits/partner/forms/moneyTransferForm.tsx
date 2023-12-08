@@ -70,7 +70,7 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm();
-          queryClient.invalidateQueries({ queryKey: ["tranfers", partnerId] });
+          queryClient.invalidateQueries({ queryKey: ["partner", partnerId] });
         }
       },
       onError: () => {

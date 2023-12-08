@@ -11,6 +11,7 @@ export const partnersColumns: TableColumnsType<PartnerType> = [
     key: "code",
     render: (value, record) => (
       <Avatar
+        shape="square"
         style={{
           backgroundColor: getHSLColor(
             `${record.code}`

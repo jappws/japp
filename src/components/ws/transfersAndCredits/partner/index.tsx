@@ -23,12 +23,13 @@ export const PartnerClientPage = () => {
   const { partnerId } = useParams();
 
   const { data, isLoading } = useQuery({
-    queryKey: ["transfers", partnerId],
+    queryKey: ["partner", partnerId],
     queryFn: () =>
       axios
         .get(`/api/v1/ws/partner/${partnerId}/transfers`)
         .then(
-          (res) => res.data as { partner: PartnerType; trans: TransferType[] }
+          (res) =>
+            res.data as { partner: PartnerType; transfers: TransferType[] }
         ),
     enabled: !!session?.user && !!partnerId,
   });
@@ -37,7 +38,7 @@ export const PartnerClientPage = () => {
     <div>
       <PageContainer
         loading={isLoading}
-        title={`${data?.partner.code}`.toUpperCase()}
+        title={`${data?.partner?.code ?? ""}`.toUpperCase()}
         fixedHeader
         breadcrumbRender={() => (
           <Breadcrumb
@@ -111,7 +112,7 @@ export const PartnerClientPage = () => {
         ]}
       >
         <div className="md:pt-4">
-          <TransfersList data={data?.trans} isLoading={isLoading} />
+          <TransfersList data={data?.transfers} isLoading={isLoading} />
           <GoldTransferForm
             open={openGoldTransferForm}
             toggle={setOpenGoldTransferForm}

@@ -72,7 +72,7 @@ export const GoldTransferForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm();
-          queryClient.invalidateQueries({ queryKey: ["transfers", partnerId] });
+          queryClient.invalidateQueries({ queryKey: ["partner", partnerId] });
         }
       },
       onError: () => {
