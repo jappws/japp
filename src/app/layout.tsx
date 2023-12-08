@@ -21,7 +21,10 @@ export async function generateMetadata(): Promise<Metadata> {
     return {
       title: company.name,
       description: company.description,
-      icons: { icon: company.icon ?? ""},
+      icons:
+        company.icon !== "" || !isNull(company.icon)
+          ? { icon: company.icon ?? "" }
+          : {},
       robots: "noindex",
     };
   }
