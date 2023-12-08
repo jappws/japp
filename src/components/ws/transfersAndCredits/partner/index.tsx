@@ -107,15 +107,6 @@ export const PartnerClientPage = () => {
         ]}
         tabBarExtraContent={
           <Space>
-            <ReactToPrint
-              key="1"
-              trigger={() => <Button icon={<PrinterOutlined />} />}
-              content={() => refComponentToPrint.current}
-              documentTitle={`P${data?.partner.id}${dayjs().format(
-                "DDMMYYYYHHmmss"
-              )}`}
-            />
-
             <Dropdown
               menu={{
                 items: [
@@ -153,6 +144,14 @@ export const PartnerClientPage = () => {
                 Nouvelle opération
               </Button>
             </Dropdown>
+            <ReactToPrint
+              key="1"
+              trigger={() => <Button icon={<PrinterOutlined />} />}
+              content={() => refComponentToPrint.current}
+              documentTitle={`P${data?.partner.id}${dayjs().format(
+                "DDMMYYYYHHmmss"
+              )}`}
+            />
           </Space>
         }
         tabList={[
