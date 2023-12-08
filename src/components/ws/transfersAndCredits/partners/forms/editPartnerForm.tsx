@@ -16,6 +16,7 @@ import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
+import { useParams } from "next/navigation";
 
 type NewBossAccountFormData = {
   code: string;
@@ -26,8 +27,9 @@ type Props = {
   toggle?: Dispatch<SetStateAction<boolean>>;
 };
 
-export const NewPartnerForm: React.FC<Props> = ({ open, toggle }) => {
+export const EditPartnerForm: React.FC<Props> = ({ open, toggle }) => {
   const [form] = Form.useForm();
+  const { partnerId } = useParams();
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
@@ -37,7 +39,8 @@ export const NewPartnerForm: React.FC<Props> = ({ open, toggle }) => {
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
-    mutationFn: (data: any) => axios.post(`/api/v1/ws/partner`, data),
+    mutationFn: (data: any) =>
+      axios.put(`/api/v1/ws/partner/${partnerId}`, data),
   });
 
   const submit = (formData: NewBossAccountFormData) => {
@@ -53,7 +56,7 @@ export const NewPartnerForm: React.FC<Props> = ({ open, toggle }) => {
           });
           form.resetFields();
           toggleForm();
-          queryClient.invalidateQueries({ queryKey: ["partners"] });
+          queryClient.invalidateQueries({ queryKey: ["partner", partnerId] });
         }
       },
       onError: () => {
@@ -69,7 +72,11 @@ export const NewPartnerForm: React.FC<Props> = ({ open, toggle }) => {
       title={
         <Space className="">
           Nouveau compte
-          <Tag className="mr-0 font-bold uppercase" color="purple" bordered={false}>
+          <Tag
+            className="mr-0 font-bold uppercase"
+            color="purple"
+            bordered={false}
+          >
             B-Partner
           </Tag>
         </Space>
@@ -90,10 +97,7 @@ export const NewPartnerForm: React.FC<Props> = ({ open, toggle }) => {
         disabled={isPending}
       >
         <div className="bg-white">
-          <ProCard
-            bordered
-            style={{ marginBlockEnd: 16, maxWidth: "100%" }}
-          >
+          <ProCard bordered style={{ marginBlockEnd: 16, maxWidth: "100%" }}>
             <Row gutter={24}>
               <Col span={24}>
                 <Form.Item

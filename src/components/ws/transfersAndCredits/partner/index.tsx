@@ -1,6 +1,6 @@
 "use client";
 
-import { GoldOutlined, SendOutlined } from "@ant-design/icons";
+import { EditOutlined, GoldOutlined, SendOutlined } from "@ant-design/icons";
 import { PageContainer } from "@ant-design/pro-components";
 import { Breadcrumb, Button, Dropdown, Space, Statistic } from "antd";
 import { TransfersList } from "./transactions/list";
@@ -12,12 +12,14 @@ import axios from "axios";
 import { PartnerType, TransferType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { EditPartnerForm } from "../partners/forms/editPartnerForm";
 
 export const PartnerClientPage = () => {
   const [openMoneyTransferForm, setOpenMoneyTransferForm] =
     useState<boolean>(false);
   const [openGoldTransferForm, setOpenGoldTransferForm] =
     useState<boolean>(false);
+  const [openEditParterForm, setOpenEditPartnerForm] = useState<boolean>(false);
 
   const { data: session } = useSession();
   const { partnerId } = useParams();
@@ -39,6 +41,16 @@ export const PartnerClientPage = () => {
       <PageContainer
         loading={isLoading}
         title={`${data?.partner?.code ?? ""}`.toUpperCase()}
+        subTitle={
+          <Button
+            type="text"
+            shape="circle"
+            icon={<EditOutlined />}
+            onClick={() => {
+              setOpenEditPartnerForm(true);
+            }}
+          />
+        }
         fixedHeader
         breadcrumbRender={() => (
           <Breadcrumb
@@ -120,6 +132,10 @@ export const PartnerClientPage = () => {
           <MoneyTransferForm
             open={openMoneyTransferForm}
             toggle={setOpenMoneyTransferForm}
+          />
+          <EditPartnerForm
+            open={openEditParterForm}
+            toggle={setOpenEditPartnerForm}
           />
         </div>
       </PageContainer>
