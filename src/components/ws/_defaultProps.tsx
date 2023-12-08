@@ -22,7 +22,7 @@ export const wsLayoutDefaultProps = {
       },
       {
         key:"/ws/transfers_and_credits",
-        name: "Transferts et crédits",
+        name: "Partenaires et crédits",
         icon: <TransactionOutlined />,
         path: "/ws/transfers_and_credits",
       },
