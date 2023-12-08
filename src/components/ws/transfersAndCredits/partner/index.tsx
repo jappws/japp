@@ -136,6 +136,7 @@ export const PartnerClientPage = () => {
           <EditPartnerForm
             open={openEditParterForm}
             toggle={setOpenEditPartnerForm}
+            partner={data?.partner}
           />
         </div>
       </PageContainer>
