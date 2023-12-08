@@ -17,6 +17,7 @@ import { Dispatch, SetStateAction } from "react";
 import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
 import { ProCard } from "@ant-design/pro-components";
 import { useParams } from "next/navigation";
+import { PartnerType } from "@/lib/types";
 
 type NewBossAccountFormData = {
   code: string;
@@ -25,9 +26,10 @@ type NewBossAccountFormData = {
 type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
+  partner?:PartnerType
 };
 
-export const EditPartnerForm: React.FC<Props> = ({ open, toggle }) => {
+export const EditPartnerForm: React.FC<Props> = ({ open, toggle,partner }) => {
   const [form] = Form.useForm();
   const { partnerId } = useParams();
 
@@ -71,7 +73,7 @@ export const EditPartnerForm: React.FC<Props> = ({ open, toggle }) => {
     <Modal
       title={
         <Space className="">
-          Nouveau compte
+          Modification {partner?.code??""}
           <Tag
             className="mr-0 font-bold uppercase"
             color="purple"
@@ -92,7 +94,7 @@ export const EditPartnerForm: React.FC<Props> = ({ open, toggle }) => {
         layout="horizontal"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{}}
+        initialValues={{code:partner?.code}}
         onFinish={submit}
         disabled={isPending}
       >
