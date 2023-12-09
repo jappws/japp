@@ -7,6 +7,7 @@ export async function GET(request: Request, { params }: { params: {} }) {
   try {
     const totalPartnersCredit = await prisma.partner.aggregate({
       _sum: { balance: true },
+      _count: true,
     });
 
     const bankAggregations = await prisma.account.aggregate({
@@ -18,15 +19,14 @@ export async function GET(request: Request, { params }: { params: {} }) {
       _count: true,
     });
 
-
     const totalBanck = await prisma.account.aggregate({
-      where: { owner: { deleted: false },balance:{gt:0} },
+      where: { owner: { deleted: false }, balance: { gt: 0 } },
       _sum: { balance: true },
       _count: true,
     });
 
     const totalCredit = await prisma.account.aggregate({
-      where: { owner: { deleted: false },balance:{lt:0} },
+      where: { owner: { deleted: false }, balance: { lt: 0 } },
       _sum: { balance: true },
       _count: true,
     });
@@ -37,10 +37,13 @@ export async function GET(request: Request, { params }: { params: {} }) {
         maxBalance: bankAggregations._max.balance,
         avgBalance: bankAggregations._avg.balance,
         minBalance: bankAggregations._min.balance,
-        totalBanck:totalBanck._sum.balance,
-        totalCredit:totalCredit._sum.balance,
+        totalBanck: totalBanck._sum.balance,
+        totalCredit: totalCredit._sum.balance,
       },
-      transfersAndCredits: totalPartnersCredit._sum.balance,
+      partnersAndCredits: {
+        totalCredits: totalPartnersCredit._sum.balance,
+        numberOfCredits: totalPartnersCredit._count,
+      },
     };
     return new Response(JSON.stringify(res), { status: 200 });
   } catch (e: any) {

@@ -35,7 +35,10 @@ export const DashboardClient = () => {
               totalBanck: number | null;
               totalCredit: number | null;
             };
-            transfersAndCredits: number | null;
+            partnersAndCredits: {
+              totalCredits: number | null;
+              numberOfCredits: number;
+            };
           }
       ),
   });
@@ -123,7 +126,7 @@ export const DashboardClient = () => {
             </div>
           </div>
           <ProCard
-            title="Transferts et expéditions"
+            title="Partenaires et crédits"
             style={{ marginBlockEnd: 16 }}
             extra={[
               <Button
@@ -134,15 +137,28 @@ export const DashboardClient = () => {
               />,
             ]}
           >
-            <Statistic
-              title="Balance"
-              className=" uppercase "
-              value={Number(data?.transfersAndCredits)}
-              loading={isLoading}
-              precision={2}
-              suffix="$US"
-              valueStyle={{ color: token.colorInfo }}
-            />
+            <Row>
+              <Col span={12}>
+                <Statistic
+                  title="Partenaires"
+                  className=" uppercase "
+                  value={Number(data?.partnersAndCredits.numberOfCredits)}
+                  loading={isLoading}
+                  valueStyle={{ color: token.colorPrimary }}
+                />
+              </Col>
+              <Col span={12}>
+                <Statistic
+                  title="Crédits"
+                  className=" uppercase "
+                  value={Number(data?.partnersAndCredits.totalCredits)}
+                  loading={isLoading}
+                  precision={2}
+                  suffix="$US"
+                  valueStyle={{ color: token.colorInfo }}
+                />
+              </Col>
+            </Row>
           </ProCard>
         </div>
       </PageContainer>

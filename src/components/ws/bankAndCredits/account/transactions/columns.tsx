@@ -30,7 +30,7 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
       record.type === "DEPOSIT" ||
       record.type === "LOAN_PAYMENT" ||
       record.type === "RECEIPT_OF_TRANSFER" ? (
-        <span className="text-green-500">{`${new Intl.NumberFormat("fr-FR", {
+        <span className="text-blue-500">{`${new Intl.NumberFormat("fr-FR", {
           style: "currency",
           currency: "USD",
         }).format(record.amount)}`}</span>
@@ -62,7 +62,7 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     align: "right",
     render: (_, record) => (
       <span
-        className={cn(record.balanceAfter < 0 ? "text-red-500" : "")}
+        className={cn(record.balanceAfter < 0 ? "text-red-500" : "text-green-500")}
       >{`${new Intl.NumberFormat("fr-FR", {
         style: "currency",
         currency: "USD",
