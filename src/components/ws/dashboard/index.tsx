@@ -77,7 +77,6 @@ export const DashboardClient = () => {
                   className=" uppercase "
                   value={data?.banckAndCredits.numberOfAccounts}
                   loading={isLoading}
-                  // prefix={<ArrowRightOutlined key="1" />}
                   valueStyle={{ color: token.colorPrimary }}
                 />
               </ProCard>
