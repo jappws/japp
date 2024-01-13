@@ -18,7 +18,7 @@ export const RegisterPageClientSider: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [companyData, setCompanyData] = useState<
     CompanyFormDataType | undefined
-  >({ currency: IsoCodeCurrencyType.USD, name: "Japp", shortName: "Japp" });
+  >({ currency: IsoCodeCurrencyType.USD});
   const [userData, setUserData] = useState<UserFormDataType | undefined>();
 
   const { mutate, isPending } = useMutation({

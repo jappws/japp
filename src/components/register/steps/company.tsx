@@ -148,7 +148,7 @@ export const StepCompanyForm: React.FC<Props> = ({
                 <Input
                   className="bg-white "
                   placeholder="Nom designant votre entreprise"
-                  disabled
+                  // disabled
                 />
               </Form.Item>
             </Col>
@@ -166,7 +166,11 @@ export const StepCompanyForm: React.FC<Props> = ({
                   },
                 ]}
               >
-                <Input className="bg-white" placeholder="Nom court" disabled />
+                <Input
+                  className="bg-white"
+                  placeholder="Nom court"
+                  //  disabled
+                />
               </Form.Item>
             </Col>
             <Col span={24}>
