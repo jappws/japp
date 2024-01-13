@@ -129,7 +129,7 @@ export const RegisterPageClientSider: React.FC = () => {
         <div className="flex-1" />
         <Space>
           <Typography.Text className=" text-4xl font-bold text-white">
-            PTPT
+            PtPt
           </Typography.Text>
           <SettingOutlined style={{ color: "#fff" }} />
         </Space>
