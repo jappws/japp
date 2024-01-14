@@ -11,7 +11,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Mot de passe", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await axios.post("https://ptpt.app/api/v1/login/email", {
+        const res = await axios.post(`${process.env.NEXTAUTH_URL}/api/v1/login/email`, {
           email: credentials?.email,
           password: credentials?.password,
         });

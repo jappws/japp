@@ -29,14 +29,15 @@ export const LoginFormByEmail = () => {
       });
 
       setLoading(false);
-      console.log(res?.url)
-      console.log(`${process.env.NEXTAUTH_URL}/api/v1/login/email`)
+      // console.log(res?.url)
+      // console.log(`${process.env.NEXTAUTH_URL}/api/v1/login/email`)
 
       if (!res?.error) {
         push(callbackUrl);
+        message.success(`Connecté comme ${data.email}`)
       } else {
         message.error("L'adresse mail ou le mot de passe est incorrect!");
-        console.log(res.error)
+        // console.log(res.error)
       }
     } catch (error: any) {
       setLoading(false);
