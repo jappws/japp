@@ -381,6 +381,7 @@ export const NewUserForm: React.FC<Props> = ({ open, toggle }) => {
                       {
                         value: "ADMIN",
                         label: "Administrateur",
+                        disabled: true,
                       },
                       {
                         value: "CLIENT",
