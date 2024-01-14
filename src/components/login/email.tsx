@@ -29,6 +29,7 @@ export const LoginFormByEmail = () => {
       });
 
       setLoading(false);
+      console.log(res?.url)
 
       if (!res?.error) {
         push(callbackUrl);
