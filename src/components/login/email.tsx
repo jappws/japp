@@ -34,7 +34,7 @@ export const LoginFormByEmail = () => {
         push(callbackUrl);
       } else {
         message.error("L'adresse mail ou le mot de passe est incorrect!");
-        // console.log(res.error)
+        console.log(res.error)
       }
     } catch (error: any) {
       setLoading(false);
