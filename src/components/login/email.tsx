@@ -30,6 +30,7 @@ export const LoginFormByEmail = () => {
 
       setLoading(false);
       console.log(res?.url)
+      console.log(`${process.env.NEXTAUTH_URL}/api/v1/login/email`)
 
       if (!res?.error) {
         push(callbackUrl);
