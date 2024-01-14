@@ -10,7 +10,7 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Mot de passe", type: "password" },
       },
       async authorize(credentials, req) {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/v1/login/email`, {
+        const res = await fetch(`https://ptpt.app/api/v1/login/email`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
