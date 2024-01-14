@@ -22,7 +22,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { CompanyType } from "@/lib/types/index.d";
 import { CurrentUserRightSider } from "./settings/users/user/currentUserProfile";
-import { getHSLColor } from "@/lib/utils";
+import { cn, getHSLColor } from "@/lib/utils";
 
 const currentYear = dayjs().format("YYYY");
 
@@ -124,6 +124,9 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
                 onClick={() => {
                   push("/ws/settings");
                 }}
+                className={cn(
+                  session?.user.role === "ADMIN" ? "block" : "hidden"
+                )}
               />,
             ];
           }}
