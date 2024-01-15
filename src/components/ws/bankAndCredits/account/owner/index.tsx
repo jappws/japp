@@ -126,7 +126,12 @@ export const AccountOwner = () => {
                   unCheckedChildren="Non autorisé"
                   disabled
                 />
-                <Button type="link" onClick={()=>setOpenBlockOrUnBlockForm(true)}>Gérer</Button>
+                <Button
+                  type="link"
+                  onClick={() => setOpenBlockOrUnBlockForm(true)}
+                >
+                  Gérer
+                </Button>
               </Space>
             )}
           ></ProDescriptions.Item>
@@ -155,6 +160,20 @@ export const AccountOwner = () => {
             title="Créateur du compte (Opérateur)"
           >
             {`${account?.owner?.createdBy.firstName} ${account?.owner?.createdBy.lastName} (${account?.owner.createdBy.username})`}
+          </ProDescriptions.Item>
+        </ProDescriptions>
+      </ProCard>
+      <ProCard
+        loading={isLoading}
+        title="Suppression du compte"
+        style={{ marginBlockEnd: 16 }}
+        
+      >
+        <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
+          <ProDescriptions.Item valueType="text" title="Attention">
+            Le compte sera définitivement supprimé, y compris ses mouvements et
+            opérations associées. Cette action est irréversible et ne peut pas
+            être annulée.
           </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
