@@ -42,6 +42,8 @@ export const AccountOwner = () => {
             icon={<EditOutlined />}
             className="shadow-none"
             onClick={() => setOpenEditForm(true)}
+            ghost
+            type="primary"
           >
             Editer
           </Button>,
