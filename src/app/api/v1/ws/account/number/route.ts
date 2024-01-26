@@ -1,10 +1,7 @@
 import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 
-export async function GET(
-  request: Request,
-  { params }: { params: { yearId: number } }
-) {
+export async function GET(request: Request) {
   try {
     const currentYear = new Date().getFullYear();
     const accountNumberPrefix = String(currentYear).substring(2);
@@ -33,8 +30,8 @@ export async function GET(
     });
 
     if (accountWithSameNewNumber) {
-      const maxBillValue = Math.max(...accountNumbersEnds);
-      accountNumberSuffix = String(maxBillValue + 1).padStart(5, "0");
+      const maxEndValue = Math.max(...accountNumbersEnds);
+      accountNumberSuffix = String(maxEndValue + 1).padStart(5, "0");
       accountNumber = `${accountNumberPrefix}${accountNumberSuffix}`;
 
       return new Response(JSON.stringify({ accountNumber: accountNumber }));
