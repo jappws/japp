@@ -178,6 +178,7 @@ export const AccountOwner = () => {
             Supprimer
           </Button>,
         ]}
+        className=" bg-red-100"
       >
         <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
           <ProDescriptions.Item valueType="text" title="Attention">
