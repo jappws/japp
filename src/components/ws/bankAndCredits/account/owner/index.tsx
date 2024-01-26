@@ -2,7 +2,7 @@
 
 import { AccountType } from "@/lib/types/index.d";
 import { getHSLColor } from "@/lib/utils";
-import { EditOutlined } from "@ant-design/icons";
+import { CloseOutlined, EditOutlined } from "@ant-design/icons";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, Button, Space, Switch, Tag } from "antd";
@@ -167,7 +167,17 @@ export const AccountOwner = () => {
         loading={isLoading}
         title="Suppression du compte"
         style={{ marginBlockEnd: 16 }}
-        
+        extra={[
+          <Button
+            key="1"
+            icon={<CloseOutlined />}
+            className="shadow-none"
+            onClick={() => {}}
+            danger
+          >
+            Supprimer
+          </Button>,
+        ]}
       >
         <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
           <ProDescriptions.Item valueType="text" title="Attention">
