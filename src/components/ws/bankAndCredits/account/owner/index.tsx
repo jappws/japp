@@ -176,7 +176,6 @@ export const AccountOwner = () => {
             className="shadow-none"
             onClick={() => {}}
             danger
-            type="primary"
           >
             Supprimer
           </Button>,
