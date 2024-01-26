@@ -97,7 +97,7 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
         // requiredMark="optional"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{ date: dayjs() }}
+        initialValues={{  }}
         onFinish={submit}
         disabled={isPending}
       >
