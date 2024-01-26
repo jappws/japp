@@ -174,11 +174,12 @@ export const AccountOwner = () => {
             className="shadow-none"
             onClick={() => {}}
             danger
+            type="primary"
           >
             Supprimer
           </Button>,
         ]}
-        className=" bg-red-100"
+        className=" bg-red-50"
       >
         <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
           <ProDescriptions.Item valueType="text" title="Attention">
