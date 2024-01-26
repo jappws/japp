@@ -2,7 +2,7 @@
 
 import { AccountType } from "@/lib/types/index.d";
 import { getHSLColor } from "@/lib/utils";
-import { CloseOutlined, EditOutlined } from "@ant-design/icons";
+import { CloseOutlined, EditOutlined, WarningFilled, WarningOutlined } from "@ant-design/icons";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, Button, Space, Switch, Tag } from "antd";
@@ -176,6 +176,7 @@ export const AccountOwner = () => {
             className="shadow-none"
             onClick={() => {}}
             danger
+            type="primary"
           >
             Supprimer
           </Button>,
@@ -183,7 +184,7 @@ export const AccountOwner = () => {
         className=" bg-red-50"
       >
         <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
-          <ProDescriptions.Item valueType="text" title="Attention">
+          <ProDescriptions.Item valueType="text" title={<WarningFilled className="text-red-500"/>}>
             Le compte sera définitivement supprimé, y compris ses mouvements et
             opérations associées. Cette action est irréversible et ne peut pas
             être annulée.
