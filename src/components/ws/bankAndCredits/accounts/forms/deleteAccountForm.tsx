@@ -24,6 +24,7 @@ import {
 } from "@ant-design/icons";
 import { AccountType } from "@/lib/types/index.d";
 import { ProCard } from "@ant-design/pro-components";
+import { useRouter } from "next/navigation";
 
 type DeleteAccountFormData = {
   inputConfimation: string;
@@ -42,6 +43,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
 }) => {
   const [form] = Form.useForm();
   const [textToConfirm] = React.useState(`${accountData?.accountNumber}`);
+  const {push}=useRouter()
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
@@ -72,6 +74,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
               queryClient.invalidateQueries({
                 queryKey: ["accounts"],
               });
+              push('/ws/bank_and_credits')
             } else {
               message.error({
                 content: "Ce compte n'existe pas",
