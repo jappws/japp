@@ -120,7 +120,6 @@ export const DeleteAccountForm: React.FC<Props> = ({
           <ProCard
             title=""
             bordered
-            collapsible
             style={{ marginBlockEnd: 16, maxWidth: "100%" }}
           >
             <Row>
@@ -140,8 +139,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
                 >
                   <Input
                     className="bg-white"
-                    placeholder={`Saisir ${textToConfirm}`}
-                    disabled
+                    placeholder={`${textToConfirm}`}
                   />
                 </Form.Item>
               </Col>
