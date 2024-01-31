@@ -114,7 +114,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
         disabled={isPending}
       >
         <div className="bg-white">
-          <div className="flex space-x-3 p-3 bg-red-50 mb-5">
+          <div className="flex space-x-3 p-3 bg-red-50 mb-5 rounded-sm">
             <WarningFilled className="text-red-500 text-6xl" />
             <div className="flex-1">
               Le compte sera définitivement supprimé, y compris ses mouvements
@@ -124,7 +124,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
           </div>
           <Typography.Text>
             Veuillez saisir{" "}
-            <Tag color="error" className="mr-0">
+            <Tag color="error" className="mr-0" bordered={false}>
               {textToConfirm}
             </Tag>{" "}
             pour confirmer la suppression.
