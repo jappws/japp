@@ -1,8 +1,13 @@
 "use client";
 
 import { AccountType } from "@/lib/types/index.d";
-import { getHSLColor } from "@/lib/utils";
-import { CloseOutlined, EditOutlined, WarningFilled, WarningOutlined } from "@ant-design/icons";
+import { cn, getHSLColor } from "@/lib/utils";
+import {
+  CloseOutlined,
+  EditOutlined,
+  WarningFilled,
+  WarningOutlined,
+} from "@ant-design/icons";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { useQuery } from "@tanstack/react-query";
 import { Avatar, Button, Space, Switch, Tag } from "antd";
@@ -13,6 +18,7 @@ import dayjs from "dayjs";
 import { EditAccountForm } from "../../accounts/forms/editAccountForm";
 import { useState } from "react";
 import { BlockOrUnblockForm } from "../forms/blockOrUnblockForm";
+import { DeleteAccountForm } from "../../accounts/forms/deleteAccountForm";
 
 export const AccountOwner = () => {
   const { data: session } = useSession();
@@ -21,6 +27,7 @@ export const AccountOwner = () => {
   const [openEditForm, setOpenEditForm] = useState<boolean>(false);
   const [openBlockOrUnBlockForm, setOpenBlockOrUnBlockForm] =
     useState<boolean>(false);
+  const [openDeleteForm, setOpenDeleteForm] = useState<boolean>(false);
 
   const { data: account, isLoading } = useQuery({
     queryKey: ["account", accountId],
@@ -165,32 +172,39 @@ export const AccountOwner = () => {
           </ProDescriptions.Item>
         </ProDescriptions>
       </ProCard>
-      <ProCard
-        loading={isLoading}
-        title="Suppression du compte"
-        style={{ marginBlockEnd: 16 }}
-        extra={[
-          <Button
-            key="1"
-            icon={<CloseOutlined />}
-            className="shadow-none"
-            onClick={() => {}}
-            danger
-            type="primary"
-          >
-            Supprimer
-          </Button>,
-        ]}
-        className=" bg-red-50"
-      >
-        <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
-          <ProDescriptions.Item valueType="text" title={<WarningFilled className="text-red-500"/>}>
-            Le compte sera définitivement supprimé, y compris ses mouvements et
-            opérations associées. Cette action est irréversible et ne peut pas
-            être annulée.
-          </ProDescriptions.Item>
-        </ProDescriptions>
-      </ProCard>
+      {session?.user.role === "ADMIN" && (
+        <ProCard
+          loading={isLoading}
+          title="Suppression du compte"
+          style={{ marginBlockEnd: 16 }}
+          extra={[
+            <Button
+              key="1"
+              icon={<CloseOutlined />}
+              className="shadow-none"
+              onClick={() => {
+                setOpenDeleteForm(true);
+              }}
+              danger
+              type="primary"
+            >
+              Supprimer
+            </Button>,
+          ]}
+          className={cn("bg-red-50")}
+        >
+          <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
+            <ProDescriptions.Item
+              valueType="text"
+              title={<WarningFilled className="text-red-500" />}
+            >
+              Le compte sera définitivement supprimé, y compris ses mouvements
+              et opérations associées. Cette action est irréversible et ne peut
+              pas être annulée.
+            </ProDescriptions.Item>
+          </ProDescriptions>
+        </ProCard>
+      )}
       <EditAccountForm
         open={openEditForm}
         toggle={setOpenEditForm}
@@ -200,6 +214,11 @@ export const AccountOwner = () => {
         open={openBlockOrUnBlockForm}
         toggle={setOpenBlockOrUnBlockForm}
         user={account?.owner}
+      />
+      <DeleteAccountForm
+        open={openDeleteForm}
+        toggle={setOpenDeleteForm}
+        accountData={account}
       />
     </div>
   );
