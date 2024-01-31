@@ -17,7 +17,11 @@ import {
 } from "antd";
 import axios from "axios";
 import React, { Dispatch, SetStateAction } from "react";
-import { CheckOutlined, LoadingOutlined, WarningFilled } from "@ant-design/icons";
+import {
+  CheckOutlined,
+  LoadingOutlined,
+  WarningFilled,
+} from "@ant-design/icons";
 import { AccountType } from "@/lib/types/index.d";
 import { ProCard } from "@ant-design/pro-components";
 
@@ -37,7 +41,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
   accountData,
 }) => {
   const [form] = Form.useForm();
-  const [textToConfirm]= React.useState(`${accountData?.accountNumber}`)
+  const [textToConfirm] = React.useState(`${accountData?.accountNumber}`);
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
@@ -52,40 +56,40 @@ export const DeleteAccountForm: React.FC<Props> = ({
   });
 
   const submit = (formData: DeleteAccountFormData) => {
-    if(formData.inputConfimation===textToConfirm){
-    mutate(
-      {},
-      {
-        onSuccess: (res) => {
-          if (res.data.message !== "account_not_found") {
-            message.success({
-              content: "Compte supprimé avec succès",
-              icon: <CheckOutlined />,
-            });
+    if (formData.inputConfimation === textToConfirm) {
+      mutate(
+        {},
+        {
+          onSuccess: (res) => {
+            if (res.data.message !== "account_not_found") {
+              message.success({
+                content: "Compte supprimé avec succès",
+                icon: <CheckOutlined />,
+              });
 
-            toggleForm();
+              toggleForm();
 
-            queryClient.invalidateQueries({
-              queryKey: ["accounts"],
-            });
-          } else {
+              queryClient.invalidateQueries({
+                queryKey: ["accounts"],
+              });
+            } else {
+              message.error({
+                content: "Ce compte n'existe pas",
+              });
+            }
+          },
+          onError: () => {
             message.error({
-              content: "Ce compte n'existe pas",
+              content: "Oops! Une erreur s'est produite, Veuillez réessayer!",
             });
-          }
-        },
-        onError: () => {
-          message.error({
-            content: "Oops! Une erreur s'est produite, Veuillez réessayer!",
-          });
-        },
-      }
-    );
-}else{
-    message.error({
+          },
+        }
+      );
+    } else {
+      message.error({
         content: "Oops! Mauvais texte de confirmation",
       });
-}
+    }
   };
 
   return (
@@ -95,7 +99,9 @@ export const DeleteAccountForm: React.FC<Props> = ({
           Suppression du compte
           <Tag className="mr-0 font-bold" color="purple" bordered={false}>
             {accountData?.accountNumber}
-          </Tag>
+          </Tag>{" "}
+          {accountData?.owner?.firstName} {accountData?.owner?.lastName}{" "}
+          {accountData?.owner.surname}
         </Space>
       }
       open={open}
