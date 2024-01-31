@@ -99,8 +99,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
           Suppression du compte
           <Tag className="mr-0 font-bold" color="purple" bordered={false}>
             {accountData?.accountNumber}
-          </Tag>{" "}
-          {`${accountData?.owner?.firstName} ${accountData?.owner?.lastName} ${accountData?.owner.surname}`}
+          </Tag>
         </Space>
       }
       open={open}
@@ -119,7 +118,8 @@ export const DeleteAccountForm: React.FC<Props> = ({
         disabled={isPending}
       >
         <div className="bg-white">
-          <div className="flex space-x-3 p-3 bg-red-50 mb-5 rounded-md">
+          <div>{`${accountData?.owner?.firstName} ${accountData?.owner?.lastName} ${accountData?.owner.surname}`}</div>
+          <div className="flex space-x-3 p-3 bg-red-50 my-5 rounded-md">
             <WarningFilled className="text-red-500 text-6xl" />
             <div className="flex-1">
               Le compte sera définitivement supprimé, y compris ses mouvements
