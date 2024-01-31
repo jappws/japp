@@ -100,8 +100,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
           <Tag className="mr-0 font-bold" color="purple" bordered={false}>
             {accountData?.accountNumber}
           </Tag>{" "}
-          {accountData?.owner?.firstName} {accountData?.owner?.lastName}{" "}
-          {accountData?.owner.surname}
+          {`${accountData?.owner?.firstName} ${accountData?.owner?.lastName} ${accountData?.owner.surname}`}
         </Space>
       }
       open={open}
