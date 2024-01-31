@@ -6,6 +6,7 @@ import {
   Col,
   Form,
   Input,
+  InputNumber,
   Modal,
   Row,
   Space,
@@ -39,7 +40,7 @@ export const DeleteTransactionForm: React.FC<Props> = ({
   transData,
 }) => {
   const [form] = Form.useForm();
-  const [textToConfirm] = React.useState(`${transData?.amount}`);
+  const [textToConfirm] = React.useState<number | undefined>(transData?.amount);
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
@@ -54,7 +55,7 @@ export const DeleteTransactionForm: React.FC<Props> = ({
   });
 
   const submit = (formData: DeleteTransFormData) => {
-    if (formData.inputConfimation === textToConfirm) {
+    if (parseFloat(formData.inputConfimation) === textToConfirm) {
       mutate(
         {},
         {
@@ -145,10 +146,17 @@ export const DeleteTransactionForm: React.FC<Props> = ({
                     },
                   ]}
                 >
-                  <Input
+                    <InputNumber
+                  className=" bg-white w-40"
+                  min={0.00}
+                  step={0.01}
+                  controls={true}
+                  stringMode={true}
+                />
+                  {/* <Input
                     className="bg-white"
                     placeholder={`${textToConfirm}`}
-                  />
+                  /> */}
                 </Form.Item>
               </Col>
             </Row>

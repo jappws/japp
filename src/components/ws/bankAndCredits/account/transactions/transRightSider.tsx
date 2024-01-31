@@ -164,6 +164,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 onClick={()=>setOpenDeleteForm(true)}
                 type="text"
                 className="shadow-none"
+                shape="circle"
               />,
               <ReactToPrint
                 key="2"
@@ -186,6 +187,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 onClick={handleDownloadAndShare}
                 type="text"
                 className="shadow-none"
+                shape="circle"
               />,
             ]}
             style={{ marginBlockEnd: 16 }}
@@ -239,7 +241,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
           <ProCard
             className=" ml"
             title="Autres informations"
-            collapsible
             bordered
             style={{ marginBlockEnd: 16 }}
           >
@@ -252,36 +253,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               </ProDescriptions.Item>
             </ProDescriptions>
           </ProCard>
-
-          {/* <ProCard
-                title="Suppression de l'opération"
-                style={{ marginBlockEnd: 16 }}
-                extra={[
-                  <Button
-                    key="1"
-                    icon={<CloseOutlined />}
-                    className="shadow-none"
-                    onClick={() => {
-                      setOpenDeleteForm(true);
-                    }}
-                    danger
-                    type="primary"
-                  >
-                    Supprimer
-                  </Button>,
-                ]}
-                className={cn("bg-red-50")}
-              >
-                <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
-                  <ProDescriptions.Item
-                    valueType="text"
-                    title={<WarningFilled className="text-red-500" />}
-                  >
-                    Cette action est irréversible et ne peut pas être annulée
-                    une fois effectuée.
-                  </ProDescriptions.Item>
-                </ProDescriptions>
-              </ProCard> */}
 
           {/* To print */}
           <div className="hidden">
