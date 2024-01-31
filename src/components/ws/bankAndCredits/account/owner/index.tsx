@@ -200,7 +200,7 @@ export const AccountOwner = () => {
             >
               Le compte sera définitivement supprimé, y compris ses mouvements
               et opérations associées. Cette action est irréversible et ne peut
-              pas être annulée.
+              pas être annulée une fois effectuée.
             </ProDescriptions.Item>
           </ProDescriptions>
         </ProCard>
