@@ -114,8 +114,8 @@ export const DeleteAccountForm: React.FC<Props> = ({
         disabled={isPending}
       >
         <div className="bg-white">
-          <div className="flex space-x-3 bg-red-50">
-            <WarningFilled className="text-red-500" />
+          <div className="flex space-x-3 p-3 bg-red-50 mb-5">
+            <WarningFilled className="text-red-500 text-6xl" />
             <div className="flex-1">
               Le compte sera définitivement supprimé, y compris ses mouvements
               et opérations associées. Cette action est irréversible et ne peut
