@@ -17,7 +17,7 @@ import {
 } from "antd";
 import axios from "axios";
 import React, { Dispatch, SetStateAction } from "react";
-import { CheckOutlined, LoadingOutlined } from "@ant-design/icons";
+import { CheckOutlined, LoadingOutlined, WarningFilled } from "@ant-design/icons";
 import { AccountType } from "@/lib/types/index.d";
 import { ProCard } from "@ant-design/pro-components";
 
@@ -109,14 +109,26 @@ export const DeleteAccountForm: React.FC<Props> = ({
         layout="horizontal"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{  }}
+        initialValues={{}}
         onFinish={submit}
         disabled={isPending}
       >
         <div className="bg-white">
-            <Typography.Text>
-                Veuillez saisir <Tag color="error" className="mr-0">{textToConfirm}</Tag> pour confirmer la suppression.
-            </Typography.Text>
+          <div className="flex space-x-3 bg-red-50">
+            <WarningFilled className="text-red-500" />
+            <div className="flex-1">
+              Le compte sera définitivement supprimé, y compris ses mouvements
+              et opérations associées. Cette action est irréversible et ne peut
+              pas être annulée une fois effectuée.
+            </div>
+          </div>
+          <Typography.Text>
+            Veuillez saisir{" "}
+            <Tag color="error" className="mr-0">
+              {textToConfirm}
+            </Tag>{" "}
+            pour confirmer la suppression.
+          </Typography.Text>
           <ProCard
             title=""
             bordered
@@ -165,7 +177,7 @@ export const DeleteAccountForm: React.FC<Props> = ({
                 className="shadow-none"
                 icon={isPending ? <LoadingOutlined /> : undefined}
               >
-                Supprimer
+                Confirmer
               </Button>
             </Space>
           </div>
