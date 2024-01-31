@@ -252,6 +252,36 @@ export const SelectedTransRightSider: React.FC<Props> = ({
             </ProDescriptions>
           </ProCard>
 
+          <ProCard
+                title="Suppression de l'opération"
+                style={{ marginBlockEnd: 16 }}
+                extra={[
+                  <Button
+                    key="1"
+                    icon={<CloseOutlined />}
+                    className="shadow-none"
+                    onClick={() => {
+                      setOpenDeleteForm(true);
+                    }}
+                    danger
+                    type="primary"
+                  >
+                    Supprimer
+                  </Button>,
+                ]}
+                className={cn("bg-red-50")}
+              >
+                <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
+                  <ProDescriptions.Item
+                    valueType="text"
+                    title={<WarningFilled className="text-red-500" />}
+                  >
+                    Cette action est irréversible et ne peut pas être annulée
+                    une fois effectuée.
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              </ProCard>
+
           {/* To print */}
           <div className="hidden">
             <div ref={refComponentToPrint} className="">
@@ -330,35 +360,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
-              <ProCard
-                title="Suppression de l'opération"
-                style={{ marginBlockEnd: 16 }}
-                extra={[
-                  <Button
-                    key="1"
-                    icon={<CloseOutlined />}
-                    className="shadow-none"
-                    onClick={() => {
-                      setOpenDeleteForm(true);
-                    }}
-                    danger
-                    type="primary"
-                  >
-                    Supprimer
-                  </Button>,
-                ]}
-                className={cn("bg-red-50")}
-              >
-                <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
-                  <ProDescriptions.Item
-                    valueType="text"
-                    title={<WarningFilled className="text-red-500" />}
-                  >
-                    Cette action est irréversible et ne peut pas être annulée
-                    une fois effectuée.
-                  </ProDescriptions.Item>
-                </ProDescriptions>
-              </ProCard>
+              
             </div>
             <DeleteTransactionForm open={openDeleteForm} toggle={setOpenDeleteForm} transData={data}/>
           </div>
