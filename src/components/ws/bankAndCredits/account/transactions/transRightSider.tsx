@@ -3,6 +3,7 @@
 import {
   CheckOutlined,
   CloseOutlined,
+  DeleteOutlined,
   FilePdfOutlined,
   PrinterOutlined,
   ShareAltOutlined,
@@ -157,8 +158,15 @@ export const SelectedTransRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              <ReactToPrint
+              <Button
                 key="1"
+                icon={<DeleteOutlined />}
+                onClick={()=>setOpenDeleteForm(true)}
+                type="text"
+                className="shadow-none"
+              />,
+              <ReactToPrint
+                key="2"
                 trigger={() => (
                   <Tooltip title="Imprimer" placement="bottom">
                     <Button
@@ -172,13 +180,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 content={() => refComponentToPrint.current}
                 documentTitle={`M${data?.id}-${account?.accountNumber}`}
               />,
-              // <Button
-              //   key="2"
-              //   icon={<FilePdfOutlined />}
-              //   onClick={handleDownloadPdf}
-              //   type="text"
-              //   className="shadow-none"
-              // />,
               <Button
                 key="3"
                 icon={<ShareAltOutlined />}
@@ -252,7 +253,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
             </ProDescriptions>
           </ProCard>
 
-          <ProCard
+          {/* <ProCard
                 title="Suppression de l'opération"
                 style={{ marginBlockEnd: 16 }}
                 extra={[
@@ -280,7 +281,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                     une fois effectuée.
                   </ProDescriptions.Item>
                 </ProDescriptions>
-              </ProCard>
+              </ProCard> */}
 
           {/* To print */}
           <div className="hidden">
