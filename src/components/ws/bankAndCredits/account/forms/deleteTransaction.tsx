@@ -55,7 +55,7 @@ export const DeleteTransactionForm: React.FC<Props> = ({
   });
 
   const submit = (formData: DeleteTransFormData) => {
-    if (parseFloat(formData.inputConfimation) === textToConfirm) {
+    if (Number(formData.inputConfimation) === textToConfirm) {
       mutate(
         {},
         {
