@@ -6,6 +6,7 @@ import {
   FilePdfOutlined,
   PrinterOutlined,
   ShareAltOutlined,
+  WarningFilled,
 } from "@ant-design/icons";
 import {
   Layout,
@@ -20,18 +21,19 @@ import {
   Image,
   Typography,
 } from "antd";
-import { Dispatch, SetStateAction, useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 import { AccountType, CompanyType, TransactionType } from "@/lib/types/index.d";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";
-import { getInOrOutType } from "@/lib/utils";
+import { cn, getInOrOutType } from "@/lib/utils";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import { isNull } from "lodash";
 import { Share } from "@capacitor/share";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { DeleteTransactionForm } from "../forms/deleteTransaction";
 
 const { confirm } = Modal;
 
@@ -53,6 +55,8 @@ export const SelectedTransRightSider: React.FC<Props> = ({
   } = theme.useToken();
 
   const refComponentToPrint = useRef(null);
+
+  const [openDeleteForm, setOpenDeleteForm]= React.useState<boolean>(false)
 
   const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: ["company"],
@@ -259,13 +263,15 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   width={64}
                   preview={false}
                 />{" "}
-              <div className="flex-1"/>
-            <Typography.Text className="uppercase">{company?.name}</Typography.Text>
+                <div className="flex-1" />
+                <Typography.Text className="uppercase">
+                  {company?.name}
+                </Typography.Text>
               </div>
               <ProCard
                 title={`Mouvement`}
                 bordered
-                style={{ marginBlockEnd: 16, marginBlockStart:32 }}
+                style={{ marginBlockEnd: 16, marginBlockStart: 32 }}
                 extra={[
                   <Tag key="1" className="mr-0 uppercase" bordered={false}>
                     {getInOrOutType(data?.type)}
@@ -324,7 +330,37 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
+              <ProCard
+                title="Suppression de l'opération"
+                style={{ marginBlockEnd: 16 }}
+                extra={[
+                  <Button
+                    key="1"
+                    icon={<CloseOutlined />}
+                    className="shadow-none"
+                    onClick={() => {
+                      setOpenDeleteForm(true);
+                    }}
+                    danger
+                    type="primary"
+                  >
+                    Supprimer
+                  </Button>,
+                ]}
+                className={cn("bg-red-50")}
+              >
+                <ProDescriptions column={{ sm: 1, md: 2 }} emptyText="">
+                  <ProDescriptions.Item
+                    valueType="text"
+                    title={<WarningFilled className="text-red-500" />}
+                  >
+                    Cette action est irréversible et ne peut pas être annulée
+                    une fois effectuée.
+                  </ProDescriptions.Item>
+                </ProDescriptions>
+              </ProCard>
             </div>
+            <DeleteTransactionForm open={openDeleteForm} toggle={setOpenDeleteForm} transData={data}/>
           </div>
         </Layout.Content>
       </Layout>

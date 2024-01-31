@@ -189,7 +189,7 @@ export const AccountOwner = () => {
               type="primary"
             >
               Supprimer
-            </Button>,
+            </Button>
           ]}
           className={cn("bg-red-50")}
         >
