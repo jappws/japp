@@ -2,17 +2,8 @@ import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { isNull } from "lodash";
 
-// type BodyRequestType = {
-//   date: Date;
-//   type: TransferTypeType;
-//   amount: number;
-//   goldQuantity?: string;
-//   sender: string;
-//   message?: string;
-//   operatorId: number;
-// };
 
-export async function POST(
+export async function DELETE(
   request: Request,
   { params }: { params: { partnerId: string; transferId: string } }
 ) {
