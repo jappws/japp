@@ -80,15 +80,15 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
+              <Tooltip  key="1" title="Supprimer" placement="bottom">
               <Button
-                key="1"
                 icon={<DeleteOutlined />}
                 onClick={()=>setOpenDeleteForm(true)}
                 type="text"
                 className="shadow-none"
                 shape="circle"
                 danger
-              />,
+              /></Tooltip>,
               <ReactToPrint
                 key="2"
                 trigger={() => (

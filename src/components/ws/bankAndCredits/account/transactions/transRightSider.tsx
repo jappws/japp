@@ -57,7 +57,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
 
   const refComponentToPrint = useRef(null);
 
-  const [openDeleteForm, setOpenDeleteForm]= React.useState<boolean>(false)
+  const [openDeleteForm, setOpenDeleteForm] = React.useState<boolean>(false);
 
   const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: ["company"],
@@ -158,14 +158,16 @@ export const SelectedTransRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              <Button
-                key="1"
-                icon={<DeleteOutlined />}
-                onClick={()=>setOpenDeleteForm(true)}
-                type="text"
-                className="shadow-none"
-                shape="circle"
-              />,
+              <Tooltip key="1" title="Supprimer" placement="bottom">
+                <Button
+                  icon={<DeleteOutlined />}
+                  onClick={() => setOpenDeleteForm(true)}
+                  type="text"
+                  className="shadow-none"
+                  shape="circle"
+                  danger
+                />
+              </Tooltip>,
               <ReactToPrint
                 key="2"
                 trigger={() => (
@@ -174,21 +176,22 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                       className="shadow-none"
                       icon={<PrinterOutlined />}
                       shape="circle"
-                      type="text"
+                      type="link"
                     />
                   </Tooltip>
                 )}
                 content={() => refComponentToPrint.current}
                 documentTitle={`M${data?.id}-${account?.accountNumber}`}
               />,
-              <Button
-                key="3"
-                icon={<ShareAltOutlined />}
-                onClick={handleDownloadAndShare}
-                type="text"
-                className="shadow-none"
-                shape="circle"
-              />,
+              <Tooltip key="3" title="Partager" placement="bottom">
+                <Button
+                  icon={<ShareAltOutlined />}
+                  onClick={handleDownloadAndShare}
+                  type="text"
+                  className="shadow-none"
+                  shape="circle"
+                />
+              </Tooltip>,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
@@ -332,9 +335,12 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   </ProDescriptions.Item>
                 </ProDescriptions>
               </ProCard>
-              
             </div>
-            <DeleteTransactionForm open={openDeleteForm} toggle={setOpenDeleteForm} transData={data}/>
+            <DeleteTransactionForm
+              open={openDeleteForm}
+              toggle={setOpenDeleteForm}
+              transData={data}
+            />
           </div>
         </Layout.Content>
       </Layout>
