@@ -87,6 +87,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                 type="text"
                 className="shadow-none"
                 shape="circle"
+                danger
               />,
               <ReactToPrint
                 key="2"
