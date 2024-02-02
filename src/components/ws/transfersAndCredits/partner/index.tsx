@@ -21,6 +21,7 @@ import {
   Image,
   Typography,
   Avatar,
+  Tooltip,
 } from "antd";
 import { TransfersList } from "./transactions/list";
 import { GoldTransferForm } from "./forms/goldTransferForm";
@@ -36,6 +37,7 @@ import ReactToPrint from "react-to-print";
 import dayjs from "dayjs";
 import { getHSLColor } from "@/lib/utils";
 import { TransfersListToPrint } from "./transactions/listToPrint";
+import { DeletePartnerForm } from "../partners/forms/deletePartnerForm";
 
 export const PartnerClientPage = () => {
   const [openMoneyTransferForm, setOpenMoneyTransferForm] =
@@ -43,6 +45,8 @@ export const PartnerClientPage = () => {
   const [openGoldTransferForm, setOpenGoldTransferForm] =
     useState<boolean>(false);
   const [openEditParterForm, setOpenEditPartnerForm] = useState<boolean>(false);
+  const [openDeletePartnerForm, setOpenDeletePartnerForm] =
+    useState<boolean>(false);
 
   const { data: session } = useSession();
   const { partnerId } = useParams();
@@ -74,15 +78,32 @@ export const PartnerClientPage = () => {
         title={`${data?.partner?.code ?? ""}`.toUpperCase()}
         subTitle={
           <Space>
-          <Button
-            type="text"
-            shape="circle"
-            icon={<EditOutlined />}
-            onClick={() => {
-              setOpenEditPartnerForm(true);
-            }}
-          />
-          <Button type="text" shape="circle" icon={<DeleteOutlined/>} onClick={()=>{}}/>
+            <Tooltip
+              title={`Modifier ${data?.partner?.code ?? ""}`}
+              placement="bottom"
+            >
+              <Button
+                type="text"
+                shape="circle"
+                icon={<EditOutlined />}
+                onClick={() => {
+                  setOpenEditPartnerForm(true);
+                }}
+              />
+            </Tooltip>
+            <Tooltip
+              title={`Supprimer ${data?.partner?.code ?? ""}`}
+              placement="bottom"
+            >
+              <Button
+                type="text"
+                shape="circle"
+                icon={<DeleteOutlined />}
+                onClick={() => {
+                  setOpenDeletePartnerForm(true);
+                }}
+              />
+            </Tooltip>
           </Space>
         }
         fixedHeader
@@ -235,6 +256,11 @@ export const PartnerClientPage = () => {
               </div>
             </div>
           </div>
+          <DeletePartnerForm
+            open={openDeletePartnerForm}
+            toggle={setOpenDeletePartnerForm}
+            partnerData={data?.partner}
+          />
         </div>
       </PageContainer>
     </div>
