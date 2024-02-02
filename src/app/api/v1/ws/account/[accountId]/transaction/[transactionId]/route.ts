@@ -65,12 +65,12 @@ export async function DELETE(
           });
           // balanceAfter = account.balance;
 
-          const newTransaction = await tx.transaction.delete({
+          const deletedTransaction = await tx.transaction.delete({
             where: { id: Number(params.transactionId) },
           });
           res = {
             res_message: "Transaction is deleted succefully",
-            ...newTransaction,
+            ...deletedTransaction,
           };
         });
 

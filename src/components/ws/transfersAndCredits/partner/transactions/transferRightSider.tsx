@@ -3,6 +3,7 @@
 import {
   CheckOutlined,
   CloseOutlined,
+  DeleteOutlined,
   PrinterOutlined,
   SendOutlined,
   TransactionOutlined,
@@ -17,12 +18,13 @@ import {
   Tooltip,
   Avatar,
 } from "antd";
-import { Dispatch, SetStateAction, useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef } from "react";
 import { TransferType } from "@/lib/types/index.d";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import { getTransferTitle } from "@/lib/utils";
 import ReactToPrint from "react-to-print";
+import { DeleteTransferForm } from "../forms/deleteTransferForm";
 
 const { confirm } = Modal;
 
@@ -42,6 +44,8 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
   } = theme.useToken();
 
   const refComponentToPrint = useRef(null);
+  const [openDeleteForm, setOpenDeleteForm]= React.useState<boolean>(false)
+
 
   return (
     <Drawer
@@ -76,8 +80,16 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              <ReactToPrint
+              <Button
                 key="1"
+                icon={<DeleteOutlined />}
+                onClick={()=>setOpenDeleteForm(true)}
+                type="text"
+                className="shadow-none"
+                shape="circle"
+              />,
+              <ReactToPrint
+                key="2"
                 trigger={() => (
                   <Tooltip title="Imprimer" placement="bottom">
                     <Button
@@ -223,6 +235,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                 </ProDescriptions>
               </ProCard>
             </div>
+            <DeleteTransferForm open={openDeleteForm} toggle={setOpenDeleteForm} transData={data}/>
           </div>
         </Layout.Content>
       </Layout>
