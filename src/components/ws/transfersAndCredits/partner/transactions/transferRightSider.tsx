@@ -235,7 +235,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                 </ProDescriptions>
               </ProCard>
             </div>
-            <DeleteTransferForm open={openDeleteForm} toggle={setOpenDeleteForm} transData={data}/>
+            <DeleteTransferForm open={openDeleteForm} toggle={setOpenDeleteForm} transferData={data}/>
           </div>
         </Layout.Content>
       </Layout>
