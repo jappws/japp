@@ -375,7 +375,7 @@ export const NewAccountForm: React.FC<Props> = ({ open, toggle }) => {
                   label="Téléphone"
                   rules={[
                     {
-                      required: false,
+                      required: true,
                       message: "Le numéro de téléphone est obligatoire",
                     },
                     { validator: phoneValidator },
