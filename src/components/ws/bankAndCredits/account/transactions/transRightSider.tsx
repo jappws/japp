@@ -165,7 +165,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   type="text"
                   className="shadow-none"
                   shape="circle"
-                  danger
+                  
                 />
               </Tooltip>,
               <ReactToPrint
@@ -176,7 +176,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                       className="shadow-none"
                       icon={<PrinterOutlined />}
                       shape="circle"
-                      type="link"
+                      type="text"
                     />
                   </Tooltip>
                 )}
