@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  DeleteOutlined,
   EditOutlined,
   GoldOutlined,
   PrinterOutlined,
@@ -72,6 +73,7 @@ export const PartnerClientPage = () => {
         loading={isLoading}
         title={`${data?.partner?.code ?? ""}`.toUpperCase()}
         subTitle={
+          <Space>
           <Button
             type="text"
             shape="circle"
@@ -80,6 +82,8 @@ export const PartnerClientPage = () => {
               setOpenEditPartnerForm(true);
             }}
           />
+          <Button type="text" shape="circle" icon={<DeleteOutlined/>} onClick={()=>{}}/>
+          </Space>
         }
         fixedHeader
         breadcrumbRender={() => (

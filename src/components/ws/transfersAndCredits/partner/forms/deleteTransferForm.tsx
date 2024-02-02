@@ -93,7 +93,7 @@ export const DeleteTransferForm: React.FC<Props> = ({
     <Modal
       title={
         <Space className="">
-          Suppression d&apos;une transaction de transfert
+          Suppression de la transaction
         </Space>
       }
       open={open}
