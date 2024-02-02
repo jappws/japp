@@ -50,7 +50,7 @@ export async function PUT(
 }
 
 
-//Delete client account API
+//Delete Partner account API
 export async function DELETE(
   request: Request,
   { params }: { params: { partnerId: string } }
