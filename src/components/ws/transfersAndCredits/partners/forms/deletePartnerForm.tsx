@@ -61,18 +61,18 @@ export const DeletePartnerForm: React.FC<Props> = ({
         {},
         {
           onSuccess: (res) => {
-            if (res.data.message !== "account_not_found") {
+            if (res.data.message !== "partner_not_found") {
               message.success({
-                content: "Compte supprimé avec succès",
+                content: "Partenaire supprimé avec succès",
                 icon: <CheckOutlined />,
               });
 
               toggleForm();
 
               queryClient.invalidateQueries({
-                queryKey: ["accounts"],
+                queryKey: ["partners"],
               });
-              push('/ws/bank_and_credits')
+              push('/ws/transfers_and_credits')
             } else {
               message.error({
                 content: "Ce compte n'existe pas",
