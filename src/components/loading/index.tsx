@@ -1,7 +1,7 @@
 import "./loading.css";
 export const LoadingSkeleton: React.FC = () => {
   return (
-    <div id="loader-container" className="min-h-[200px] flex justify-center items-center">
+    <div id="loader-container" className="">
       <svg
         id="loader"
         width="539"
