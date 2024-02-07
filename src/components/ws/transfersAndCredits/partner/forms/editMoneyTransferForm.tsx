@@ -63,7 +63,6 @@ export const EditMoneyTransferForm: React.FC<Props> = ({
   const submit = (formData: MoneyTransferFormData) => {
     const data = {
       date: formData.date,
-      type: "MONEY_TRANSFER",
       amount: parseFloat(formData.amount),
       goldQuantity: "",
       sender: formData.sender,
@@ -106,7 +105,12 @@ export const EditMoneyTransferForm: React.FC<Props> = ({
         // requiredMark="optional"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{ ...transferData }}
+        initialValues={{
+          amount: transferData?.amount,
+          sender: transferData?.sender,
+          date: dayjs(transferData?.date),
+          message: transferData?.message,
+        }}
         onFinish={submit}
         disabled={isPending}
       >

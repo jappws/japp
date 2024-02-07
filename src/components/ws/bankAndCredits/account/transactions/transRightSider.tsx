@@ -5,7 +5,7 @@ import {
   CloseOutlined,
   DeleteOutlined,
   EditOutlined,
-  EllipsisOutlined,
+  MoreOutlined,
   PrinterOutlined,
   ShareAltOutlined,
 } from "@ant-design/icons";
@@ -167,15 +167,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              // <Tooltip key="1" title="Supprimer" placement="bottom">
-              //   <Button
-              //     icon={<DeleteOutlined />}
-              //     onClick={() => setOpenDeleteForm(true)}
-              //     type="text"
-              //     className="shadow-none"
-              //     shape="circle"
-              //   />
-              // </Tooltip>,
               <ReactToPrint
                 key="1"
                 trigger={() => (
@@ -245,7 +236,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   type="text"
                   onClick={() => {}}
                   shape="circle"
-                  icon={<EllipsisOutlined />}
+                  icon={<MoreOutlined />}
                 />
               </Dropdown>,
             ]}
