@@ -199,6 +199,11 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                       key: "edit",
                       label: "Modifier",
                       icon: <EditOutlined />,
+                      disabled:
+                        data?.type === "TRANSFER" ||
+                        data?.type === "RECEIPT_OF_TRANSFER"
+                          ? true
+                          : false,
                     },
                     {
                       type: "divider",
@@ -208,6 +213,11 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                       label: "Supprimer",
                       icon: <DeleteOutlined />,
                       danger: true,
+                      disabled:
+                      data?.type === "TRANSFER" ||
+                      data?.type === "RECEIPT_OF_TRANSFER"
+                        ? true
+                        : false,
                     },
                   ],
                   onClick: ({ key }) => {
