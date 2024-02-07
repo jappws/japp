@@ -1,9 +1,5 @@
 #loader-container {
-    max-width: 220px;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    @apply min-h-[220px] flex justify-center items-center;
 }
 
 #loader path:nth-child(2) {
