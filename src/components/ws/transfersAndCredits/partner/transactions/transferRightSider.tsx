@@ -5,7 +5,7 @@ import {
   CloseOutlined,
   DeleteOutlined,
   EditOutlined,
-  EllipsisOutlined,
+  MoreOutlined,
   PrinterOutlined,
   SendOutlined,
   TransactionOutlined,
@@ -89,17 +89,8 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              // <Tooltip  key="1" title="Supprimer" placement="bottom">
-              // <Button
-              //   icon={<DeleteOutlined />}
-              //   onClick={()=>setOpenDeleteForm(true)}
-              //   type="text"
-              //   className="shadow-none"
-              //   shape="circle"
-
-              // /></Tooltip>,
               <ReactToPrint
-                key="2"
+                key="1"
                 trigger={() => (
                   <Tooltip title="Imprimer" placement="bottom">
                     <Button
@@ -114,7 +105,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                 documentTitle={`T${data?.id}-${dayjs().year()}`}
               />,
               <Dropdown
-                key="3"
+                key="2"
                 menu={{
                   items: [
                     {
@@ -152,7 +143,7 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                   type="text"
                   onClick={() => {}}
                   shape="circle"
-                  icon={<EllipsisOutlined />}
+                  icon={<MoreOutlined />}
                 />
               </Dropdown>,
             ]}
