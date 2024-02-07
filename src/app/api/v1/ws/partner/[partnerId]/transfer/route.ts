@@ -21,39 +21,55 @@ export async function POST(
     const body: BodyRequestType = await request.json();
 
     let balanceAfter: number = 0;
+    let res: any;
 
     if (body.type === "GOLD_TRANSFER") {
-      const account = await prisma.partner.update({
-        where: { id: Number(params.partnerId) },
-        data: {
-          balance: { increment: body.amount },
-        },
-        select: { balance: true },
+      await prisma.$transaction(async (tx) => {
+        const account = await tx.partner.update({
+          where: { id: Number(params.partnerId) },
+          data: {
+            balance: { increment: body.amount },
+          },
+          select: { balance: true },
+        });
+        balanceAfter = account.balance;
+
+        const newTransaction = await tx.transfer.create({
+          data: {
+            ...body,
+            balanceAfter: balanceAfter,
+            partnerId: Number(params.partnerId),
+          },
+        });
+        res = {
+          ...newTransaction,
+        };
       });
-      balanceAfter = account.balance;
+      return new Response(JSON.stringify(res));
     } else if (body.type === "MONEY_TRANSFER") {
-      const account = await prisma.partner.update({
-        where: { id: Number(params.partnerId) },
-        data: {
-          balance: { decrement: body.amount },
-        },
-        select: { balance: true },
+      await prisma.$transaction(async (tx) => {
+        const account = await tx.partner.update({
+          where: { id: Number(params.partnerId) },
+          data: {
+            balance: { decrement: body.amount },
+          },
+          select: { balance: true },
+        });
+        balanceAfter = account.balance;
+
+        const newTransaction = await tx.transfer.create({
+          data: {
+            ...body,
+            balanceAfter: balanceAfter,
+            partnerId: Number(params.partnerId),
+          },
+        });
+        res = {
+          ...newTransaction,
+        };
       });
-      balanceAfter = account.balance;
+      return new Response(JSON.stringify(res));
     }
-
-    const newTransaction = await prisma.transfer.create({
-      data: {
-        ...body,
-        balanceAfter: balanceAfter,
-        partnerId: Number(params.partnerId),
-      },
-    });
-    const res = {
-      ...newTransaction,
-    };
-
-    return new Response(JSON.stringify(res));
   } catch (e: any) {
     //Tracking prisma error
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

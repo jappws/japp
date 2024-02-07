@@ -115,7 +115,7 @@ export const EditOutOrDebitForm: React.FC<Props> = ({
   return (
     <Modal
       centered
-      title={<div className="">Sortie (Décaissement)</div>}
+      title={<div className="">Modification sortie (Décaissement)</div>}
       open={open}
       footer={null}
       onCancel={toggleForm}

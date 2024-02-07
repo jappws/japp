@@ -4,6 +4,8 @@ import {
   CheckOutlined,
   CloseOutlined,
   DeleteOutlined,
+  EditOutlined,
+  EllipsisOutlined,
   PrinterOutlined,
   SendOutlined,
   TransactionOutlined,
@@ -17,6 +19,7 @@ import {
   Drawer,
   Tooltip,
   Avatar,
+  Dropdown,
 } from "antd";
 import React, { Dispatch, SetStateAction, useRef } from "react";
 import { TransferType } from "@/lib/types/index.d";
@@ -25,6 +28,8 @@ import dayjs from "dayjs";
 import { getTransferTitle } from "@/lib/utils";
 import ReactToPrint from "react-to-print";
 import { DeleteTransferForm } from "../forms/deleteTransferForm";
+import { EditGoldTransferForm } from "../forms/editGoldTransferForm";
+import { EditMoneyTransferForm } from "../forms/editMoneyTransferForm";
 
 const { confirm } = Modal;
 
@@ -44,8 +49,12 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
   } = theme.useToken();
 
   const refComponentToPrint = useRef(null);
-  const [openDeleteForm, setOpenDeleteForm]= React.useState<boolean>(false)
+  const [openDeleteForm, setOpenDeleteForm] = React.useState<boolean>(false);
 
+  const [openEditGoldTransferForm, setOpenEditGoldTransferForm] =
+    React.useState<boolean>(false);
+  const [openEditMoneyTransferForm, setOpenEditMoneyTransferForm] =
+    React.useState<boolean>(false);
 
   return (
     <Drawer
@@ -80,15 +89,15 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              <Tooltip  key="1" title="Supprimer" placement="bottom">
-              <Button
-                icon={<DeleteOutlined />}
-                onClick={()=>setOpenDeleteForm(true)}
-                type="text"
-                className="shadow-none"
-                shape="circle"
-                
-              /></Tooltip>,
+              // <Tooltip  key="1" title="Supprimer" placement="bottom">
+              // <Button
+              //   icon={<DeleteOutlined />}
+              //   onClick={()=>setOpenDeleteForm(true)}
+              //   type="text"
+              //   className="shadow-none"
+              //   shape="circle"
+
+              // /></Tooltip>,
               <ReactToPrint
                 key="2"
                 trigger={() => (
@@ -104,6 +113,48 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                 content={() => refComponentToPrint.current}
                 documentTitle={`T${data?.id}-${dayjs().year()}`}
               />,
+              <Dropdown
+                key="3"
+                menu={{
+                  items: [
+                    {
+                      key: "edit",
+                      label: "Modifier",
+                      icon: <EditOutlined />,
+                    },
+                    {
+                      type: "divider",
+                    },
+                    {
+                      key: "delete",
+                      label: "Supprimer",
+                      icon: <DeleteOutlined />,
+                      danger: true,
+                    },
+                  ],
+                  onClick: ({ key }) => {
+                    if (key === "edit") {
+                      if (data?.type === "GOLD_TRANSFER") {
+                        setOpenEditGoldTransferForm(true);
+                      } else if (data?.type === "MONEY_TRANSFER") {
+                        setOpenEditMoneyTransferForm(true);
+                      }
+                    } else if (key === "delete") {
+                      setOpenDeleteForm(true);
+                    }
+                  },
+                }}
+                trigger={["hover"]}
+                destroyPopupOnHide={true}
+                // placement="bottomRight"
+              >
+                <Button
+                  type="text"
+                  onClick={() => {}}
+                  shape="circle"
+                  icon={<EllipsisOutlined />}
+                />
+              </Dropdown>,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
@@ -236,7 +287,21 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
                 </ProDescriptions>
               </ProCard>
             </div>
-            <DeleteTransferForm open={openDeleteForm} toggle={setOpenDeleteForm} transferData={data}/>
+            <DeleteTransferForm
+              open={openDeleteForm}
+              toggle={setOpenDeleteForm}
+              transferData={data}
+            />
+            <EditGoldTransferForm
+              open={openEditGoldTransferForm}
+              toggle={setOpenEditGoldTransferForm}
+              transferData={data}
+            />
+            <EditMoneyTransferForm
+              open={openEditMoneyTransferForm}
+              toggle={setOpenEditMoneyTransferForm}
+              transferData={data}
+            />
           </div>
         </Layout.Content>
       </Layout>

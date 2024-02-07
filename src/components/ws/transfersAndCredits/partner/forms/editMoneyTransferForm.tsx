@@ -9,26 +9,24 @@ import {
   InputNumber,
   Layout,
   Modal,
-  Select,
   Space,
   message,
 } from "antd";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
+import dayjs from "dayjs";
 import {
   CheckOutlined,
   DollarOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { TransactionType, TransactionTypeType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
-import { getTransactionTitle } from "@/lib/utils";
+import { TransferType } from "@/lib/types";
 
-type CreditFormData = {
-  type: TransactionTypeType;
+type MoneyTransferFormData = {
   amount: string;
-  goldQuantity: string;
+  sender: string;
   date: string;
   message?: string;
 };
@@ -36,41 +34,40 @@ type CreditFormData = {
 type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
-  transactionData?: TransactionType;
+  transferData?: TransferType;
 };
 
-export const EditInOrCreditForm: React.FC<Props> = ({
+export const EditMoneyTransferForm: React.FC<Props> = ({
   open,
   toggle,
-  transactionData,
+  transferData,
 }) => {
   const [form] = Form.useForm();
-  const { accountId } = useParams();
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
     form.resetFields();
   };
-
+  const { partnerId } = useParams();
   const { data: session } = useSession();
   const queryClient = useQueryClient();
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
       axios.put(
-        `/api/v1/ws/account/${accountId}/transaction/${transactionData?.id}`,
+        `/api/v1/ws/partner/${partnerId}/transfer/${transferData?.id}`,
         data
       ),
   });
 
-  const submit = (formData: CreditFormData) => {
+  const submit = (formData: MoneyTransferFormData) => {
     const data = {
-      title: getTransactionTitle(formData.type),
-      amount: parseFloat(formData.amount),
-      //   type: formData.type,
-      goldQuantity: formData.goldQuantity,
-      message: formData.message,
       date: formData.date,
+      type: "MONEY_TRANSFER",
+      amount: parseFloat(formData.amount),
+      goldQuantity: "",
+      sender: formData.sender,
+      message: formData.message,
       operatorId: session?.user.id,
     };
     mutate(data, {
@@ -82,10 +79,7 @@ export const EditInOrCreditForm: React.FC<Props> = ({
           });
           form.resetFields();
           toggleForm();
-          queryClient.invalidateQueries({
-            queryKey: ["transactions", accountId],
-          });
-          queryClient.invalidateQueries({ queryKey: ["account", accountId] });
+          queryClient.invalidateQueries({ queryKey: ["partner", partnerId] });
         }
       },
       onError: () => {
@@ -99,7 +93,7 @@ export const EditInOrCreditForm: React.FC<Props> = ({
   return (
     <Modal
       centered
-      title={<div className="">Modification de l&apos;entrée (Encaissement)</div>}
+      title={<div className="">Modification du transfert d&apos;argent</div>}
       open={open}
       footer={null}
       onCancel={toggleForm}
@@ -112,32 +106,26 @@ export const EditInOrCreditForm: React.FC<Props> = ({
         // requiredMark="optional"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{ ...transactionData }}
+        initialValues={{ ...transferData }}
         onFinish={submit}
         disabled={isPending}
       >
         <Layout className="bg-white">
           <Layout.Content>
             <Form.Item
-              name="type"
-              label="Type d'entrée"
-              rules={[{ required: true }]}
+              name="sender"
+              label="Expéditeur"
+              rules={[
+                {
+                  required: true,
+                },
+                {
+                  whitespace: true,
+                  message: "Pas uniquement des espaces vide svp!",
+                },
+              ]}
             >
-              <Select
-                disabled
-                bordered={false}
-                showSearch
-                placeholder="Sélectionner un type"
-                optionFilterProp="children"
-                filterOption={(input, option) =>
-                  `${option?.label}`.toLowerCase().includes(input.toLowerCase())
-                }
-                menuItemSelectedIcon={<CheckOutlined />}
-                options={[
-                  { value: "DEPOSIT", label: "Dépôt d'argent sur le compte" },
-                  { value: "LOAN_PAYMENT", label: "Rembourssement de crédit" },
-                ]}
-              />
+              <Input />
             </Form.Item>
             <div className="flex items-end">
               <Form.Item
@@ -155,24 +143,10 @@ export const EditInOrCreditForm: React.FC<Props> = ({
                 />
               </Form.Item>
             </div>
-            <Form.Item
-              name="goldQuantity"
-              label="Quantité en Or"
-              rules={[
-                {
-                  required: false,
-                },
-                {
-                  whitespace: true,
-                  message: "Pas uniquement des espaces vide svp!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
+
             <Form.Item
               name="date"
-              label="Date d'encaissement"
+              label="Date de transfert"
               rules={[{ required: true }]}
             >
               <DatePicker

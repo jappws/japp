@@ -5,6 +5,7 @@ import {
   CloseOutlined,
   DeleteOutlined,
   EditOutlined,
+  EllipsisOutlined,
   FilePdfOutlined,
   PrinterOutlined,
   ShareAltOutlined,
@@ -178,11 +179,10 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               //     type="text"
               //     className="shadow-none"
               //     shape="circle"
-
               //   />
               // </Tooltip>,
               <ReactToPrint
-                key="2"
+                key="1"
                 trigger={() => (
                   <Tooltip title="Imprimer" placement="bottom">
                     <Button
@@ -196,7 +196,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 content={() => refComponentToPrint.current}
                 documentTitle={`M${data?.id}-${account?.accountNumber}`}
               />,
-              <Tooltip key="3" title="Partager" placement="bottom">
+              <Tooltip key="2" title="Partager" placement="bottom">
                 <Button
                   icon={<ShareAltOutlined />}
                   onClick={handleDownloadAndShare}
@@ -247,12 +247,12 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 // placement="bottomRight"
               >
                 <Button
-                  type="primary"
+                  type="text"
                   onClick={() => {}}
-                  className="shadow-none uppercase"
-                >
-                  Nouvelle opération
-                </Button>
+                  shape="circle"
+                  icon={<EllipsisOutlined/>}
+                />
+                 
               </Dropdown>,
             ]}
             style={{ marginBlockEnd: 16 }}
