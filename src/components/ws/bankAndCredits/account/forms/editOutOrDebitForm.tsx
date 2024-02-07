@@ -45,6 +45,7 @@ type Props = {
   isLoadingAccounts: boolean;
   currentAccountId?: number;
   transactionData?: TransactionType;
+  triggerRightSider?: Dispatch<SetStateAction<boolean>>;
 };
 
 export const EditOutOrDebitForm: React.FC<Props> = ({
@@ -54,6 +55,7 @@ export const EditOutOrDebitForm: React.FC<Props> = ({
   isLoadingAccounts,
   currentAccountId,
   transactionData,
+  triggerRightSider
 }) => {
   const [form] = Form.useForm();
 
@@ -98,6 +100,7 @@ export const EditOutOrDebitForm: React.FC<Props> = ({
           });
           form.resetFields();
           toggleForm();
+          triggerRightSider?.(false)
           queryClient.invalidateQueries({
             queryKey: ["transactions", accountId],
           });

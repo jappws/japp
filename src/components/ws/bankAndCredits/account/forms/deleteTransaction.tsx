@@ -32,12 +32,14 @@ type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
   transData?: TransactionType;
+  triggerRightSider?: Dispatch<SetStateAction<boolean>>;
 };
 
 export const DeleteTransactionForm: React.FC<Props> = ({
   open,
   toggle,
   transData,
+  triggerRightSider
 }) => {
   const [form] = Form.useForm();
   const [textToConfirm] = React.useState<number | undefined>(transData?.amount);
@@ -70,6 +72,7 @@ export const DeleteTransactionForm: React.FC<Props> = ({
               });
 
               toggleForm();
+              triggerRightSider?.(false)
               queryClient.invalidateQueries({
                 queryKey: ["transactions", transData?.accountId],
               });

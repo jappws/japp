@@ -35,12 +35,14 @@ type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
   transferData?: TransferType;
+  triggerRightSider?: Dispatch<SetStateAction<boolean>>;
 };
 
 export const EditMoneyTransferForm: React.FC<Props> = ({
   open,
   toggle,
   transferData,
+  triggerRightSider
 }) => {
   const [form] = Form.useForm();
 
@@ -78,6 +80,7 @@ export const EditMoneyTransferForm: React.FC<Props> = ({
           });
           form.resetFields();
           toggleForm();
+          triggerRightSider?.(false)
           queryClient.invalidateQueries({ queryKey: ["partner", partnerId] });
         }
       },

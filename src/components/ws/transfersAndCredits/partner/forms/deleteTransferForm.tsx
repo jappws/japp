@@ -32,12 +32,14 @@ type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
   transferData?: TransferType;
+  triggerRightSider?: Dispatch<SetStateAction<boolean>>;
 };
 
 export const DeleteTransferForm: React.FC<Props> = ({
   open,
   toggle,
   transferData,
+  triggerRightSider
 }) => {
   const [form] = Form.useForm();
   const [textToConfirm] = React.useState<number | undefined>(transferData?.amount);
@@ -68,6 +70,7 @@ export const DeleteTransferForm: React.FC<Props> = ({
               });
 
               toggleForm();
+              triggerRightSider?.(false)
               queryClient.invalidateQueries({ queryKey: ["partner", partnerId] });
             } else {
               message.error({

@@ -387,11 +387,13 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               open={openDeleteForm}
               toggle={setOpenDeleteForm}
               transData={data}
+              triggerRightSider={trigger}
             />
             <EditInOrCreditForm
               open={openEditInOrCreditForm}
               toggle={setOpenEditInOrCreditForm}
               transactionData={data}
+              triggerRightSider={trigger}
             />
             <EditOutOrDebitForm
               open={openEditOutOrDebitForm}
@@ -400,6 +402,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               accounts={accounts}
               isLoadingAccounts={isLoadingAccounts}
               currentAccountId={account?.id}
+              triggerRightSider={trigger}
             />
           </div>
         </Layout.Content>

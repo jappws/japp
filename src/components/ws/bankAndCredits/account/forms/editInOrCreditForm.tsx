@@ -38,12 +38,14 @@ type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
   transactionData?: TransactionType;
+  triggerRightSider?: Dispatch<SetStateAction<boolean>>;
 };
 
 export const EditInOrCreditForm: React.FC<Props> = ({
   open,
   toggle,
   transactionData,
+  triggerRightSider
 }) => {
   const [form] = Form.useForm();
   const { accountId } = useParams();
@@ -83,6 +85,7 @@ export const EditInOrCreditForm: React.FC<Props> = ({
           });
           form.resetFields();
           toggleForm();
+        triggerRightSider?.(false)
           queryClient.invalidateQueries({
             queryKey: ["transactions", accountId],
           });

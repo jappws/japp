@@ -282,16 +282,19 @@ export const SelectedTransferRightSider: React.FC<Props> = ({
               open={openDeleteForm}
               toggle={setOpenDeleteForm}
               transferData={data}
+              triggerRightSider={trigger}
             />
             <EditGoldTransferForm
               open={openEditGoldTransferForm}
               toggle={setOpenEditGoldTransferForm}
               transferData={data}
+              triggerRightSider={trigger}
             />
             <EditMoneyTransferForm
               open={openEditMoneyTransferForm}
               toggle={setOpenEditMoneyTransferForm}
               transferData={data}
+              triggerRightSider={trigger}
             />
           </div>
         </Layout.Content>
