@@ -6,10 +6,8 @@ import {
   DeleteOutlined,
   EditOutlined,
   EllipsisOutlined,
-  FilePdfOutlined,
   PrinterOutlined,
   ShareAltOutlined,
-  WarningFilled,
 } from "@ant-design/icons";
 import {
   Layout,
@@ -30,10 +28,7 @@ import { AccountType, CompanyType, TransactionType } from "@/lib/types/index.d";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
 import ReactToPrint from "react-to-print";
-import { cn, getInOrOutType } from "@/lib/utils";
-import html2canvas from "html2canvas";
-import { jsPDF } from "jspdf";
-import { isNull } from "lodash";
+import { getInOrOutType } from "@/lib/utils";
 import { Share } from "@capacitor/share";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
@@ -250,9 +245,8 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   type="text"
                   onClick={() => {}}
                   shape="circle"
-                  icon={<EllipsisOutlined/>}
+                  icon={<EllipsisOutlined />}
                 />
-                 
               </Dropdown>,
             ]}
             style={{ marginBlockEnd: 16 }}
@@ -414,7 +408,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               transactionData={data}
               accounts={accounts}
               isLoadingAccounts={isLoadingAccounts}
-              currentAccountId={data?.accountId}
+              currentAccountId={account?.id}
             />
           </div>
         </Layout.Content>

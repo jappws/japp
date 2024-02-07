@@ -24,6 +24,7 @@ import {
 import { TransactionType, TransactionTypeType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 import { getTransactionTitle } from "@/lib/utils";
+import dayjs from 'dayjs'
 
 type CreditFormData = {
   type: TransactionTypeType;
@@ -112,7 +113,11 @@ export const EditInOrCreditForm: React.FC<Props> = ({
         // requiredMark="optional"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{ ...transactionData }}
+        initialValues={{ type: transactionData?.type,
+          amount: transactionData?.amount,
+          goldQuantity: transactionData?.goldQuantity,
+          date: dayjs(transactionData?.date),
+          message: transactionData?.message }}
         onFinish={submit}
         disabled={isPending}
       >

@@ -128,7 +128,11 @@ export const EditOutOrDebitForm: React.FC<Props> = ({
         // requiredMark="optional"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{ ...transactionData }}
+        initialValues={{ type: transactionData?.type,
+          amount: transactionData?.amount,
+          message: transactionData?.message,
+          date: dayjs(transactionData?.date),
+           }}
         onFinish={submit}
         disabled={isPending}
       >
