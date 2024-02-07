@@ -51,7 +51,10 @@ export const DeleteTransactionForm: React.FC<Props> = ({
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
-    axios.delete(`/api/v1/ws/account/${transData?.accountId}/transaction/${transData?.id}`, data),
+      axios.delete(
+        `/api/v1/ws/account/${transData?.accountId}/transaction/${transData?.id}`,
+        data
+      ),
   });
 
   const submit = (formData: DeleteTransFormData) => {
@@ -67,8 +70,12 @@ export const DeleteTransactionForm: React.FC<Props> = ({
               });
 
               toggleForm();
-              queryClient.invalidateQueries({ queryKey: ["transactions", transData?.accountId] })
-              queryClient.invalidateQueries({ queryKey: ["account",transData?.accountId] })
+              queryClient.invalidateQueries({
+                queryKey: ["transactions", transData?.accountId],
+              });
+              queryClient.invalidateQueries({
+                queryKey: ["account", transData?.accountId],
+              });
             } else {
               message.error({
                 content: "Cette transaction n'existe pas.",
@@ -91,11 +98,7 @@ export const DeleteTransactionForm: React.FC<Props> = ({
 
   return (
     <Modal
-      title={
-        <Space className="">
-          Suppression de la transaction
-        </Space>
-      }
+      title={<Space className="">Suppression de la transaction</Space>}
       open={open}
       footer={null}
       onCancel={toggleForm}
@@ -115,8 +118,8 @@ export const DeleteTransactionForm: React.FC<Props> = ({
           <div className="flex space-x-3 p-3 bg-red-50 my-5 rounded-md">
             <WarningFilled className="text-red-500 text-6xl" />
             <div className="flex-1">
-            Cette action est irréversible et ne peut
-              pas être annulée une fois effectuée.
+              Cette action est irréversible et ne peut pas être annulée une fois
+              effectuée.
             </div>
           </div>
           <Typography.Text>
@@ -146,13 +149,13 @@ export const DeleteTransactionForm: React.FC<Props> = ({
                     },
                   ]}
                 >
-                    <InputNumber
-                  className=" bg-white w-40"
-                  min={0.00}
-                  step={0.01}
-                  controls={true}
-                  stringMode={true}
-                />
+                  <InputNumber
+                    className=" bg-white w-40"
+                    min={0.0}
+                    step={0.01}
+                    controls={true}
+                    stringMode={true}
+                  />
                   {/* <Input
                     className="bg-white"
                     placeholder={`${textToConfirm}`}

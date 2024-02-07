@@ -39,7 +39,7 @@ type Props = {
   toggle?: Dispatch<SetStateAction<boolean>>;
   accounts?: AccountType[];
   isLoadingAccounts: boolean;
-  currentAccount?:AccountType
+  currentAccount?: AccountType;
 };
 
 export const NewOutOrDebitForm: React.FC<Props> = ({
@@ -47,7 +47,7 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
   toggle,
   accounts,
   isLoadingAccounts,
-  currentAccount
+  currentAccount,
 }) => {
   const [form] = Form.useForm();
 
@@ -65,10 +65,10 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
       axios.post(`/api/v1/ws/account/${accountId}/transaction`, data),
   });
 
-  const otherAccounts=()=>{
-    const items= accounts?.filter(item=>item.id!==currentAccount?.id)
-    return items
-  }
+  const otherAccounts = () => {
+    const items = accounts?.filter((item) => item.id !== currentAccount?.id);
+    return items;
+  };
 
   const submit = (formData: DebitFormData) => {
     const data = {
@@ -119,7 +119,7 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
         // requiredMark="optional"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{  }}
+        initialValues={{}}
         onFinish={submit}
         disabled={isPending}
       >

@@ -1,6 +1,5 @@
 "use client";
 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Button,
   DatePicker,
@@ -13,34 +12,50 @@ import {
   Space,
   message,
 } from "antd";
-import axios from "axios";
-import { useSession } from "next-auth/react";
 import { Dispatch, SetStateAction } from "react";
+import dayjs from "dayjs";
 import {
   CheckOutlined,
   DollarOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { TransactionTypeType } from "@/lib/types/index.d";
+import { useSession } from "next-auth/react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import axios from "axios";
+import {
+  AccountType,
+  TransactionType,
+  TransactionTypeType,
+} from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
-import { getTransactionTitle } from "@/lib/utils";
+import { getAccountsAsOptions, getTransactionTitle } from "@/lib/utils";
 
-type CreditFormData = {
+type DebitFormData = {
   type: TransactionTypeType;
   amount: string;
-  goldQuantity: string;
-  date: string;
   message?: string;
+  date: string;
+  receiverAccountId?: number;
 };
 
 type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
+  accounts?: AccountType[];
+  isLoadingAccounts: boolean;
+  currentAccountId?: number;
+  transactionData?: TransactionType;
 };
 
-export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
+export const EditOutOrDebitForm: React.FC<Props> = ({
+  open,
+  toggle,
+  accounts,
+  isLoadingAccounts,
+  currentAccountId,
+  transactionData,
+}) => {
   const [form] = Form.useForm();
-  const { accountId } = useParams();
 
   const toggleForm = () => {
     toggle && toggle((prev) => !prev);
@@ -49,20 +64,29 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
 
   const { data: session } = useSession();
   const queryClient = useQueryClient();
+  const { accountId } = useParams();
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/account/${accountId}/transaction`, data),
+      axios.put(
+        `/api/v1/ws/account/${accountId}/transaction/${transactionData?.id}`,
+        data
+      ),
   });
 
-  const submit = (formData: CreditFormData) => {
+  const otherAccounts = () => {
+    const items = accounts?.filter((item) => item.id !== currentAccountId);
+    return items;
+  };
+
+  const submit = (formData: DebitFormData) => {
     const data = {
       title: getTransactionTitle(formData.type),
       amount: parseFloat(formData.amount),
-      type: formData.type,
-      goldQuantity: formData.goldQuantity,
+      //   type: formData.type,
       message: formData.message,
       date: formData.date,
+      receiverAccountId: formData.receiverAccountId,
       operatorId: session?.user.id,
     };
     mutate(data, {
@@ -91,7 +115,7 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
   return (
     <Modal
       centered
-      title={<div className="">Entrée (Encaissement)</div>}
+      title={<div className="">Sortie (Décaissement)</div>}
       open={open}
       footer={null}
       onCancel={toggleForm}
@@ -104,7 +128,7 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
         // requiredMark="optional"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{}}
+        initialValues={{ ...transactionData }}
         onFinish={submit}
         disabled={isPending}
       >
@@ -112,10 +136,12 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
           <Layout.Content>
             <Form.Item
               name="type"
-              label="Type d'entrée"
+              label="Type de sortie"
               rules={[{ required: true }]}
             >
               <Select
+                disabled
+                bordered={false}
                 showSearch
                 placeholder="Sélectionner un type"
                 optionFilterProp="children"
@@ -124,10 +150,56 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
                 }
                 menuItemSelectedIcon={<CheckOutlined />}
                 options={[
-                  { value: "DEPOSIT", label: "Dépôt d'argent sur le compte" },
-                  { value: "LOAN_PAYMENT", label: "Rembourssement de crédit" },
+                  {
+                    value: "WITHDRAWAL",
+                    label: "Retrait d'argent sur le compte",
+                  },
+                  {
+                    value: "LOAN_DISBURSEMENT",
+                    label: "Décaissement de crédit",
+                  },
+                  {
+                    value: "TRANSFER",
+                    label: "Virement (Transfert vers autre compte)",
+                  },
                 ]}
               />
+            </Form.Item>
+            <Form.Item
+              noStyle
+              shouldUpdate={(prevValues, currentValues) =>
+                prevValues.type !== currentValues.type
+              }
+            >
+              {({ getFieldValue }) =>
+                getFieldValue("type") === "TRANSFER" ? (
+                  <Form.Item
+                    name="receiverAccountId"
+                    label="Bénéficiaire"
+                    rules={[{ required: true }]}
+                  >
+                    <Select
+                      showSearch
+                      loading={isLoadingAccounts}
+                      placeholder="Sélectionner un compte"
+                      optionFilterProp="children"
+                      filterOption={(input, option) =>
+                        (String(option?.label).toLowerCase() ?? "").includes(
+                          input.toLowerCase()
+                        )
+                      }
+                      filterSort={(optionA, optionB) =>
+                        (String(optionA?.label) ?? "")
+                          .toLowerCase()
+                          .localeCompare(
+                            (String(optionB?.label) ?? "").toLowerCase()
+                          )
+                      }
+                      options={getAccountsAsOptions(otherAccounts())}
+                    />
+                  </Form.Item>
+                ) : null
+              }
             </Form.Item>
             <div className="flex items-end">
               <Form.Item
@@ -146,23 +218,8 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
               </Form.Item>
             </div>
             <Form.Item
-              name="goldQuantity"
-              label="Quantité en Or"
-              rules={[
-                {
-                  required: false,
-                },
-                {
-                  whitespace: true,
-                  message: "Pas uniquement des espaces vide svp!",
-                },
-              ]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
               name="date"
-              label="Date d'encaissement"
+              label="Date de décaissement"
               rules={[{ required: true }]}
             >
               <DatePicker

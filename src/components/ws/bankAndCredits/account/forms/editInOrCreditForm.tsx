@@ -21,7 +21,7 @@ import {
   DollarOutlined,
   LoadingOutlined,
 } from "@ant-design/icons";
-import { TransactionTypeType } from "@/lib/types/index.d";
+import { TransactionType, TransactionTypeType } from "@/lib/types/index.d";
 import { useParams } from "next/navigation";
 import { getTransactionTitle } from "@/lib/utils";
 
@@ -36,9 +36,14 @@ type CreditFormData = {
 type Props = {
   open: boolean;
   toggle?: Dispatch<SetStateAction<boolean>>;
+  transactionData?: TransactionType;
 };
 
-export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
+export const EditInOrCreditForm: React.FC<Props> = ({
+  open,
+  toggle,
+  transactionData,
+}) => {
   const [form] = Form.useForm();
   const { accountId } = useParams();
 
@@ -52,14 +57,17 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
-      axios.post(`/api/v1/ws/account/${accountId}/transaction`, data),
+      axios.put(
+        `/api/v1/ws/account/${accountId}/transaction/${transactionData?.id}`,
+        data
+      ),
   });
 
   const submit = (formData: CreditFormData) => {
     const data = {
       title: getTransactionTitle(formData.type),
       amount: parseFloat(formData.amount),
-      type: formData.type,
+      //   type: formData.type,
       goldQuantity: formData.goldQuantity,
       message: formData.message,
       date: formData.date,
@@ -104,7 +112,7 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
         // requiredMark="optional"
         className=" pt-3 w-full"
         onReset={toggleForm}
-        initialValues={{}}
+        initialValues={{ ...transactionData }}
         onFinish={submit}
         disabled={isPending}
       >
@@ -116,6 +124,8 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
               rules={[{ required: true }]}
             >
               <Select
+                disabled
+                bordered={false}
                 showSearch
                 placeholder="Sélectionner un type"
                 optionFilterProp="children"

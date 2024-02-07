@@ -4,6 +4,7 @@ import {
   CheckOutlined,
   CloseOutlined,
   DeleteOutlined,
+  EditOutlined,
   FilePdfOutlined,
   PrinterOutlined,
   ShareAltOutlined,
@@ -21,8 +22,9 @@ import {
   Tag,
   Image,
   Typography,
+  Dropdown,
 } from "antd";
-import React, { Dispatch, SetStateAction, useRef } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { AccountType, CompanyType, TransactionType } from "@/lib/types/index.d";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import dayjs from "dayjs";
@@ -35,6 +37,8 @@ import { Share } from "@capacitor/share";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { DeleteTransactionForm } from "../forms/deleteTransaction";
+import { EditInOrCreditForm } from "../forms/editInOrCreditForm";
+import { EditOutOrDebitForm } from "../forms/editOutOrDebitForm";
 
 const { confirm } = Modal;
 
@@ -58,11 +62,20 @@ export const SelectedTransRightSider: React.FC<Props> = ({
   const refComponentToPrint = useRef(null);
 
   const [openDeleteForm, setOpenDeleteForm] = React.useState<boolean>(false);
+  const [openEditInOrCreditForm, setOpenEditInOrCreditForm] =
+    useState<boolean>(false);
+  const [openEditOutOrDebitForm, setOpenEditOutOrDebitForm] =
+    useState<boolean>(false);
 
   const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: ["company"],
     queryFn: () =>
       axios.get(`/api/v1/ws/company`).then((res) => res.data as CompanyType),
+  });
+  const { data: accounts, isLoading: isLoadingAccounts } = useQuery({
+    queryKey: ["accounts"],
+    queryFn: () =>
+      axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
   });
 
   // const handleDownloadPdf = async () => {
@@ -158,16 +171,16 @@ export const SelectedTransRightSider: React.FC<Props> = ({
             // collapsible
             bordered
             extra={[
-              <Tooltip key="1" title="Supprimer" placement="bottom">
-                <Button
-                  icon={<DeleteOutlined />}
-                  onClick={() => setOpenDeleteForm(true)}
-                  type="text"
-                  className="shadow-none"
-                  shape="circle"
-                  
-                />
-              </Tooltip>,
+              // <Tooltip key="1" title="Supprimer" placement="bottom">
+              //   <Button
+              //     icon={<DeleteOutlined />}
+              //     onClick={() => setOpenDeleteForm(true)}
+              //     type="text"
+              //     className="shadow-none"
+              //     shape="circle"
+
+              //   />
+              // </Tooltip>,
               <ReactToPrint
                 key="2"
                 trigger={() => (
@@ -192,6 +205,55 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                   shape="circle"
                 />
               </Tooltip>,
+              <Dropdown
+                key="3"
+                menu={{
+                  items: [
+                    {
+                      key: "edit",
+                      label: "Modifier",
+                      icon: <EditOutlined />,
+                    },
+                    {
+                      type: "divider",
+                    },
+                    {
+                      key: "delete",
+                      label: "Supprimer",
+                      icon: <DeleteOutlined />,
+                      danger: true,
+                    },
+                  ],
+                  onClick: ({ key }) => {
+                    if (key === "edit") {
+                      if (
+                        data?.type === "DEPOSIT" ||
+                        data?.type === "LOAN_PAYMENT"
+                      ) {
+                        setOpenEditInOrCreditForm(true);
+                      } else if (
+                        data?.type === "WITHDRAWAL" ||
+                        data?.type === "LOAN_DISBURSEMENT"
+                      ) {
+                        setOpenEditOutOrDebitForm(true);
+                      }
+                    } else if (key === "delete") {
+                      setOpenDeleteForm(true);
+                    }
+                  },
+                }}
+                trigger={["hover"]}
+                destroyPopupOnHide={true}
+                // placement="bottomRight"
+              >
+                <Button
+                  type="primary"
+                  onClick={() => {}}
+                  className="shadow-none uppercase"
+                >
+                  Nouvelle opération
+                </Button>
+              </Dropdown>,
             ]}
             style={{ marginBlockEnd: 16 }}
           >
@@ -340,6 +402,19 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               open={openDeleteForm}
               toggle={setOpenDeleteForm}
               transData={data}
+            />
+            <EditInOrCreditForm
+              open={openEditInOrCreditForm}
+              toggle={setOpenEditInOrCreditForm}
+              transactionData={data}
+            />
+            <EditOutOrDebitForm
+              open={openEditOutOrDebitForm}
+              toggle={setOpenEditOutOrDebitForm}
+              transactionData={data}
+              accounts={accounts}
+              isLoadingAccounts={isLoadingAccounts}
+              currentAccountId={data?.accountId}
             />
           </div>
         </Layout.Content>
