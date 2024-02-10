@@ -186,7 +186,7 @@ export const EditInOrCreditForm: React.FC<Props> = ({
               <DatePicker
                 className=" bg-white"
                 placeholder="sélectionner une date"
-                format="DD/MM/YYYY"
+                format="DD/MM/YYYY HH:mm"
               />
             </Form.Item>
 
