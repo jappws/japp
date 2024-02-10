@@ -10,7 +10,7 @@ export const transactionsColumns: TableColumnsType<TransactionType> = [
     title: "Date",
     dataIndex: "date",
     key: "date",
-    render: (_, record) => `${dayjs(record.date).format("DD-MM-YYYY HH:mm")}`,
+    render: (_, record) => `${dayjs(record.date).format("DD-MM-YYYY")}`,
     ellipsis: true,
   },
   {
