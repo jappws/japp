@@ -143,7 +143,7 @@ export const MoneyTransferForm: React.FC<Props> = ({ open, toggle }) => {
               <DatePicker
                 className=" bg-white"
                 placeholder="sélectionner une date"
-                format="DD/MM/YYYY"
+                format="DD/MM/YYYY HH:mm"
               />
             </Form.Item>
 
