@@ -22,8 +22,8 @@ export async function GET(
        }
  
        return {
+        balanceAfter: balanceAfter,
          ...transaction,
-         balanceAfter: balanceAfter,
        };
      })
     return new Response(JSON.stringify(trans), { status: 200 });
