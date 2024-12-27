@@ -25,7 +25,7 @@ export async function POST(
 
     if (body.type === "DEPOSIT" || body.type === "LOAN_PAYMENT") {
       await prisma.$transaction(async (tx) => {
-        const account = await tx.account.update({
+         await tx.account.update({
           where: { id: Number(params.accountId) },
           data: {
             balance: { increment: body.amount },
@@ -36,7 +36,6 @@ export async function POST(
         const newTransaction = await tx.transaction.create({
           data: {
             ...bodyWithoutReceiverId,
-            balanceAfter: account.balance,
             accountId: Number(params.accountId),
           },
         });
@@ -49,7 +48,7 @@ export async function POST(
       body.type === "LOAN_DISBURSEMENT"
     ) {
       await prisma.$transaction(async (tx) => {
-        const account = await tx.account.update({
+       await tx.account.update({
           where: { id: Number(params.accountId) },
           data: {
             balance: { decrement: body.amount },
@@ -60,7 +59,6 @@ export async function POST(
         const newTransaction = await tx.transaction.create({
           data: {
             ...bodyWithoutReceiverId,
-            balanceAfter: account.balance,
             accountId: Number(params.accountId),
           },
         });
@@ -104,12 +102,10 @@ export async function POST(
         data: [
           {
             ...bodyWithoutReceiverId,
-            balanceAfter: senderBalanceAfter,
             accountId: Number(params.accountId),
           },
           {
             ...bodyWithoutReceiverIdTitleMessageAndType,
-            balanceAfter: receiverBalanceAfter,
             type: "RECEIPT_OF_TRANSFER",
             accountId: Number(body.receiverAccountId),
             title: "Réception du virement",

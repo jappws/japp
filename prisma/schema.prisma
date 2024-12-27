@@ -68,7 +68,7 @@ model Transaction {
   id Int @id @default(autoincrement())
   date DateTime
   amount Float
-  balanceAfter Float
+  // balanceAfter Float
   goldQuantity String? @default("")
   title String? @default("")
   message String @default("") // Un commentaire, une observation sur la transaction

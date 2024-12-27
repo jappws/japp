@@ -51,7 +51,6 @@ export async function PUT(
             where: { id: Number(params.transactionId) },
             data: {
               ...bodyWithoutReceiverId,
-              balanceAfter: account.balance,
               accountId: Number(params.accountId),
             },
           });
@@ -68,7 +67,7 @@ export async function PUT(
             where: { id: Number(params.accountId) },
             data: { balance: { increment: getTransaction.amount } },
           });
-          const account = await tx.account.update({
+         await tx.account.update({
             where: { id: Number(params.accountId) },
             data: {
               balance: { decrement: body.amount },
@@ -80,7 +79,6 @@ export async function PUT(
             where: { id: Number(params.transactionId) },
             data: {
               ...bodyWithoutReceiverId,
-              balanceAfter: account.balance,
               accountId: Number(params.accountId),
             },
           });
