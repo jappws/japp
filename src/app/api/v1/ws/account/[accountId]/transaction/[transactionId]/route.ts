@@ -39,7 +39,7 @@ export async function PUT(
             data: { balance: { decrement: getTransaction.amount } },
           });
 
-          const account = await tx.account.update({
+          await tx.account.update({
             where: { id: Number(params.accountId) },
             data: {
               balance: { increment: body.amount },
@@ -173,7 +173,6 @@ export async function DELETE(
       where: { id: Number(params.transactionId) },
     });
     if (!isNull(getTransaction)) {
-      // let balanceAfter: number = 0;
       let res: any;
 
       if (
@@ -181,7 +180,7 @@ export async function DELETE(
         getTransaction.type === "LOAN_PAYMENT"
       ) {
         await prisma.$transaction(async (tx) => {
-          const account = await tx.account.update({
+           await tx.account.update({
             where: { id: Number(params.accountId) },
             data: {
               balance: { decrement: getTransaction.amount },
@@ -203,7 +202,7 @@ export async function DELETE(
         getTransaction.type === "LOAN_DISBURSEMENT"
       ) {
         await prisma.$transaction(async (tx) => {
-          const account = await tx.account.update({
+       await tx.account.update({
             where: { id: Number(params.accountId) },
             data: {
               balance: { increment: getTransaction.amount },
@@ -272,8 +271,6 @@ export async function DELETE(
 
         return new Response(JSON.stringify({}));
       }
-
-      return new Response(JSON.stringify({}));
     } else {
       return new Response(JSON.stringify({ message: "transaction_not_found" }));
     }

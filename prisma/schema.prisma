@@ -132,7 +132,7 @@ model Transfer {
   date DateTime
   type TransferType
   amount Float
-  balanceAfter Float
+  // balanceAfter Float
   goldQuantity String? @default("")
   sender String
   message String @default("") // Un commentaire, une observation sur le transfer

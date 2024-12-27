@@ -20,24 +20,21 @@ export async function POST(
   try {
     const body: BodyRequestType = await request.json();
 
-    let balanceAfter: number = 0;
     let res: any;
 
     if (body.type === "GOLD_TRANSFER") {
       await prisma.$transaction(async (tx) => {
-        const account = await tx.partner.update({
+         await tx.partner.update({
           where: { id: Number(params.partnerId) },
           data: {
             balance: { increment: body.amount },
           },
           select: { balance: true },
         });
-        balanceAfter = account.balance;
 
         const newTransaction = await tx.transfer.create({
           data: {
             ...body,
-            balanceAfter: balanceAfter,
             partnerId: Number(params.partnerId),
           },
         });
@@ -48,19 +45,17 @@ export async function POST(
       return new Response(JSON.stringify(res));
     } else if (body.type === "MONEY_TRANSFER") {
       await prisma.$transaction(async (tx) => {
-        const account = await tx.partner.update({
+       await tx.partner.update({
           where: { id: Number(params.partnerId) },
           data: {
             balance: { decrement: body.amount },
           },
           select: { balance: true },
         });
-        balanceAfter = account.balance;
-
+       
         const newTransaction = await tx.transfer.create({
           data: {
             ...body,
-            balanceAfter: balanceAfter,
             partnerId: Number(params.partnerId),
           },
         });

@@ -35,20 +35,19 @@ export async function PUT(
             data: { balance: { decrement: getTransfer.amount } },
           });
 
-          const account = await tx.partner.update({
+          await tx.partner.update({
             where: { id: Number(params.partnerId) },
             data: {
               balance: { increment: body.amount },
             },
             select: { balance: true },
           });
-          balanceAfter = account.balance;
+
 
           const editedTransfer = await tx.transfer.update({
             where: { id: Number(params.transferId) },
             data: {
               ...body,
-              balanceAfter: balanceAfter,
               partnerId: Number(params.partnerId),
             },
           });
@@ -63,20 +62,18 @@ export async function PUT(
             where: { id: Number(params.partnerId) },
             data: { balance: { increment: getTransfer.amount } },
           });
-          const account = await tx.partner.update({
+          await tx.partner.update({
             where: { id: Number(params.partnerId) },
             data: {
               balance: { decrement: body.amount },
             },
             select: { balance: true },
           });
-          balanceAfter = account.balance;
 
           const editedTransfer = await tx.transfer.update({
             where: { id: Number(params.transferId) },
             data: {
               ...body,
-              balanceAfter: balanceAfter,
               partnerId: Number(params.partnerId),
             },
           });
@@ -132,7 +129,7 @@ export async function DELETE(
 
       if (getTransfer.type === "GOLD_TRANSFER") {
         await prisma.$transaction(async (tx) => {
-          const partner = await tx.partner.update({
+          await tx.partner.update({
             where: { id: Number(params.partnerId) },
             data: {
               balance: { decrement: getTransfer.amount },
@@ -151,7 +148,7 @@ export async function DELETE(
         return new Response(JSON.stringify(res));
       } else if (getTransfer.type === "MONEY_TRANSFER") {
         await prisma.$transaction(async (tx) => {
-          const partner = await tx.partner.update({
+          await tx.partner.update({
             where: { id: Number(params.partnerId) },
             data: {
               balance: { increment: getTransfer.amount },
