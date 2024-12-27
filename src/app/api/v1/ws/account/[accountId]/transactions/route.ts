@@ -11,8 +11,22 @@ export async function GET(
       orderBy: { date: "asc" },
       include: { operator: {}, account: {} },
     });
-    const res = transactions;
-    return new Response(JSON.stringify(res), { status: 200 });
+     // Ajouter le solde après la transaction à chaque transaction
+     let balanceAfter = 0.0;
+     const trans =  transactions.map((transaction) => {
+ 
+       if (transaction.type === "DEPOSIT" || transaction.type === "LOAN_PAYMENT" || transaction.type === "RECEIPT_OF_TRANSFER") {
+         balanceAfter += transaction.amount; // Calculer le solde après la transaction
+       } else if (transaction.type === "WITHDRAWAL" || transaction.type==="LOAN_DISBURSEMENT" || transaction.type==="TRANSFER" ) {
+         balanceAfter -= transaction.amount; // Calculer le solde après la transaction
+       }
+ 
+       return {
+         ...transaction,
+         balanceAfter: balanceAfter,
+       };
+     })
+    return new Response(JSON.stringify(trans), { status: 200 });
   } catch (e: any) {
     //Tracking prisma error
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
