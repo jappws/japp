@@ -74,11 +74,10 @@ export async function POST(
         message,
         ...bodyWithoutReceiverIdTitleMessageAndType
       } = body;
-      let senderBalanceAfter: number = 0;
-      let receiverBalanceAfter: number = 0;
+
 
       await prisma.$transaction(async (tx) => {
-        const senderAccount = await tx.account.update({
+         await tx.account.update({
           where: { id: Number(params.accountId) },
           data: {
             balance: { decrement: body.amount },
@@ -86,16 +85,14 @@ export async function POST(
           select: { balance: true },
         });
 
-        senderBalanceAfter = senderAccount.balance;
 
-        const receiverAccount = await tx.account.update({
+         await tx.account.update({
           where: { id: Number(body.receiverAccountId) },
           data: {
             balance: { increment: body.amount },
           },
           select: { balance: true },
         });
-        receiverBalanceAfter = receiverAccount.balance;
       });
 
       await prisma.transaction.createMany({
