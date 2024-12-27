@@ -63,7 +63,7 @@ export async function GET(
 ) {
   try {
     // Récupérer l'accountId à partir des paramètres
-    const { accountId } = await params;
+    const { accountId } =  params;
 
     // Trouver toutes les transactions pour le compte spécifié
     const transactions = await prisma.transaction.findMany({
