@@ -221,7 +221,7 @@ export async function DELETE(
         });
 
         return new Response(JSON.stringify(res));
-      } else if ("TRANSFER") {
+      } else  {
         // const {
         //   receiverAccountId,
         //   type,
