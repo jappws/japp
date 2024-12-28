@@ -23,6 +23,7 @@ import {
 } from "@ant-design/icons";
 import { TransactionType } from "@/lib/types/index.d";
 import { ProCard } from "@ant-design/pro-components";
+import { useParams } from "next/navigation";
 
 type DeleteTransFormData = {
   inputConfimation: string;
@@ -50,6 +51,7 @@ export const DeleteTransactionForm: React.FC<Props> = ({
   };
 
   const queryClient = useQueryClient();
+  const { accountId } = useParams();
 
   const { mutate: mutate, isPending } = useMutation({
     mutationFn: (data: any) =>
@@ -74,10 +76,10 @@ export const DeleteTransactionForm: React.FC<Props> = ({
               toggleForm();
               triggerRightSider?.(false)
               queryClient.invalidateQueries({
-                queryKey: ["transactions", transData?.accountId],
+                queryKey: ["transactions", accountId],
               });
               queryClient.invalidateQueries({
-                queryKey: ["account", transData?.accountId],
+                queryKey: ["account", accountId],
               });
             } else {
               message.error({
