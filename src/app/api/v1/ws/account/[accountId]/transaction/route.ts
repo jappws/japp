@@ -1,7 +1,7 @@
 import prisma from "@/lib/prisma";
-import { TransactionTypeType } from "@/lib/types/index.d";
-
+import { TransactionTypeType } from "@/lib/types";
 import { Prisma } from "@prisma/client";
+import { type NextRequest } from "next/server";
 
 type BodyRequestType = {
   date: Date;
@@ -14,128 +14,109 @@ type BodyRequestType = {
   receiverAccountId?: number;
 };
 
+async function handleTransaction(
+  accountId: string,
+  body: BodyRequestType,
+  updateBalance: (tx: Prisma.TransactionClient, accountId: number, amount: number) => Promise<void>
+) {
+  let res: any;
+
+  await prisma.$transaction(async (tx) => {
+    // Mettre à jour le solde du compte
+    await updateBalance(tx, Number(accountId), body.amount);
+
+    // Créer une nouvelle transaction 
+    const newTransaction = await tx.transaction.create({
+      data: {
+        ...body,
+        accountId: Number(accountId),
+      },
+    });
+    res = { ...newTransaction };
+  });
+
+  return new Response(JSON.stringify(res), { status: 201 });
+}
+
+// Fonctions utilitaires pour incrémenter et décrémenter le solde
+const incrementBalance = async (tx: Prisma.TransactionClient, accountId: number, amount: number): Promise<void> => {
+  await tx.account.update({
+    where: { id: accountId },
+    data: { balance: { increment: amount } },
+  });
+};
+
+const decrementBalance = async (tx: Prisma.TransactionClient, accountId: number, amount: number): Promise<void> => {
+  await tx.account.update({
+    where: { id: accountId },
+    data: { balance: { decrement: amount } },
+  });
+};
+
+async function handleError(e: any) {
+  const error_response = {
+    status: e instanceof Prisma.PrismaClientKnownRequestError ? "fail" : "error",
+    code: e.code,
+    message: e.message,
+    clientVersion: e.clientVersion,
+  };
+  return new Response(JSON.stringify(error_response), {
+    status: e instanceof Prisma.PrismaClientKnownRequestError ? 400 : 500,
+    headers: { "Content-Type": "application/json" },
+  });
+}
+
 export async function POST(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { accountId: string } }
 ) {
   try {
+    const { accountId } = params;
     const body: BodyRequestType = await request.json();
-    const { receiverAccountId, ...bodyWithoutReceiverId } = body;
-    let res: any;
 
-    if (body.type === "DEPOSIT" || body.type === "LOAN_PAYMENT") {
-      await prisma.$transaction(async (tx) => {
-         await tx.account.update({
-          where: { id: Number(params.accountId) },
-          data: {
-            balance: { increment: body.amount },
-          },
-          select: { balance: true },
+    switch (body.type) {
+      case TransactionTypeType.DEPOSIT:
+      case TransactionTypeType.LOAN_PAYMENT:
+        return await handleTransaction(accountId, body, incrementBalance);
+
+      case TransactionTypeType.WITHDRAWAL:
+      case TransactionTypeType.LOAN_DISBURSEMENT:
+        return await handleTransaction(accountId, body, decrementBalance);
+
+      case TransactionTypeType.TRANSFER:
+        const { receiverAccountId, ...bodyWithoutReceiverId } = body;
+        if (!receiverAccountId) throw new Error("Receiver account ID is required for transfer");
+
+        await prisma.$transaction(async (tx) => {
+          // Mettre à jour le solde du compte expéditeur
+          await decrementBalance(tx, Number(accountId), body.amount);
+
+          // Mettre à jour le solde du compte destinataire
+          await incrementBalance(tx, Number(receiverAccountId), body.amount);
         });
 
-        const newTransaction = await tx.transaction.create({
-          data: {
-            ...bodyWithoutReceiverId,
-            accountId: Number(params.accountId),
-          },
-        });
-        res = { ...newTransaction };
-      });
-
-      return new Response(JSON.stringify(res));
-    } else if (
-      body.type === "WITHDRAWAL" ||
-      body.type === "LOAN_DISBURSEMENT"
-    ) {
-      await prisma.$transaction(async (tx) => {
-       await tx.account.update({
-          where: { id: Number(params.accountId) },
-          data: {
-            balance: { decrement: body.amount },
-          },
-          select: { balance: true },
+        // Créer les transactions pour le transfert
+        await prisma.transaction.createMany({
+          data: [
+            {
+              ...bodyWithoutReceiverId,
+              accountId: Number(accountId),
+            },
+            {
+              ...bodyWithoutReceiverId,
+              type: TransactionTypeType.RECEIPT_OF_TRANSFER,
+              accountId: Number(receiverAccountId),
+              title: "Réception du virement",
+            },
+          ],
         });
 
-        const newTransaction = await tx.transaction.create({
-          data: {
-            ...bodyWithoutReceiverId,
-            accountId: Number(params.accountId),
-          },
-        });
-        res = { ...newTransaction };
-      });
+        return new Response(JSON.stringify({ message: "Transfer succeeded" }), { status: 201 });
 
-      return new Response(JSON.stringify(res));
-    } else if (body.type === "TRANSFER") {
-      const {
-        receiverAccountId,
-        type,
-        title,
-        message,
-        ...bodyWithoutReceiverIdTitleMessageAndType
-      } = body;
-
-
-      await prisma.$transaction(async (tx) => {
-         await tx.account.update({
-          where: { id: Number(params.accountId) },
-          data: {
-            balance: { decrement: body.amount },
-          },
-          select: { balance: true },
-        });
-
-
-         await tx.account.update({
-          where: { id: Number(body.receiverAccountId) },
-          data: {
-            balance: { increment: body.amount },
-          },
-          select: { balance: true },
-        });
-      });
-
-      await prisma.transaction.createMany({
-        data: [
-          {
-            ...bodyWithoutReceiverId,
-            accountId: Number(params.accountId),
-          },
-          {
-            ...bodyWithoutReceiverIdTitleMessageAndType,
-            type: "RECEIPT_OF_TRANSFER",
-            accountId: Number(body.receiverAccountId),
-            title: "Réception du virement",
-          },
-        ],
-      });
-
-      return new Response(JSON.stringify({ message: "Transfer succeded" }));
+      default:
+        throw new Error("Invalid transaction type");
     }
-
-    return new Response(JSON.stringify({}));
   } catch (e: any) {
-    //Tracking prisma error
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const error_response = {
-        status: "fail",
-        code: e.code,
-        message: e.message,
-        clientVersion: e.clientVersion,
-      };
-      return new Response(JSON.stringify(error_response), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    // tracking other internal server
-    const error_response = {
-      status: "error",
-      message: e.message,
-    };
-    return new Response(JSON.stringify(error_response), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return handleError(e);
   }
 }

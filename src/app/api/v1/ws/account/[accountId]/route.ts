@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
-import { SexType } from "@/lib/types/index.d";
+import { SexType } from "@/lib/types";
 import { Prisma } from "@prisma/client";
-import { isNull } from "lodash";
 
 type BodyRequestType = {
   ownerId: number;
@@ -25,36 +24,23 @@ export async function GET(
   { params }: { params: { accountId: string } }
 ) {
   try {
-    // get a account
+    // Récupérer l'accountId à partir des paramètres
+    const { accountId } = params;
+
+    // Trouver le compte avec les informations du propriétaire
     const account = await prisma.account.findUnique({
-      where: { id: Number(params.accountId) },
+      where: { id: Number(accountId) },
       include: { owner: { include: { createdBy: {} } } },
     });
 
-    return new Response(JSON.stringify(account));
-  } catch (e: any) {
-    //Tracking prisma error
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const error_response = {
-        status: "fail",
-        code: e.code,
-        message: e.message,
-        clientVersion: e.clientVersion,
-      };
-      return new Response(JSON.stringify(error_response), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+    // Si le compte n'est pas trouvé, lancer une erreur
+    if (!account) {
+      throw new Error("account_not_found");
     }
-    // tracking other internal server
-    const error_response = {
-      status: "error",
-      message: e.message,
-    };
-    return new Response(JSON.stringify(error_response), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+
+    return new Response(JSON.stringify(account), { status: 200 });
+  } catch (e: any) {
+    return handleError(e);
   }
 }
 
@@ -64,100 +50,101 @@ export async function PUT(
 ) {
   try {
     const body: BodyRequestType = await request.json();
+    const { accountId } = params;
 
-    const editedAccount = await prisma.account.update({
-      where: { id: Number(params.accountId) },
-      data: {},
+    // Vérifier l'existence du compte
+    const existingAccount = await prisma.account.findUnique({
+      where: { id: Number(accountId) },
     });
 
-    const editedUser = await prisma.user.update({
-      where: { id: body.ownerId },
-      data: { ...body.owner },
-    });
-
-    return new Response(JSON.stringify(editedUser));
-  } catch (e: any) {
-    //Tracking prisma error
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const error_response = {
-        status: "fail",
-        code: e.code,
-        message: e.message,
-        clientVersion: e.clientVersion,
-      };
-      return new Response(JSON.stringify(error_response), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
+    // Si le compte n'existe pas, lancer une erreur
+    if (!existingAccount) {
+      throw new Error("account_not_found");
     }
-    // tracking other internal server
-    const error_response = {
-      status: "error",
-      message: e.message,
-    };
-    return new Response(JSON.stringify(error_response), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
+
+    // Utiliser une transaction pour mettre à jour le compte et l'utilisateur
+    const result = await prisma.$transaction(async (tx) => {
+      const editedAccount = await tx.account.update({
+        where: { id: Number(accountId) },
+        data: {},
+      });
+
+      const editedUser = await tx.user.update({
+        where: { id: body.ownerId },
+        data: { ...body.owner },
+      });
+
+      return { editedAccount, editedUser };
     });
+
+    return new Response(JSON.stringify(result.editedUser), { status: 200 });
+  } catch (e: any) {
+    return handleError(e);
   }
 }
 
-//Delete client account API
 export async function DELETE(
   request: Request,
   { params }: { params: { accountId: string } }
 ) {
   try {
+    const { accountId } = params;
+
+    // Trouver le compte
     const getAccount = await prisma.account.findUnique({
-      where: { id: Number(params.accountId) },
+      where: { id: Number(accountId) },
     });
 
-    if (!isNull(getAccount)) {
-      await prisma.transaction.deleteMany({
-        where: { accountId: Number(params.accountId) },
-      });
-      let res: any;
-
-      await prisma.$transaction(async (tx) => {
-        const deletedAccount = await tx.account.delete({
-          where: { id: Number(params.accountId) },
-        });
-        const deletedUser = await tx.user.delete({
-          where: { id: getAccount.ownerId },
-        });
-        res = { account: deletedAccount, user: deletedUser };
-      });
-      return new Response(
-        JSON.stringify({
-          message: "Account and User deleted succefully",
-          ...res,
-        })
-      );
-    } else {
-      return new Response(JSON.stringify({ message: "account_not_found" }));
+    // Si le compte n'existe pas, lancer une erreur
+    if (!getAccount) {
+      throw new Error("account_not_found");
     }
+
+    await prisma.transaction.deleteMany({
+      where: { accountId: Number(accountId) },
+    });
+
+    const result = await prisma.$transaction(async (tx) => {
+      const deletedAccount = await tx.account.delete({
+        where: { id: Number(accountId) },
+      });
+      const deletedUser = await tx.user.delete({
+        where: { id: getAccount.ownerId },
+      });
+      return { account: deletedAccount, user: deletedUser };
+    });
+
+    return new Response(
+      JSON.stringify({
+        message: "Account and User deleted successfully",
+        ...result,
+      }),
+      { status: 200 }
+    );
   } catch (e: any) {
-    //Tracking prisma error
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const error_response = {
-        status: "fail",
-        code: e.code,
-        message: e.message,
-        clientVersion: e.clientVersion,
-      };
-      return new Response(JSON.stringify(error_response), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    // tracking other internal server
-    const error_response = {
-      status: "error",
-      message: e.message,
-    };
-    return new Response(JSON.stringify(error_response), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return handleError(e);
   }
+}
+
+// Fonction de gestion des erreurs
+function handleError(e: any) {
+  const error_response = {
+    status: e instanceof Prisma.PrismaClientKnownRequestError ? "fail" : "error",
+    code: e.code,
+    message: e.message,
+    clientVersion: e.clientVersion,
+  };
+
+  // Si l'erreur est "account_not_found", retourner une réponse avec un statut 404
+  if (e.message === "account_not_found") {
+    return new Response(
+      JSON.stringify({ status: "fail", message: e.message }),
+      { status: 404, headers: { "Content-Type": "application/json" } }
+    );
+  }
+
+  return new Response(JSON.stringify(error_response), {
+    status: e instanceof Prisma.PrismaClientKnownRequestError ? 400 : 500,
+    headers: { "Content-Type": "application/json" },
+  });
 }
