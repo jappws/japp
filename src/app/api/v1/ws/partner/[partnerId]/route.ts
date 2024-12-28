@@ -1,110 +1,102 @@
 import prisma from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
+import { type NextRequest } from "next/server";
 import { isNull } from "lodash";
+import { Prisma } from "@prisma/client";
 
 type BodyRequestType = {
   code?: string;
 };
 
+///////////////////////////////////////////////////////////////
+///////////// Mise à jour du partenaire ///////////////////////
+//////////////////////////////////////////////////////////////
+
 export async function PUT(
-  request: Request,
-  { params }: { params: { partnerId: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ partnerId: string }> }
 ) {
   try {
+    // Récupérer l'ID du partenaire à partir des paramètres
+    const { partnerId } = await params;
     const body: BodyRequestType = await request.json();
+
+    // Mettre à jour le partenaire avec les nouvelles données
     const updatedPartner = await prisma.partner.update({
-      where: { id: Number(params.partnerId) },
+      where: { id: Number(partnerId) },
       data: {
         code: body.code,
       },
     });
 
-    const res = {
-      ...updatedPartner,
-    };
-    return new Response(JSON.stringify(res), { status: 201 });
+    // Retourner la réponse avec les informations du partenaire mis à jour
+    return new Response(JSON.stringify(updatedPartner), { status: 201 });
   } catch (e: any) {
-    //Tracking prisma error
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const error_response = {
-        status: "fail",
-        code: e.code,
-        message: e.message,
-        clientVersion: e.clientVersion,
-      };
-      return new Response(JSON.stringify(error_response), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    // tracking other internal server
-    const error_response = {
-      status: "error",
-      message: e.message,
-    };
-    return new Response(JSON.stringify(error_response), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return handleError(e);
   }
 }
 
+//////////////////////////////////////////////////////////////
+//////////// Suppression du compte partenaire ////////////////
+////////////////////////////////////////////////////////////
 
-//Delete Partner account API
 export async function DELETE(
-  request: Request,
-  { params }: { params: { partnerId: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ partnerId: string }> }
 ) {
   try {
+    // Récupérer l'ID du partenaire à partir des paramètres
+    const { partnerId } = await params;
+
+    // Trouver le partenaire existant
     const getPartner = await prisma.partner.findUnique({
-      where: { id: Number(params.partnerId) },
+      where: { id: Number(partnerId) },
     });
 
-    if (!isNull(getPartner)) {
-      await prisma.transfer.deleteMany({
-        where: { partnerId: Number(params.partnerId) },
-      });
-      let res: any;
-
-      await prisma.$transaction(async (tx) => {
-        const deletedPartner = await tx.partner.delete({
-          where: { id: Number(params.partnerId) },
-        });
-
-        res = { ...deletedPartner };
-      });
-      return new Response(
-        JSON.stringify({
-          message: "Partner deleted succefully",
-          ...res,
-        })
-      );
-    } else {
-      return new Response(JSON.stringify({ message: "partner_not_found" }));
+    // Si le partenaire n'est pas trouvé, renvoyer une réponse 404
+    if (isNull(getPartner)) {
+      return new Response(JSON.stringify({ message: "partner_not_found" }), { status: 404 });
     }
+
+    // Utiliser une transaction Prisma pour supprimer les transferts associés et le partenaire
+    const result = await prisma.$transaction(async (tx) => {
+      // Supprimer les transferts associés au partenaire
+      await tx.transfer.deleteMany({
+        where: { partnerId: Number(partnerId) },
+      });
+
+      // Supprimer le partenaire
+      const deletedPartner = await tx.partner.delete({
+        where: { id: Number(partnerId) },
+      });
+
+      return deletedPartner;
+    });
+
+    // Retourner la réponse avec la confirmation de suppression
+    return new Response(
+      JSON.stringify({
+        message: "Partner deleted successfully",
+        ...result,
+      }),
+      { status: 200 }
+    );
   } catch (e: any) {
-    //Tracking prisma error
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const error_response = {
-        status: "fail",
-        code: e.code,
-        message: e.message,
-        clientVersion: e.clientVersion,
-      };
-      return new Response(JSON.stringify(error_response), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
-      });
-    }
-    // tracking other internal server
-    const error_response = {
-      status: "error",
-      message: e.message,
-    };
-    return new Response(JSON.stringify(error_response), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
-    });
+    return handleError(e);
   }
 }
 
+// Fonction de gestion des erreurs
+function handleError(e: any) {
+  const error_response = {
+    status: e instanceof Prisma.PrismaClientKnownRequestError ? "fail" : "error",
+    code: e.code,
+    message: e.message,
+    clientVersion: e.clientVersion,
+  };
+
+  // Retourner la réponse d'erreur
+  return new Response(JSON.stringify(error_response), {
+    status: e instanceof Prisma.PrismaClientKnownRequestError ? 400 : 500,
+    headers: { "Content-Type": "application/json" },
+  });
+}

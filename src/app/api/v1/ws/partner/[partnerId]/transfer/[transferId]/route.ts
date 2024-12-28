@@ -1,6 +1,8 @@
+
 import prisma from "@/lib/prisma";
+import { TransferTypeType } from "@/lib/types";
 import { Prisma } from "@prisma/client";
-import { isNull } from "lodash";
+import { type NextRequest } from "next/server";
 
 type BodyRequestType = {
   date: Date;
@@ -12,186 +14,156 @@ type BodyRequestType = {
 };
 
 ///////////////////////////////////////////////////////////////
-///////////// Update a transfer ///////////////////////////////
+///////////// Mettre à jour un transfert //////////////////////
 //////////////////////////////////////////////////////////////
 
 export async function PUT(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { partnerId: string; transferId: string } }
 ) {
   try {
+    // Récupérer les paramètres de la requête
+    const { partnerId, transferId } = params;
     const body: BodyRequestType = await request.json();
+
+    // Trouver le transfert existant
     const getTransfer = await prisma.transfer.findUnique({
-      where: { id: Number(params.transferId) },
+      where: { id: Number(transferId) },
     });
 
-    if (!isNull(getTransfer)) {
-      let balanceAfter: number = 0;
-      let res: any;
-      if (getTransfer.type === "GOLD_TRANSFER") {
-        await prisma.$transaction(async (tx) => {
-          await tx.partner.update({
-            where: { id: Number(params.partnerId) },
-            data: { balance: { decrement: getTransfer.amount } },
-          });
-
-          await tx.partner.update({
-            where: { id: Number(params.partnerId) },
-            data: {
-              balance: { increment: body.amount },
-            },
-            select: { balance: true },
-          });
-
-
-          const editedTransfer = await tx.transfer.update({
-            where: { id: Number(params.transferId) },
-            data: {
-              ...body,
-              partnerId: Number(params.partnerId),
-            },
-          });
-          res = {
-            ...editedTransfer,
-          };
-        });
-        return new Response(JSON.stringify(res));
-      } else if (getTransfer.type === "MONEY_TRANSFER") {
-        await prisma.$transaction(async (tx) => {
-          await tx.partner.update({
-            where: { id: Number(params.partnerId) },
-            data: { balance: { increment: getTransfer.amount } },
-          });
-          await tx.partner.update({
-            where: { id: Number(params.partnerId) },
-            data: {
-              balance: { decrement: body.amount },
-            },
-            select: { balance: true },
-          });
-
-          const editedTransfer = await tx.transfer.update({
-            where: { id: Number(params.transferId) },
-            data: {
-              ...body,
-              partnerId: Number(params.partnerId),
-            },
-          });
-          res = {
-            ...editedTransfer,
-          };
-        });
-        return new Response(JSON.stringify(res));
-      }
-    } else {
-      return new Response(JSON.stringify({ message: "transfer_not_found" }));
+    // Si le transfert n'est pas trouvé, renvoyer une réponse 404
+    if (!getTransfer) {
+      return new Response(JSON.stringify({ message: "transfer_not_found" }), { status: 404 });
     }
-  } catch (e: any) {
-    //Tracking prisma error
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const error_response = {
-        status: "fail",
-        code: e.code,
-        message: e.message,
-        clientVersion: e.clientVersion,
-      };
-      return new Response(JSON.stringify(error_response), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
+
+    let res: any;
+    // Utiliser une transaction Prisma pour garantir l'atomicité des opérations
+    await prisma.$transaction(async (tx) => {
+      // Trouver le partenaire
+      const partner = await tx.partner.findUnique({
+        where: { id: Number(partnerId) },
+        select: { balance: true },
       });
-    }
-    // tracking other internal server
-    const error_response = {
-      status: "error",
-      message: e.message,
-    };
-    return new Response(JSON.stringify(error_response), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
+
+      // Vérifier que le partenaire n'est pas nul
+      if (!partner) {
+        throw new Error("Partner not found");
+      }
+
+      // Récupérer la valeur actuelle du solde
+      const currentBalance = partner.balance;
+
+      // Calculer le nouveau solde en fonction du type de transfert
+      let newBalance;
+      switch (getTransfer.type) {
+        case TransferTypeType.GOLD_TRANSFER:
+          newBalance = currentBalance - getTransfer.amount + body.amount;
+          break;
+        case TransferTypeType.MONEY_TRANSFER:
+          newBalance = currentBalance + getTransfer.amount - body.amount;
+          break;
+        default:
+          throw new Error(`Unsupported transfer type: ${getTransfer.type}`);
+      }
+
+      // Mettre à jour le solde du partenaire
+      await tx.partner.update({
+        where: { id: Number(partnerId) },
+        data: { balance: newBalance },
+      });
+
+      // Mettre à jour le transfert avec le nouveau solde
+      const editedTransfer = await tx.transfer.update({
+        where: { id: Number(transferId) },
+        data: {
+          ...body,
+          partnerId: Number(partnerId),
+        },
+      });
+
+      res={...editedTransfer};
     });
+
+    // Retourner la réponse avec le transfert mis à jour
+    return new Response(JSON.stringify(res), { status: 200 });
+  } catch (e: any) {
+    return handleError(e);
   }
 }
 
 //////////////////////////////////////////////////////////////
-//////////// Delete a transfer //////////////////////////////
+//////////// Supprimer un transfert //////////////////////////
 ////////////////////////////////////////////////////////////
+
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { partnerId: string; transferId: string } }
 ) {
   try {
+    // Récupérer les paramètres de la requête
+    const { partnerId, transferId } =  params;
+
+    // Trouver le transfert existant
     const getTransfer = await prisma.transfer.findUnique({
-      where: { id: Number(params.transferId) },
+      where: { id: Number(transferId) },
     });
 
-    if (!isNull(getTransfer)) {
-      let res: any;
-
-      if (getTransfer.type === "GOLD_TRANSFER") {
-        await prisma.$transaction(async (tx) => {
-          await tx.partner.update({
-            where: { id: Number(params.partnerId) },
-            data: {
-              balance: { decrement: getTransfer.amount },
-            },
-          });
-
-          const deletedTransfer = await tx.transfer.delete({
-            where: { id: Number(params.transferId) },
-          });
-
-          res = {
-            res_message: "Transfer is deleted succefully",
-            ...deletedTransfer,
-          };
-        });
-        return new Response(JSON.stringify(res));
-      } else if (getTransfer.type === "MONEY_TRANSFER") {
-        await prisma.$transaction(async (tx) => {
-          await tx.partner.update({
-            where: { id: Number(params.partnerId) },
-            data: {
-              balance: { increment: getTransfer.amount },
-            },
-          });
-
-          const deletedTransfer = await tx.transfer.delete({
-            where: { id: Number(params.transferId) },
-          });
-
-          res = {
-            res_message: "Transfer is deleted succefully",
-            ...deletedTransfer,
-          };
-        });
-
-        return new Response(JSON.stringify(res));
-      }
-    } else {
-      return new Response(JSON.stringify({ message: "transfer_not_found" }));
+    // Si le transfert n'est pas trouvé, renvoyer une réponse 404
+    if (!getTransfer) {
+      return new Response(JSON.stringify({ message: "transfer_not_found" }), { status: 404 });
     }
-  } catch (e: any) {
-    //Tracking prisma error
-    if (e instanceof Prisma.PrismaClientKnownRequestError) {
-      const error_response = {
-        status: "fail",
-        code: e.code,
-        message: e.message,
-        clientVersion: e.clientVersion,
-      };
-      return new Response(JSON.stringify(error_response), {
-        status: 400,
-        headers: { "Content-Type": "application/json" },
+
+    // Définir la mise à jour du solde en fonction du type de transfert
+    let balanceUpdate;
+    switch (getTransfer.type) {
+      case TransferTypeType.GOLD_TRANSFER:
+      balanceUpdate = { decrement: getTransfer.amount };
+      break;
+      case TransferTypeType.MONEY_TRANSFER:
+      balanceUpdate = { increment: getTransfer.amount };
+      break;
+      default:
+      throw new Error(`Unsupported transfer type: ${getTransfer.type}`);
+    }
+
+    // Utiliser une transaction Prisma pour garantir l'atomicité des opérations
+    const result = await prisma.$transaction(async (tx) => {
+      // Mettre à jour le solde du partenaire
+      await tx.partner.update({
+        where: { id: Number(partnerId) },
+        data: { balance: balanceUpdate },
       });
-    }
-    // tracking other internal server
-    const error_response = {
-      status: "error",
-      message: e.message,
-    };
-    return new Response(JSON.stringify(error_response), {
-      status: 500,
-      headers: { "Content-Type": "application/json" },
+
+      // Supprimer le transfert
+      const deletedTransfer = await tx.transfer.delete({
+        where: { id: Number(transferId) },
+      });
+
+      // Retourner la réponse avec le transfert supprimé
+      return {
+        ...deletedTransfer,
+      };
     });
+
+    // Retourner la réponse avec le transfert supprimé
+    return new Response(JSON.stringify(result), { status: 200 });
+  } catch (e: any) {
+    return handleError(e);
   }
+}
+
+// Fonction de gestion des erreurs
+function handleError(e: any) {
+  const error_response = {
+    status: e instanceof Prisma.PrismaClientKnownRequestError ? "fail" : "error",
+    code: e.code,
+    message: e.message,
+    clientVersion: e.clientVersion,
+  };
+
+  // Retourner la réponse d'erreur
+  return new Response(JSON.stringify(error_response), {
+    status: e instanceof Prisma.PrismaClientKnownRequestError ? 400 : 500,
+    headers: { "Content-Type": "application/json" },
+  });
 }
