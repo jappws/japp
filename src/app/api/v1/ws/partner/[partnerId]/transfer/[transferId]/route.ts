@@ -114,7 +114,7 @@ export async function DELETE(
     }
 
     // Définir la mise à jour du solde en fonction du type de transfert
-    let balanceUpdate;
+    let balanceUpdate:any;
     switch (getTransfer.type) {
       case TransferTypeType.GOLD_TRANSFER:
       balanceUpdate = { decrement: getTransfer.amount };
