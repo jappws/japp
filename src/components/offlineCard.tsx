@@ -30,7 +30,7 @@ export const OfflineNotificationCard: React.FC = () => {
                 <p className="text-gray-600">Veuillez vérifier votre connexion internet ou actualiser la page</p>
                 <Button
                     onClick={() => window.location.reload()}
-                    className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+                    type='primary'
                 >
                     OK
                 </Button>
