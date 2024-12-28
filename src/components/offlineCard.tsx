@@ -31,6 +31,7 @@ export const OfflineNotificationCard: React.FC = () => {
                 <Button
                     onClick={() => window.location.reload()}
                     type='primary'
+                    className='mt-4 shadow-none uppercase'
                 >
                     OK
                 </Button>
