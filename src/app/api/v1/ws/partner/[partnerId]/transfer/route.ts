@@ -32,7 +32,7 @@ export async function POST(
     const body: BodyRequestType = await request.json();
     const partnerId = Number(params.partnerId);
 
-    let balanceUpdate;
+    let balanceUpdate:any;
     switch (body.type) {
       case TransferTypeType.GOLD_TRANSFER:
       balanceUpdate = { increment: body.amount };
