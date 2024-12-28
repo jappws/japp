@@ -1,5 +1,5 @@
 import prisma from "@/lib/prisma";
-import { TransactionTypeType } from "@/lib/types";
+import { TransactionTypeType } from "@/lib/types/index.d";
 import { Prisma } from "@prisma/client";
 import { type NextRequest } from "next/server";
 

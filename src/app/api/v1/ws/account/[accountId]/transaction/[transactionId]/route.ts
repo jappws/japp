@@ -2,7 +2,7 @@ import prisma from "@/lib/prisma";
 import { Prisma } from "@prisma/client";
 import { isNull } from "lodash";
 import { type NextRequest } from "next/server";
-import { TransactionTypeType } from "@/lib/types";
+import { TransactionTypeType } from "@/lib/types/index.d";
 
 // Type pour la requête du corps
 type BodyRequestType = {
