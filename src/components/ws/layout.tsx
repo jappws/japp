@@ -161,7 +161,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
           )}
           {...settings}
         >
-            {isOnline ? children : (
+            {isOnline && session?.user ? children : (
             <div className="flex items-center justify-center h-full">
               <div className="bg-white p-6 rounded-lg shadow-lg text-center">
               <UserOutlined style={{ fontSize: '48px', color: '#ff4d4f' }} />
