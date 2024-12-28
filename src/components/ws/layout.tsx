@@ -23,11 +23,13 @@ import axios from "axios";
 import { CompanyType } from "@/lib/types/index.d";
 import { CurrentUserRightSider } from "./settings/users/user/currentUserProfile";
 import { cn, getHSLColor } from "@/lib/utils";
+import useOnlineStatus from "@/hooks/onlineStatus";
 
 const currentYear = dayjs().format("YYYY");
 
 export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
+  const {isOnline}= useOnlineStatus()
   const { data: session } = useSession();
 
   const [openUserProfile, setOpenUserProfile] = useState<boolean>(false);
@@ -160,7 +162,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
           )}
           {...settings}
         >
-          {children}
+          {isOnline? children:<div>Vous etes offline</div>}
           {/* <SettingDrawer
               pathname={pathname}
               enableDarkTheme
