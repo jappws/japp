@@ -11,7 +11,7 @@ import {
   ProLayout,
   SettingDrawer,
 } from "@ant-design/pro-components";
-import { Avatar, Dropdown } from "antd";
+import { Avatar, Button, Dropdown } from "antd";
 import React, { useState } from "react";
 import { wsLayoutDefaultProps } from "./_defaultProps";
 import { usePathname, useRouter } from "next/navigation";
@@ -23,6 +23,7 @@ import { CompanyType } from "@/lib/types/index.d";
 import { CurrentUserRightSider } from "./settings/users/user/currentUserProfile";
 import { cn, getHSLColor } from "@/lib/utils";
 import useOnlineStatus from "@/hooks/onlineStatus";
+import { OfflineNotificationCard } from "../offlineCard";
 
 const currentYear = dayjs().format("YYYY");
 
@@ -161,21 +162,7 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
           )}
           {...settings}
         >
-            {isOnline && session?.user ? children : (
-            <div className="flex items-center justify-center h-full">
-              <div className="bg-white p-6 rounded-lg shadow-lg text-center">
-              <UserOutlined style={{ fontSize: '48px', color: '#ff4d4f' }} />
-              <h2 className="text-2xl font-bold mb-2">Vous êtes hors ligne</h2>
-              <p className="text-gray-600">Veuillez vérifier votre connexion Internet.</p>
-              <button
-                onClick={() => window.location.reload()}
-                className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
-              >
-                Recharger la page
-              </button>
-              </div>
-            </div>
-            )}
+            {isOnline && session?.user ? children : <OfflineNotificationCard/>}
 
           {/* <SettingDrawer
               pathname={pathname}
