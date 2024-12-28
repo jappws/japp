@@ -29,7 +29,7 @@ const currentYear = dayjs().format("YYYY");
 
 export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  const {isOnline}= useOnlineStatus()
+  const { isOnline } = useOnlineStatus()
   const { data: session } = useSession();
 
   const [openUserProfile, setOpenUserProfile] = useState<boolean>(false);
@@ -81,8 +81,8 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
             children: `${session?.user?.firstName
               ?.charAt(0)
               .toUpperCase()}${session?.user?.lastName
-              ?.charAt(0)
-              .toUpperCase()}`,
+                ?.charAt(0)
+                .toUpperCase()}`,
             size: "small",
             title: `${session?.user?.username ?? ""}`,
             render: (props, dom) => {
@@ -162,7 +162,13 @@ export const WSClientLayout = ({ children }: { children: React.ReactNode }) => {
           )}
           {...settings}
         >
-          {isOnline? children:<div>Vous etes offline</div>}
+          {isOnline ? children : <div className="flex items-center justify-center h-full">
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+              <h2 className="text-2xl font-bold mb-2">Vous êtes hors ligne</h2>
+              <p className="text-gray-600">Veuillez vérifier votre connexion Internet.</p>
+            </div>
+          </div>}
+
           {/* <SettingDrawer
               pathname={pathname}
               enableDarkTheme
