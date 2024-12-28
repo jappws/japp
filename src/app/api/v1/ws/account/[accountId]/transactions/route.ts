@@ -68,7 +68,7 @@ export async function GET(
     // Trouver toutes les transactions pour le compte spécifié
     const transactions = await prisma.transaction.findMany({
       where: { accountId: Number(accountId) },
-      orderBy: { date: "asc" },
+      orderBy: { date: "asc"},
       include: { operator: {}, account: {} },
     });
 
