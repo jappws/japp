@@ -212,9 +212,10 @@ export const NewOutOrDebitForm: React.FC<Props> = ({
               rules={[{ required: true }]}
             >
               <DatePicker
+                showTime
                 className=" bg-white"
                 placeholder="sélectionner une date"
-                format="DD/MM/YYYY HH:mm"
+                format="DD/MM/YYYY HH:mm:ss"
               />
             </Form.Item>
 

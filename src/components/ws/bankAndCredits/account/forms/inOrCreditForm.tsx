@@ -166,9 +166,10 @@ export const NewInOrCreditForm: React.FC<Props> = ({ open, toggle }) => {
               rules={[{ required: true }]}
             >
               <DatePicker
+                showTime
                 className=" bg-white"
                 placeholder="sélectionner une date"
-                format="DD/MM/YYYY HH:mm"
+                format="DD/MM/YYYY HH:mm:ss"
               />
             </Form.Item>
 
