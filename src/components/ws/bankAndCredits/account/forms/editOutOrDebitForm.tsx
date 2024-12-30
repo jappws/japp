@@ -231,7 +231,7 @@ export const EditOutOrDebitForm: React.FC<Props> = ({
             >
               <DatePicker
                 showTime
-                className=" bg-white"
+                className=" bg-white w-full"
                 placeholder="sélectionner une date"
                 format="DD/MM/YYYY HH:mm:ss"
               />
