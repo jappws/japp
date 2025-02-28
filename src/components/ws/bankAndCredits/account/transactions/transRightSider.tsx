@@ -33,6 +33,7 @@ import { getInOrOutType } from "@/lib/utils";
 import { Share } from "@capacitor/share";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import {toJpeg} from "html-to-image"
 import { DeleteTransactionForm } from "../forms/deleteTransaction";
 import { EditInOrCreditForm } from "../forms/editInOrCreditForm";
 import { EditOutOrDebitForm } from "../forms/editOutOrDebitForm";
@@ -76,20 +77,21 @@ export const SelectedTransRightSider: React.FC<Props> = ({
   });
 
   const handleDownloadJPG = async () => {
-    // const element = refComponentToPrint.current;
-    // if (!isNull(element)) {
-    //   const canvas = await html2canvas(element);
-    //   const imgData = canvas.toDataURL("image/png");
+    if (!refComponentToPrint.current) return;
 
-    //   const pdf = new jsPDF();
-    //   const imgProperties = pdf.getImageProperties(imgData);
-    //   const pdfWidth = pdf.internal.pageSize.getWidth();
-    //   const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    try {
+      const dataUrl = await toJpeg(refComponentToPrint.current, {
+        quality: 0.95,
+        backgroundColor: "white",
+      });
 
-    //   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-    //   pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
-
-    // }
+      const link = document.createElement("a");
+      link.download = `priere-du-${new Date().toISOString().split("T")[0]}.jpg`;
+      link.href = dataUrl;
+      link.click();
+    } catch (error) {
+      console.error("Erreur lors de l'export:", error);
+    }
   };
 
   const handleDownloadAndShare = async () => {
