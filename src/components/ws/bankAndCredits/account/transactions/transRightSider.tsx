@@ -171,7 +171,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               <Tooltip key="2" title="Expoter en image" placement="bottom">
                 <Button
                   icon={<DownloadOutlined />}
-                  onClick={handleDownloadJPG}
+                  onClick={()=>setOpenToImage(prev=>!prev)}
                   type="text"
                   className="shadow-none"
                   shape="circle"
