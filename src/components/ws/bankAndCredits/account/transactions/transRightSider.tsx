@@ -171,7 +171,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               <Tooltip key="2" title="Expoter en image" placement="bottom">
                 <Button
                   icon={<DownloadOutlined />}
-                  onClick={()=>setOpenToImage(prev=>!prev)}
+                  onClick={() => setOpenToImage((prev) => !prev)}
                   type="text"
                   className="shadow-none"
                   shape="circle"
@@ -291,6 +291,15 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               content={() => refComponentToPrint.current}
               documentTitle={`M${data?.id}-${account?.accountNumber}`}
             />
+            <Button
+              block
+              type="default"
+              icon={<DownloadOutlined />}
+              className="shadow-none"
+              onClick={() => setOpenToImage((prev) => !prev)}
+            >
+              Export en image
+            </Button>
           </ProCard>
 
           <ProCard
