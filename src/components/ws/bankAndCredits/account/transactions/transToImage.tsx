@@ -61,7 +61,7 @@ setIsExporting(true)
       centered
       title={<div className="">Exporter la transaction en image</div>}
       open={open}
-    //   footer={<Button/>}
+      footer={<Button/>}
         onOk={handleDownloadJPG}
       onCancel={toggleForm}
       closable={!isExporting}
