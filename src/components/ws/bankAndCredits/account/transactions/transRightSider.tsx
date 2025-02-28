@@ -295,7 +295,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
               block
               type="default"
               icon={<DownloadOutlined />}
-              className="shadow-none"
+              className="shadow-none mt-3"
               onClick={() => setOpenToImage((prev) => !prev)}
             >
               Export en image
