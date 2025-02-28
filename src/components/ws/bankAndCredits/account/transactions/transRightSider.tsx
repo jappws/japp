@@ -33,10 +33,10 @@ import { getInOrOutType } from "@/lib/utils";
 import { Share } from "@capacitor/share";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import {toJpeg} from "html-to-image"
 import { DeleteTransactionForm } from "../forms/deleteTransaction";
 import { EditInOrCreditForm } from "../forms/editInOrCreditForm";
 import { EditOutOrDebitForm } from "../forms/editOutOrDebitForm";
+import { TransToImage } from "./transToImage";
 
 const { confirm } = Modal;
 
@@ -64,6 +64,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
     useState<boolean>(false);
   const [openEditOutOrDebitForm, setOpenEditOutOrDebitForm] =
     useState<boolean>(false);
+  const [openToImage, setOpenToImage] = React.useState<boolean>(false);
 
   const { data: company, isLoading: isLoadingCompany } = useQuery({
     queryKey: ["company"],
@@ -75,24 +76,6 @@ export const SelectedTransRightSider: React.FC<Props> = ({
     queryFn: () =>
       axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
   });
-
-  const handleDownloadJPG = async () => {
-    if (!refComponentToPrint.current) return;
-
-    try {
-      const dataUrl = await toJpeg(refComponentToPrint.current, {
-        quality: 0.95,
-        backgroundColor: "white",
-      });
-
-      const link = document.createElement("a");
-      link.download = `priere-du-${new Date().toISOString().split("T")[0]}.jpg`;
-      link.href = dataUrl;
-      link.click();
-    } catch (error) {
-      console.error("Erreur lors de l'export:", error);
-    }
-  };
 
   const handleDownloadAndShare = async () => {
     await Share.share({
@@ -226,10 +209,10 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                       icon: <DeleteOutlined />,
                       danger: true,
                       disabled:
-                      data?.type === "TRANSFER" ||
-                      data?.type === "RECEIPT_OF_TRANSFER"
-                        ? true
-                        : false,
+                        data?.type === "TRANSFER" ||
+                        data?.type === "RECEIPT_OF_TRANSFER"
+                          ? true
+                          : false,
                     },
                   ],
                   onClick: ({ key }) => {
@@ -405,6 +388,13 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 </ProDescriptions>
               </ProCard>
             </div>
+            <TransToImage
+              open={openToImage}
+              toggle={setOpenToImage}
+              data={data}
+              account={account}
+              company={company}
+            />
             <DeleteTransactionForm
               open={openDeleteForm}
               toggle={setOpenDeleteForm}
