@@ -8,6 +8,7 @@ import {
   MoreOutlined,
   PrinterOutlined,
   ShareAltOutlined,
+  DownloadOutlined,
 } from "@ant-design/icons";
 import {
   Layout,
@@ -74,22 +75,22 @@ export const SelectedTransRightSider: React.FC<Props> = ({
       axios.get(`/api/v1/ws/accounts`).then((res) => res.data as AccountType[]),
   });
 
-  // const handleDownloadPdf = async () => {
-  //   const element = refComponentToPrint.current;
-  //   if (!isNull(element)) {
-  //     const canvas = await html2canvas(element);
-  //     const imgData = canvas.toDataURL("image/png");
+  const handleDownloadJPG = async () => {
+    // const element = refComponentToPrint.current;
+    // if (!isNull(element)) {
+    //   const canvas = await html2canvas(element);
+    //   const imgData = canvas.toDataURL("image/png");
 
-  //     const pdf = new jsPDF();
-  //     const imgProperties = pdf.getImageProperties(imgData);
-  //     const pdfWidth = pdf.internal.pageSize.getWidth();
-  //     const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
+    //   const pdf = new jsPDF();
+    //   const imgProperties = pdf.getImageProperties(imgData);
+    //   const pdfWidth = pdf.internal.pageSize.getWidth();
+    //   const pdfHeight = (imgProperties.height * pdfWidth) / imgProperties.width;
 
-  //     pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
-  //     pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
+    //   pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    //   pdf.save(`PDFM${data?.id}${account?.accountNumber}.pdf`);
 
-  //   }
-  // };
+    // }
+  };
 
   const handleDownloadAndShare = async () => {
     await Share.share({
@@ -182,7 +183,16 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 content={() => refComponentToPrint.current}
                 documentTitle={`M${data?.id}-${account?.accountNumber}`}
               />,
-              <Tooltip key="2" title="Partager" placement="bottom">
+              <Tooltip key="2" title="Expoter en image" placement="bottom">
+                <Button
+                  icon={<DownloadOutlined />}
+                  onClick={handleDownloadJPG}
+                  type="text"
+                  className="shadow-none"
+                  shape="circle"
+                />
+              </Tooltip>,
+              <Tooltip key="3" title="Partager" placement="bottom">
                 <Button
                   icon={<ShareAltOutlined />}
                   onClick={handleDownloadAndShare}
@@ -192,7 +202,7 @@ export const SelectedTransRightSider: React.FC<Props> = ({
                 />
               </Tooltip>,
               <Dropdown
-                key="3"
+                key="4"
                 menu={{
                   items: [
                     {
