@@ -7,7 +7,7 @@ import { toJpeg } from "html-to-image";
 import { ProCard, ProDescriptions } from "@ant-design/pro-components";
 import { AccountType, CompanyType, TransactionType } from "@/lib/types";
 import { getInOrOutType } from "@/lib/utils";
-import dayjs from "dayjs";
+// import dayjs from "dayjs";
 
 type Props = {
   open: boolean;
@@ -58,11 +58,13 @@ export const TransToImage: React.FC<Props> = ({
       open={open}
       onOk={handleDownloadJPG}
       onCancel={toggleForm}
+      cancelButtonProps={{className:"shadow-none"}}
+      okButtonProps={{className:"shadow-none"}}
       closable={!isExporting}
       maskClosable={!isExporting}
     >
       <div>
-        <div ref={refComponentToPrint} className="">
+        <div ref={refComponentToPrint} className=" p-6">
           <div className="flex items-end">
             <Image
               src={company?.logo}
@@ -111,7 +113,10 @@ export const TransToImage: React.FC<Props> = ({
           >
             <ProDescriptions column={1} title="" emptyText="">
               <ProDescriptions.Item ellipsis label="Date" valueType="text">
-                {dayjs(data?.date).format("DD-MM-YYYY")}
+                {new Intl.DateTimeFormat("fr", { dateStyle: "long" }).format(
+                  new Date(`${data?.date}`)
+                )}
+                {/* {dayjs(data?.date).format("DD-MM-YYYY")} */}
               </ProDescriptions.Item>
               <ProDescriptions.Item label="Intitulé" valueType="text">
                 {data?.title}
